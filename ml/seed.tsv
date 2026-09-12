@@ -1,0 +1,152 @@
+source	where	what	label
+browser	github.com	kritazya/buddy: an AI productivity mentor	1
+browser	github.com	Pull Request #42: gate heartbeats by session age	1
+browser	github.com	Issues - scikit-learn/scikit-learn	1
+browser	github.com	buddy/engine/trigger.py at main	1
+browser	github.com	Commits - kritazya/buddy	1
+browser	github.com	Compare changes - kritazya/buddy	1
+browser	gitlab.com	Merge request !18: fix upsert ordering	1
+browser	stackoverflow.com	python - How to pass sample_weight to LogisticRegression	1
+browser	stackoverflow.com	javascript - chrome.alarms minimum period in MV3	1
+browser	stackoverflow.com	postgresql - upsert with ON CONFLICT DO UPDATE	1
+browser	stackoverflow.com	asyncio - run a background task in FastAPI	1
+browser	developer.mozilla.org	chrome.tabs - Mozilla MDN	1
+browser	developer.mozilla.org	Window: focus event - Web APIs MDN	1
+browser	developer.mozilla.org	Using service workers - Web APIs	1
+browser	docs.python.org	asyncio - Asynchronous I/O - Python documentation	1
+browser	docs.python.org	datetime - Basic date and time types	1
+browser	scikit-learn.org	TfidfVectorizer - scikit-learn documentation	1
+browser	scikit-learn.org	1.1 Linear Models - scikit-learn	1
+browser	scikit-learn.org	sklearn.pipeline.Pipeline documentation	1
+browser	fastapi.tiangolo.com	Background Tasks - FastAPI	1
+browser	fastapi.tiangolo.com	Lifespan Events - FastAPI	1
+browser	pypi.org	joblib - PyPI	1
+browser	readthedocs.io	uvicorn deployment documentation	1
+browser	arxiv.org	Attention Is All You Need	1
+browser	arxiv.org	Efficient Transformers: A Survey	1
+browser	arxiv.org	A statistical approach to activity recognition	1
+browser	scholar.google.com	productivity classification citations	1
+browser	colab.research.google.com	train_classifier.ipynb - Colab	1
+browser	kaggle.com	Titanic - Machine Learning from Disaster	1
+browser	kaggle.com	notebook: text classification with TF-IDF	1
+browser	overleaf.com	Senior Design Report - Overleaf online LaTeX editor	1
+browser	canvas.instructure.com	Assignment 3: Linear Algebra - COMP 322	1
+browser	canvas.instructure.com	Grades - Operating Systems	1
+browser	leetcode.com	Two Sum - LeetCode	1
+browser	leetcode.com	Merge Intervals - LeetCode	1
+browser	chatgpt.com	Debugging a FastAPI lifespan hang	1
+browser	claude.ai	TF-IDF vs embeddings for short text	1
+browser	google.com	logistic regression sample weights - Google Search	1
+browser	google.com	chrome extension service worker lifetime - Google Search	1
+browser	google.com	timescaledb hypertable upsert - Google Search	1
+browser	google.com	esp32 i2s audio example - Google Search	1
+browser	docs.google.com	HackRice submission draft - Google Docs	1
+browser	docs.google.com	Meeting notes week 3 - Google Docs	1
+browser	sheets.google.com	experiment results - Google Sheets	1
+browser	figma.com	Buddy dashboard - Figma	1
+browser	notion.so	Sprint board - Notion	1
+browser	linear.app	BUD-14 trigger engine thresholds	1
+browser	mathworks.com	readtable - MATLAB documentation	1
+browser	timescale.com	Hypertables - Timescale Docs	1
+browser	elevenlabs.io	Text to Speech API reference	1
+browser	ai.google.dev	Gemini API quickstart	1
+browser	espressif.com	ESP32-S3 technical reference manual	1
+browser	youtube.com	MIT 18.06 Lecture 1: The Geometry of Linear Equations	1
+browser	youtube.com	Andrej Karpathy - Let's build GPT from scratch	1
+browser	youtube.com	3Blue1Brown - Essence of linear algebra chapter 3	1
+browser	youtube.com	FastAPI full course tutorial for beginners	1
+browser	youtube.com	How TF-IDF works explained step by step	1
+browser	youtube.com	PyCon 2024 talk: asyncio in production	1
+browser	youtube.com	ESP32 I2S audio tutorial part 2	1
+browser	youtube.com	Stanford CS231n lecture 4 backpropagation	1
+browser	reddit.com	r/learnpython - How do I structure a FastAPI project	1
+browser	reddit.com	r/MachineLearning - [D] handling class imbalance	1
+browser	youtube.com	INDIA'S GOT LATENT S2 Bonus EP1 ft. Raghav Juyal	0
+browser	youtube.com	Coldplay - Viva La Vida official video	0
+browser	youtube.com	lofi hip hop radio beats to relax to	0
+browser	youtube.com	Top 10 funniest fails compilation 2026	0
+browser	youtube.com	I spent 50 hours in solitary confinement	0
+browser	youtube.com	NBA highlights Lakers vs Celtics full game	0
+browser	youtube.com	Minecraft speedrun world record reaction	0
+browser	youtube.com	official movie trailer 2026	0
+browser	youtube.com	#shorts funny cat compilation	0
+browser	youtube.com	my honest vlog living in Houston	0
+browser	youtube.com	Valorant gameplay ranked grind	0
+browser	youtube.com	full episode season 2 recap	0
+browser	reddit.com	r/memes - when the code finally compiles	0
+browser	reddit.com	r/funny - top posts this week	0
+browser	reddit.com	r/nba - game thread Lakers	0
+browser	reddit.com	r/aww - my cat sleeping	0
+browser	instagram.com	Instagram	0
+browser	instagram.com	Reels	0
+browser	tiktok.com	For You - TikTok	0
+browser	twitter.com	Home / X	0
+browser	x.com	timeline scrolling	0
+browser	netflix.com	Stranger Things season 4 - Netflix	0
+browser	netflix.com	Netflix browse	0
+browser	twitch.tv	xQc live stream	0
+browser	twitch.tv	Valorant streams - Twitch	0
+browser	9gag.com	9GAG memes	0
+browser	pinterest.com	room decor ideas	0
+browser	espn.com	NBA scores and standings	0
+browser	amazon.com	Amazon.com shopping cart	0
+browser	google.com	nba scores tonight - Google Search	0
+browser	google.com	cheap flights to cancun - Google Search	0
+browser	primevideo.com	Prime Video watch now	0
+browser	hulu.com	Hulu browse shows	0
+desktop	Visual Studio Code	train.py - Buddy	1
+desktop	Visual Studio Code	session.js - buddy	1
+desktop	Visual Studio Code	engine/trigger.py - Buddy	1
+desktop	Visual Studio Code	README.md - Buddy	1
+desktop	Cursor	app.py - Buddy	1
+desktop	PyCharm	buddy - train.py	1
+desktop	Xcode	BuddyWatch - ContentView.swift	1
+desktop	Terminal	buddy - uvicorn engine.app:app	1
+desktop	Terminal	python train.py	1
+desktop	iTerm2	git rebase -i main	1
+desktop	iTerm2	pytest -q buddy	1
+desktop	Warp	npm run build	1
+desktop	Ghostty	tail -f engine.log	1
+desktop	MATLAB	plot_score.m - MATLAB	1
+desktop	RStudio	analysis.R	1
+desktop	Arduino IDE	buddy.ino - Arduino IDE	1
+desktop	Figma	Buddy dashboard mockup	1
+desktop	Notion	Sprint board - HackRice	1
+desktop	Obsidian	daily note 2026-09-12	1
+desktop	Microsoft Word	Senior design report.docx	1
+desktop	Microsoft Excel	results.xlsx	1
+desktop	Microsoft PowerPoint	demo slides.pptx	1
+desktop	Pages	lab writeup	1
+desktop	Preview	attention_is_all_you_need.pdf	1
+desktop	Preview	lecture_notes_week3.pdf	1
+desktop	Postman	POST /ingest - Buddy API	1
+desktop	Docker Desktop	Containers	1
+desktop	TablePlus	buddy - postgres	1
+desktop	DBeaver	timescale connection	1
+desktop	Zoom	COMP 322 lecture	1
+desktop	Zoom	HackRice standup	1
+desktop	Slack	#buddy-dev - HackRice	1
+desktop	Slack	code review thread - buddy	1
+desktop	Microsoft Teams	sprint planning	1
+desktop	Jupyter	train_classifier.ipynb	1
+desktop	Steam	Steam	0
+desktop	Steam	Store - Steam	0
+desktop	Steam	Library - Steam	0
+desktop	Epic Games Launcher	Epic Games Store	0
+desktop	League of Legends	League of Legends client	0
+desktop	VALORANT	VALORANT	0
+desktop	Minecraft	Minecraft 1.21	0
+desktop	Netflix	Netflix	0
+desktop	VLC	Stranger.Things.S04E01.mkv	0
+desktop	QuickTime Player	movie.mp4	0
+desktop	Discord	#gaming - HackRice	0
+desktop	Discord	#memes	0
+desktop	Discord	Valorant voice channel	0
+desktop	Spotify	Discover Weekly playlist	0
+desktop	Music	Coldplay - Viva La Vida	0
+desktop	Messages	Messages - mom	0
+desktop	WhatsApp	WhatsApp chats	0
+desktop	Photos	Photos - Summer 2025	0
+desktop	TikTok	TikTok for you	0
+desktop	Instagram	Instagram feed	0
+desktop	Twitch	Twitch streams	0

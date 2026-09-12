@@ -1,6 +1,0 @@
-{
-  "score_threshold": 35,
-  "streak_seconds": 45,
-  "cooldown_seconds": 180,
-  "require_open_deadline_task": true
-}

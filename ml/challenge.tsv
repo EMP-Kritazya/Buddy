@@ -1,0 +1,17 @@
+source	where	what	label	why
+browser	youtube.com	Stanford CS229 Lecture 5: Generative Learning Algorithms	1	youtube says leisure, title says lecture
+browser	youtube.com	Taylor Swift - Cruel Summer official audio	0	youtube and music, both leisure
+browser	youtube.com	How to use TimescaleDB hypertables in production	1	tutorial on a leisure domain
+browser	reddit.com	r/learnmachinelearning - where do I start with TF-IDF	1	learning subreddit
+browser	reddit.com	r/gaming - my new battlestation	0	leisure subreddit
+browser	twitch.tv	PyData Global conference stream	1	conference on a streaming site
+browser	netflix.com	The Social Dilemma documentary	0	documentary is still leisure here
+browser	github.com	trending repositories today	0	browsing github is not working
+desktop	Discord	#help-python - debugging asyncio deadlock	1	work channel in a leisure app
+desktop	Discord	#valorant-lfg voice chat	0	gaming channel
+desktop	Zoom	Senior Design weekly meeting	1	class meeting
+desktop	Zoom	family call with mom	0	personal call in a work app
+desktop	VLC	CS229_lecture3.mp4	1	lecture recording in a media player
+desktop	Preview	boarding_pass.pdf	0	personal document in a work app
+desktop	Visual Studio Code	settings.json	1	editor is work even with a dull title
+desktop	Spotify	Deep Focus playlist	0	music is not the work itself

@@ -5,18 +5,22 @@
 // in chrome.storage because the MV3 service worker can be killed at any moment.
 
 import {
+  canResume,
+  HEARTBEAT_MINUTES,
+  HEARTBEAT_MS,
   IDLE_SECONDS,
   MIN_SESSION_MS,
   SLEEP_GAP_MS,
   describeTab,
   openSession,
+  resumeSession,
   sameContent,
   toRecord,
 } from "./lib/session.js";
 import { enqueue, flush } from "./lib/queue.js";
 
 const HEARTBEAT_ALARM = "buddy-heartbeat";
-const FOCUS_DEBOUNCE_MS = 500;
+const FOCUS_DEBOUNCE_MS = 1000;
 const WINDOW_NONE = chrome.windows.WINDOW_ID_NONE;
 
 // onActivated, onFocusChanged and onUpdated often fire together; running them one at a time
@@ -90,7 +94,10 @@ chrome.idle.onStateChanged.addListener((idleState) => trigger({ idleState }));
 
 chrome.alarms.get(HEARTBEAT_ALARM).then((alarm) => {
   // Re-creating an existing alarm resets its timer, which would starve it on frequent SW wakes.
-  if (!alarm) chrome.alarms.create(HEARTBEAT_ALARM, { periodInMinutes: 1 });
+  // A changed period still has to take effect, so recreate only when it no longer matches.
+  if (alarm?.periodInMinutes !== HEARTBEAT_MINUTES) {
+    chrome.alarms.create(HEARTBEAT_ALARM, { periodInMinutes: HEARTBEAT_MINUTES });
+  }
 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name !== HEARTBEAT_ALARM) return;
@@ -157,28 +164,46 @@ async function reconcile(at) {
     // The idle event fires IDLE_SECONDS after the last input; that's when the user actually left.
     const endMs =
       reason === "idle" ? Math.max(cur.start_ms, at - IDLE_SECONDS * 1000) : at;
-    await closeSession(cur, endMs, reason);
+    const closedAt = await closeSession(cur, endMs, reason);
+    // Remembered so a quick return to the same page continues this session rather than
+    // starting a new one. Overwritten by the next close, so only the latest page can resume.
+    await chrome.storage.local.set({ lastClosed: { ...cur, closed_at: closedAt } });
   }
 
-  await chrome.storage.local.set({
-    current: target?.tracked ? openSession(target, at) : null,
-  });
+  let next = null;
+  if (target?.tracked) {
+    const { lastClosed } = await chrome.storage.local.get("lastClosed");
+    next = canResume(lastClosed, target, at)
+      ? resumeSession(lastClosed, target, at)
+      : openSession(target, at);
+  }
+  await chrome.storage.local.set({ current: next });
 }
 
 async function heartbeat(at) {
   await reconcile(at);
   const { current } = await chrome.storage.local.get("current");
-  if (!current || at - current.start_ms < MIN_SESSION_MS) return;
+  if (!current) return;
+  // The alarm is a fixed metronome, but a progress report is only worth sending once per
+  // interval of real session time. Opening a session - a tab switch, a navigation, a refresh -
+  // starts that count over, so a 6-second-old session never reports.
+  const sinceReported = at - Math.max(current.start_ms, current.last_beat_end_ms);
+  if (sinceReported < HEARTBEAT_MS) return;
   // Non-final snapshot: the backend upserts on session_id, so long sessions are visible live.
   current.beats += 1;
+  current.last_beat_end_ms = at;
   await chrome.storage.local.set({ current });
   await enqueue(await toRecord(current, at, "heartbeat", false));
 }
 
 async function closeSession(session, endMs, reason) {
+  // A heartbeat already told the backend the session reached that point. Ending earlier (idle
+  // backdates to the last input) would upsert a SHORTER row and retract time already reported.
+  const end = Math.max(endMs, session.last_beat_end_ms ?? 0);
   // Sub-2s tab flicking is noise for the classifier, unless a heartbeat already reported it.
-  if (endMs - session.start_ms < MIN_SESSION_MS && !session.beats) return;
-  await enqueue(await toRecord(session, endMs, reason, true));
+  const worthSending = end - session.start_ms >= MIN_SESSION_MS || session.beats;
+  if (worthSending) await enqueue(await toRecord(session, end, reason, true));
+  return end;
 }
 
 // storage.session is wiped when the browser (or the extension) restarts, so a missing marker
@@ -192,6 +217,7 @@ async function recoverIfNewRun() {
     await closeSession(current, current.last_seen_ms, "startup_recovery");
   await chrome.storage.local.set({
     current: null,
+    lastClosed: null,
     focusedWindowId: null,
     idleState: await chrome.idle.queryState(IDLE_SECONDS),
   });

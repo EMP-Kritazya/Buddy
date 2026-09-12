@@ -1,0 +1,1001 @@
+session_id	app_name	app_type	browser_name	domain	title	duration_s	label
+gen-00000	Google Chrome	browser	Google Chrome	colab.research.google.com	app.ipynb - Colab	340.145	1
+gen-00001	Google Chrome	browser	Google Chrome	youtube.com	MrBeast - worst roommate stories - YouTube	169.63	0
+gen-00002	MATLAB	desktop			filter_design.m - MATLAB	462.476	1
+gen-00003	Google Chrome	browser	Google Chrome	youtube.com	Technoblade - my honest apartment tour - YouTube	75.562	0
+gen-00004	Google Chrome	browser	Google Chrome	github.com	Issues - espressif/esp32-voice	260.961	1
+gen-00005	Apex Legends	desktop			Apex Legends	100.112	0
+gen-00006	Microsoft Excel	desktop			experiment results.xlsx	513.892	1
+gen-00007	Google Chrome	browser	Google Chrome	youtube.com	League of Legends ranked gameplay highlights - YouTube	204.806	0
+gen-00008	Discord	desktop			#backend - Buddy Team	275.926	1
+gen-00009	Google Chrome	browser	Google Chrome	tiktok.com	For You - TikTok	177.847	0
+gen-00010	Google Chrome	browser	Google Chrome	leetcode.com	Word Ladder - LeetCode	1007.41	1
+gen-00011	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing Fortnite - Twitch	93.631	0
+gen-00012	Google Chrome	browser	Google Chrome	google.com	typescript websockets connection pool exhausted - Google Search	879.034	1
+gen-00013	Google Chrome	browser	Google Chrome	youtube.com	Minecraft ranked gameplay highlights - YouTube	41.404	0
+gen-00014	Google Chrome	browser	Google Chrome	github.com	rahulm/portfolio: webrtc for probability	517.405	1
+gen-00015	Google Chrome	browser	Google Chrome	espn.com	NFL scores and standings - ESPN	168.344	0
+gen-00016	Google Chrome	browser	Google Chrome	scikit-learn.org	(5958) scikit-learn - scikit-learn documentation	479.747	1
+gen-00017	Google Chrome	browser	Google Chrome	youtube.com	CS2 ranked gameplay highlights - YouTube	246.373	0
+gen-00018	Jupyter	desktop			agent.ipynb	392.563	1
+gen-00019	QuickTime Player	desktop			The.Office.S01E04.mkv	876.59	0
+gen-00020	Google Chrome	browser	Google Chrome	leetcode.com	Two Sum - LeetCode	607.877	1
+gen-00021	Discord	desktop			#valorant-lfg - Gamers United	20.725	0
+gen-00022	DBeaver	desktop			hackrice - containers	420.843	1
+gen-00023	VLC	desktop			Money.Heist.S03E08.mkv	1119.587	0
+gen-00024	Google Chrome	browser	Google Chrome	github.com	Issues - fastapi/dotfiles	223.953	1
+gen-00025	Zoom	desktop			family call with mom	419.857	0
+gen-00026	Google Chrome	browser	Google Chrome	github.com	portfolio/styles.css at main	23.062	1
+gen-00027	WhatsApp	desktop			Leo	372.236	0
+gen-00028	Google Chrome	browser	Google Chrome	stackoverflow.com	sql - how to fix flaky test in postgres - Stack Overflow	595.585	1
+gen-00029	Google Chrome	browser	Google Chrome	youtube.com	Drake - Kesariya (Official Video) - YouTube	131.513	0
+gen-00030	Preview	desktop			syllabus.pdf	2488.056	1
+gen-00031	Google Chrome	browser	Google Chrome	reddit.com	(2455) r/cricket - match thread india vs australia	207.885	0
+gen-00032	Google Chrome	browser	Google Chrome	reddit.com	r/MachineLearning - how do I use webrtc with python	230.943	1
+gen-00033	Google Chrome	browser	Google Chrome	instagram.com	(1039) Instagram	44.15	0
+gen-00034	iTerm2	desktop			senior-design - ssh pi@buddy.local	430.682	1
+gen-00035	League of Legends	desktop			League of Legends	106.034	0
+gen-00036	Google Chrome	browser	Google Chrome	stackoverflow.com	go - how to fix deadlock in esp32 - Stack Overflow	296.969	1
+gen-00037	Google Chrome	browser	Google Chrome	google.com	movie showtimes near me - Google Search	100.551	0
+gen-00038	Microsoft Word	desktop			Sprint plan.docx	201.989	1
+gen-00039	Google Chrome	browser	Google Chrome	youtube.com	#shorts this meme is too real	361.568	0
+gen-00040	Google Chrome	browser	Google Chrome	stackoverflow.com	sql - how to fix flaky test in tf-idf - Stack Overflow	398.472	1
+gen-00041	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Paradise (Official Video) - YouTube	44.64	0
+gen-00042	Google Chrome	browser	Google Chrome	pytorch.org	asyncio - PyTorch documentation	616.261	1
+gen-00043	Google Chrome	browser	Google Chrome	amazon.com	Amazon.com: gaming mouse	44.52	0
+gen-00044	Arduino IDE	desktop			blink.ino - Arduino IDE	762.779	1
+gen-00045	Google Chrome	browser	Google Chrome	instagram.com	Reels	302.087	0
+gen-00046	Google Chrome	browser	Google Chrome	arxiv.org	[2384.1907] attention is all you need	609.141	1
+gen-00047	Steam	desktop			Store - Steam	146.558	0
+gen-00048	Google Chrome	browser	Google Chrome	leetcode.com	Merge Intervals - LeetCode	284.892	1
+gen-00049	Google Chrome	browser	Google Chrome	youtube.com	Rocket League ranked gameplay highlights - YouTube	594.09	0
+gen-00050	Preview	desktop			datasheet_esp32.pdf	508.392	1
+gen-00051	Google Chrome	browser	Google Chrome	youtube.com	#shorts game thread lakers vs celtics	648.38	0
+gen-00052	Google Chrome	browser	Google Chrome	google.com	python esp32 race condition - Google Search	872.37	1
+gen-00053	Zoom	desktop			family call with sister	587.664	0
+gen-00054	Google Chrome	browser	Google Chrome	stackoverflow.com	java - how to fix timeout in random forest - Stack Overflow	692.194	1
+gen-00055	Google Chrome	browser	Google Chrome	youtube.com	FIFA 26 ranked gameplay highlights - YouTube	744.547	0
+gen-00056	Visual Studio Code	desktop			app.py - esp32-voice	227.187	1
+gen-00057	Google Chrome	browser	Google Chrome	amazon.com	(8056) Amazon.com: hoodie	195.131	0
+gen-00058	Google Chrome	browser	Google Chrome	canvas.instructure.com	MATH 2415 - Assignment 3	327.855	1
+gen-00059	Google Chrome	browser	Google Chrome	youtube.com	#shorts my dog stole the remote	119.475	0
+gen-00060	Microsoft Teams	desktop			#buddy-dev - Buddy Team	238.149	1
+gen-00061	Valorant	desktop			Valorant	738.742	0
+gen-00062	Google Chrome	browser	Google Chrome	github.com	Pull Request #212: fix slow query by leo	1208.743	1
+gen-00063	Google Chrome	browser	Google Chrome	netflix.com	Friends season 4 - Netflix	142.062	0
+gen-00064	Google Chrome	browser	Google Chrome	figma.com	portfolio dashboard - Figma	77.827	1
+gen-00065	Google Chrome	browser	Google Chrome	google.com	cheap flights to cancun - Google Search	68.953	0
+gen-00066	PyCharm	desktop			app.py - esp32-voice	500.293	1
+gen-00067	Google Chrome	browser	Google Chrome	youtube.com	(2530) Taylor Swift - Believer (Official Video) - YouTube	217.214	0
+gen-00068	Arduino IDE	desktop			buddy.ino - Arduino IDE	1061.323	1
+gen-00069	Google Chrome	browser	Google Chrome	youtube.com	Arijit Singh - Kesariya (Official Video) - YouTube	223.924	0
+gen-00070	Microsoft Word	desktop			Senior design report.docx	99.992	1
+gen-00071	Google Chrome	browser	Google Chrome	instagram.com	Explore - Instagram	34.273	0
+gen-00072	Google Chrome	browser	Google Chrome	arxiv.org	[2458.1906] attention is all you need	516.604	1
+gen-00073	Google Chrome	browser	Google Chrome	google.com	ipl points table - Google Search	136.128	0
+gen-00074	Google Chrome	browser	Google Chrome	youtube.com	COMP 540 Lecture 7: signal processing - YouTube	671.312	1
+gen-00075	Photos	desktop			Trip to Austin	1034.867	0
+gen-00076	iTerm2	desktop			portfolio - uvicorn engine.app:app	131.704	1
+gen-00077	Google Chrome	browser	Google Chrome	amazon.com	Amazon.com: airpods case	181.318	0
+gen-00078	Slack	desktop			#help-python - Buddy Team	735.239	1
+gen-00079	Netflix	desktop			Wednesday.S04E04.mkv	70.913	0
+gen-00080	Google Chrome	browser	Google Chrome	youtube.com	sentdex - asyncio tutorial for beginners - YouTube	281.894	1
+gen-00081	Google Chrome	browser	Google Chrome	google.com	iphone 18 price - Google Search	255.901	0
+gen-00082	Zoom	desktop			office hours	708.991	1
+gen-00083	Google Chrome	browser	Google Chrome	youtube.com	#shorts top plays of the week	198.718	0
+gen-00084	PyCharm	desktop			buddy.ino - senior-design	638.421	1
+gen-00085	Google Chrome	browser	Google Chrome	reddit.com	r/gaming - worst ui in a modern game	120.481	0
+gen-00086	Google Chrome	browser	Google Chrome	github.com	Pull Request #54: fix memory leak by anita	870.213	1
+gen-00087	Google Chrome	browser	Google Chrome	youtube.com	CarryMinati - 24 hours in the airport - YouTube	577.095	0
+gen-00088	Google Chrome	browser	Google Chrome	github.com	Issues - vercel/senior-design	202.236	1
+gen-00089	TikTok	desktop			For You	460.788	0
+gen-00090	Google Chrome	browser	Google Chrome	github.com	esp32-voice/session.js at main	1106.263	1
+gen-00091	Google Chrome	browser	Google Chrome	x.com	Markiplier on X	744.337	0
+gen-00092	Google Chrome	browser	Google Chrome	arxiv.org	(2335) [2359.2482] efficient transformers	487.395	1
+gen-00093	Google Chrome	browser	Google Chrome	netflix.com	Breaking Bad season 1 - Netflix	96.698	0
+gen-00094	Google Chrome	browser	Google Chrome	colab.research.google.com	session.ipynb - Colab	637.183	1
+gen-00095	Google Chrome	browser	Google Chrome	espn.com	Cricket scores and standings - ESPN	107.119	0
+gen-00096	Preview	desktop			lecture_notes_week3.pdf	79.924	1
+gen-00097	GTA V	desktop			GTA V	312.099	0
+gen-00098	Ghostty	desktop			portfolio - git rebase -i main	325.293	1
+gen-00099	VLC	desktop			Breaking.Bad.S01E03.mkv	142.018	0
+gen-00100	Google Chrome	browser	Google Chrome	canvas.instructure.com	CS231n - Assignment 1	2798.453	1
+gen-00101	Google Chrome	browser	Google Chrome	youtube.com	Apex Legends ranked gameplay highlights - YouTube	251.65	0
+gen-00102	Google Chrome	browser	Google Chrome	claude.ai	debugging cors error in tf-idf	192.259	1
+gen-00103	Instagram	desktop			Following	130.766	0
+gen-00104	Google Chrome	browser	Google Chrome	github.com	Pull Request #186: fix slow query by leo	448.725	1
+gen-00105	Google Chrome	browser	Google Chrome	netflix.com	(554) Stranger Things season 3 - Netflix	388.24	0
+gen-00106	Google Chrome	browser	Google Chrome	leetcode.com	Course Schedule - LeetCode	562.882	1
+gen-00107	Google Chrome	browser	Google Chrome	youtube.com	Coldplay - Viva La Vida (Official Video) - YouTube	232.489	0
+gen-00108	Cursor	desktop			main.py - senior-design	580.794	1
+gen-00109	Google Chrome	browser	Google Chrome	reddit.com	(5740) r/nextfuckinglevel - this street performer is insane	284.253	0
+gen-00110	Google Chrome	browser	Google Chrome	docs.google.com	Demo script - Google Docs	89.76	1
+gen-00111	Google Chrome	browser	Google Chrome	youtube.com	Karan Aujla - Paradise (Official Video) - YouTube	270.855	0
+gen-00112	Notion	desktop			hackrice - board	264.912	1
+gen-00113	Google Chrome	browser	Google Chrome	youtube.com	AP Dhillon - Believer (Official Video) - YouTube	406.647	0
+gen-00114	Google Chrome	browser	Google Chrome	youtube.com	(7145) 3Blue1Brown - timescaledb tutorial for beginners - YouTube	146.287	1
+gen-00115	Google Chrome	browser	Google Chrome	youtube.com	AP Dhillon - Kesariya (Official Video) - YouTube	234.366	0
+gen-00116	Google Chrome	browser	Google Chrome	stackoverflow.com	python - how to fix memory leak in timescaledb - Stack Overflow	305.174	1
+gen-00117	Google Chrome	browser	Google Chrome	youtube.com	Valorant ranked gameplay highlights - YouTube	38.973	0
+gen-00118	Jupyter	desktop			plot_score.ipynb	187.97	1
+gen-00119	Twitch	desktop			Feed	192.34	0
+gen-00120	Google Chrome	browser	Google Chrome	colab.research.google.com	index.ipynb - Colab	228.58	1
+gen-00121	Discord	desktop			#music - Chill Zone	241.883	0
+gen-00122	Slack	desktop			#code-review - Senior Design	799.337	1
+gen-00123	Google Chrome	browser	Google Chrome	netflix.com	Peaky Blinders season 1 - Netflix	210.841	0
+gen-00124	Microsoft Excel	desktop			benchmark timings.xlsx	426.407	1
+gen-00125	TikTok	desktop			Feed	260.699	0
+gen-00126	Google Chrome	browser	Google Chrome	stackoverflow.com	java - how to fix slow query in random forest - Stack Overflow	880.32	1
+gen-00127	Google Chrome	browser	Google Chrome	reddit.com	r/nba - trade rumors megathread	114.386	0
+gen-00128	Google Chrome	browser	Google Chrome	scikit-learn.org	(1751) kubernetes - scikit-learn documentation	2224.11	1
+gen-00129	Discord	desktop			#anime - Gamers United	587.174	0
+gen-00130	Google Chrome	browser	Google Chrome	github.com	Pull Request #130: fix flaky test by rahulm	1660.546	1
+gen-00131	Google Chrome	browser	Google Chrome	youtube.com	GTA V ranked gameplay highlights - YouTube	1126.505	0
+gen-00132	Preview	desktop			paper_draft.pdf	1696.4	1
+gen-00133	Google Chrome	browser	Google Chrome	netflix.com	The Office season 1 - Netflix	740.259	0
+gen-00134	Google Chrome	browser	Google Chrome	docs.google.com	Meeting notes - Google Docs	1267.972	1
+gen-00135	Google Chrome	browser	Google Chrome	espn.com	NBA scores and standings - ESPN	46.035	0
+gen-00136	Google Chrome	browser	Google Chrome	github.com	tarunk/buddy: kubernetes for backpropagation	556.167	1
+gen-00137	Zoom	desktop			family call with Sofia	43.774	0
+gen-00138	Google Chrome	browser	Google Chrome	figma.com	Buddy dashboard - Figma	312.543	1
+gen-00139	Google Chrome	browser	Google Chrome	youtube.com	Arijit Singh - Brown Munde (Official Video) - YouTube	178.915	0
+gen-00140	Google Chrome	browser	Google Chrome	github.com	Pull Request #171: fix race condition by leo	364.803	1
+gen-00141	Google Chrome	browser	Google Chrome	google.com	nba scores tonight - Google Search	483.495	0
+gen-00142	Google Chrome	browser	Google Chrome	overleaf.com	Lab writeup - Overleaf, Online LaTeX Editor	1270.31	1
+gen-00143	Google Chrome	browser	Google Chrome	youtube.com	#shorts monday morning mood	169.933	0
+gen-00144	Jupyter	desktop			session.ipynb	352.61	1
+gen-00145	Google Chrome	browser	Google Chrome	x.com	(6899) Ashish Chanchlani on X	814.543	0
+gen-00146	Google Chrome	browser	Google Chrome	docs.google.com	Senior design report - Google Docs	118.622	1
+gen-00147	Google Chrome	browser	Google Chrome	youtube.com	(1994) Elden Ring ranked gameplay highlights - YouTube	118.662	0
+gen-00148	Jupyter	desktop			trigger.ipynb	630.78	1
+gen-00149	Google Chrome	browser	Google Chrome	youtube.com	(6023) MrBeast - I survived 50 hours in a box - YouTube	68.156	0
+gen-00150	Google Chrome	browser	Google Chrome	reddit.com	r/learnprogramming - how do I use postgres with javascript	222.627	1
+gen-00151	WhatsApp	desktop			sister	81.563	0
+gen-00152	Preview	desktop			attention_is_all_you_need.pdf	1454.473	1
+gen-00153	Discord	desktop			#valorant-lfg - Chill Zone	202.742	0
+gen-00154	Jupyter	desktop			app.ipynb	373.241	1
+gen-00155	Google Chrome	browser	Google Chrome	reddit.com	(7968) r/dankmemes - no context memes	73.122	0
+gen-00156	Google Chrome	browser	Google Chrome	youtube.com	MATH 2415 Lecture 9: graph theory - YouTube	131.027	1
+gen-00157	Google Chrome	browser	Google Chrome	youtube.com	Fortnite ranked gameplay highlights - YouTube	139.068	0
+gen-00158	Google Chrome	browser	Google Chrome	youtube.com	freeCodeCamp - docker tutorial for beginners - YouTube	154.892	1
+gen-00159	Google Chrome	browser	Google Chrome	twitch.tv	Samay Raina playing Fortnite - Twitch	256.753	0
+gen-00160	Google Chrome	browser	Google Chrome	github.com	Issues - pytorch/dotfiles	289.267	1
+gen-00161	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing Valorant - Twitch	36.255	0
+gen-00162	Postman	desktop			Buddy - notes	1183.781	1
+gen-00163	Google Chrome	browser	Google Chrome	reddit.com	r/dankmemes - deep fried friday	312.502	0
+gen-00164	Google Chrome	browser	Google Chrome	arxiv.org	[2427.3550] attention is all you need	44.578	1
+gen-00165	Netflix	desktop			The.Office.S01E04.mkv	351.38	0
+gen-00166	Google Chrome	browser	Google Chrome	overleaf.com	Sprint plan - Overleaf, Online LaTeX Editor	303.18	1
+gen-00167	Google Chrome	browser	Google Chrome	twitch.tv	(1433) Dude Perfect playing Rocket League - Twitch	209.231	0
+gen-00168	Microsoft Teams	desktop			#standup - Rice CS	73.872	1
+gen-00169	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing League of Legends - Twitch	371.596	0
+gen-00170	Obsidian	desktop			portfolio - API	304.261	1
+gen-00171	Google Chrome	browser	Google Chrome	youtube.com	Dude Perfect - my honest apartment tour - YouTube	184.035	0
+gen-00172	iTerm2	desktop			hackrice - pytest -q	209.953	1
+gen-00173	Google Chrome	browser	Google Chrome	youtube.com	Dude Perfect - I survived 50 hours in a box - YouTube	175.726	0
+gen-00174	Google Chrome	browser	Google Chrome	figma.com	esp32-voice dashboard - Figma	234.055	1
+gen-00175	Rocket League	desktop			Rocket League	605.281	0
+gen-00176	Google Chrome	browser	Google Chrome	colab.research.google.com	plot_score.ipynb - Colab	220.774	1
+gen-00177	Google Chrome	browser	Google Chrome	google.com	best biryani houston - Google Search	36.384	0
+gen-00178	Google Chrome	browser	Google Chrome	overleaf.com	Senior design report - Overleaf, Online LaTeX Editor	424.576	1
+gen-00179	CS2	desktop			CS2	532.216	0
+gen-00180	Google Chrome	browser	Google Chrome	github.com	Issues - scikit-learn/hackrice-16	3124.109	1
+gen-00181	Photos	desktop			Screenshots	273.117	0
+gen-00182	Google Chrome	browser	Google Chrome	canvas.instructure.com	Berkeley CS61A - Assignment 1	1132.823	1
+gen-00183	Google Chrome	browser	Google Chrome	youtube.com	Ashish Chanchlani - I survived 50 hours in a box - YouTube	557.583	0
+gen-00184	Google Chrome	browser	Google Chrome	chatgpt.com	debugging deadlock in opencv	273.524	1
+gen-00185	Google Chrome	browser	Google Chrome	youtube.com	#shorts this street performer is insane	346.689	0
+gen-00186	Discord	desktop			#backend - HackRice	369.547	1
+gen-00187	Discord	desktop			#random - Gamers United	154.005	0
+gen-00188	Notion	desktop			hackrice - postgres	182.002	1
+gen-00189	Discord	desktop			#music - Gamers United	250.22	0
+gen-00190	TablePlus	desktop			esp32-voice - containers	2066.927	1
+gen-00191	Twitch	desktop			Following	60.304	0
+gen-00192	Google Chrome	browser	Google Chrome	github.com	sofia-dev/portfolio: websockets for backpropagation	602.451	1
+gen-00193	Zoom	desktop			family call with Leo	230.949	0
+gen-00194	Google Chrome	browser	Google Chrome	github.com	Pull Request #138: fix race condition by meiling	1794.803	1
+gen-00195	Google Chrome	browser	Google Chrome	netflix.com	The Office season 3 - Netflix	177.989	0
+gen-00196	Google Chrome	browser	Google Chrome	youtube.com	sentdex - pandas tutorial for beginners - YouTube	234.348	1
+gen-00197	Spotify	desktop			Imagine Dragons - Softly	156.324	0
+gen-00198	Google Chrome	browser	Google Chrome	youtube.com	Berkeley CS61A Lecture 13: operating systems - YouTube	221.995	1
+gen-00199	Google Chrome	browser	Google Chrome	twitch.tv	CarryMinati playing League of Legends - Twitch	271.036	0
+gen-00200	Arduino IDE	desktop			i2s_test.ino - Arduino IDE	469.477	1
+gen-00201	Google Chrome	browser	Google Chrome	reddit.com	r/pcmasterrace - cable management attempt	47.964	0
+gen-00202	Google Chrome	browser	Google Chrome	google.com	bash kafka cors error - Google Search	567.969	1
+gen-00203	Google Chrome	browser	Google Chrome	youtube.com	Ashish Chanchlani - 24 hours in the airport - YouTube	238.422	0
+gen-00204	Google Chrome	browser	Google Chrome	github.com	(3375) senior-design/index.html at main	352.679	1
+gen-00205	Zoom	desktop			family call with Rahul	117.481	0
+gen-00206	Microsoft PowerPoint	desktop			Lab writeup.pptx	806.056	1
+gen-00207	Music	desktop			Arijit Singh - Blinding Lights	265.808	0
+gen-00208	Google Chrome	browser	Google Chrome	github.com	Issues - vercel/timeseries-api	93.084	1
+gen-00209	Google Chrome	browser	Google Chrome	x.com	Home / X	120.295	0
+gen-00210	Google Chrome	browser	Google Chrome	docs.google.com	Sprint plan - Google Docs	123.753	1
+gen-00211	Google Chrome	browser	Google Chrome	youtube.com	AP Dhillon - Blinding Lights (Official Video) - YouTube	136.153	0
+gen-00212	Google Chrome	browser	Google Chrome	github.com	(3547) Pull Request #56: fix import cycle by meiling	1209.7	1
+gen-00213	QuickTime Player	desktop			The.Office.S03E02.mkv	97.93	0
+gen-00214	Google Chrome	browser	Google Chrome	github.com	buddy/styles.css at main	387.345	1
+gen-00215	Google Chrome	browser	Google Chrome	reddit.com	r/gaming - my new battlestation	334.998	0
+gen-00216	Google Chrome	browser	Google Chrome	figma.com	senior-design dashboard - Figma	422.134	1
+gen-00217	Google Chrome	browser	Google Chrome	youtube.com	Samay Raina - spending $10000 in 10 minutes - YouTube	93.552	0
+gen-00218	Google Chrome	browser	Google Chrome	leetcode.com	LRU Cache - LeetCode	458.597	1
+gen-00219	Netflix	desktop			Dark.S04E04.mkv	247.123	0
+gen-00220	Google Chrome	browser	Google Chrome	github.com	(6118) Issues - timescale/portfolio	3411.144	1
+gen-00221	Google Chrome	browser	Google Chrome	youtube.com	Markiplier - we tried the impossible challenge - YouTube	186.655	0
+gen-00222	Visual Studio Code	desktop			buddy.ino - hackrice	110.439	1
+gen-00223	Google Chrome	browser	Google Chrome	youtube.com	#shorts worst haircut ever	94.993	0
+gen-00224	Google Chrome	browser	Google Chrome	overleaf.com	Demo script - Overleaf, Online LaTeX Editor	206.13	1
+gen-00225	Google Chrome	browser	Google Chrome	youtube.com	Karan Aujla - Softly (Official Video) - YouTube	67.347	0
+gen-00226	Microsoft PowerPoint	desktop			Sprint plan.pptx	128.832	1
+gen-00227	Google Chrome	browser	Google Chrome	youtube.com	Ashish Chanchlani - my honest apartment tour - YouTube	928.366	0
+gen-00228	Google Chrome	browser	Google Chrome	youtube.com	ArjanCodes - sqlalchemy tutorial for beginners - YouTube	255.914	1
+gen-00229	Google Chrome	browser	Google Chrome	amazon.com	Amazon.com: desk lamp	122.759	0
+gen-00230	Google Chrome	browser	Google Chrome	youtube.com	3Blue1Brown - react tutorial for beginners - YouTube	579.95	1
+gen-00231	Messages	desktop			grandma	635.428	0
+gen-00232	Zoom	desktop			HackRice standup	603.207	1
+gen-00233	Discord	desktop			#anime - Valorant Squad	119.818	0
+gen-00234	Google Chrome	browser	Google Chrome	stackoverflow.com	rust - how to fix memory leak in chrome extension - Stack Overflow	629.386	1
+gen-00235	Google Chrome	browser	Google Chrome	x.com	Dude Perfect on X	88.836	0
+gen-00236	Discord	desktop			#help-python - HackRice	869.519	1
+gen-00237	Spotify	desktop			Arijit Singh - Levitating	56.546	0
+gen-00238	MATLAB	desktop			plot_score.m - MATLAB	69.43	1
+gen-00239	WhatsApp	desktop			grandma	100.383	0
+gen-00240	Google Chrome	browser	Google Chrome	github.com	(6788) rahulm/senior-design: scikit-learn for linear algebra	593.879	1
+gen-00241	WhatsApp	desktop			mom	127.479	0
+gen-00242	Google Chrome	browser	Google Chrome	github.com	rahulm/esp32-voice: postgres for control systems	634.772	1
+gen-00243	Spotify	desktop			Karan Aujla - Brown Munde	67.14	0
+gen-00244	Discord	desktop			#code-review - Senior Design	465.617	1
+gen-00245	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Softly (Official Video) - YouTube	279.27	0
+gen-00246	Google Chrome	browser	Google Chrome	chatgpt.com	(3975) debugging flaky test in redis	316.108	1
+gen-00247	Google Chrome	browser	Google Chrome	twitch.tv	Samay Raina playing Apex Legends - Twitch	551.937	0
+gen-00248	Google Chrome	browser	Google Chrome	github.com	portfolio/buddy.ino at main	84.867	1
+gen-00249	Messages	desktop			Rahul	47.173	0
+gen-00250	Google Chrome	browser	Google Chrome	colab.research.google.com	train.ipynb - Colab	328.782	1
+gen-00251	Messages	desktop			Leo	75.253	0
+gen-00252	Google Chrome	browser	Google Chrome	github.com	(3844) portfolio/Dockerfile at main	777.352	1
+gen-00253	Google Chrome	browser	Google Chrome	youtube.com	#shorts match thread india vs australia	926.092	0
+gen-00254	Google Chrome	browser	Google Chrome	chatgpt.com	debugging flaky test in pytorch	254.816	1
+gen-00255	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing Valorant - Twitch	145.483	0
+gen-00256	Google Chrome	browser	Google Chrome	canvas.instructure.com	CS231n - Assignment 7	530.537	1
+gen-00257	Google Chrome	browser	Google Chrome	twitch.tv	Samay Raina playing League of Legends - Twitch	37.244	0
+gen-00258	Google Chrome	browser	Google Chrome	youtube.com	sentdex - pytorch tutorial for beginners - YouTube	692.392	1
+gen-00259	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing Rocket League - Twitch	80.935	0
+gen-00260	DBeaver	desktop			Buddy - board	1789.403	1
+gen-00261	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing Rocket League - Twitch	111.124	0
+gen-00262	Google Chrome	browser	Google Chrome	claude.ai	debugging slow query in random forest	526.643	1
+gen-00263	Steam	desktop			GTA V - Steam	72.983	0
+gen-00264	Microsoft Teams	desktop			#help-python - HackRice	450.963	1
+gen-00265	Music	desktop			Karan Aujla - Blinding Lights	392.311	0
+gen-00266	Google Chrome	browser	Google Chrome	pytorch.org	bluetooth le - PyTorch documentation	236.478	1
+gen-00267	Google Chrome	browser	Google Chrome	x.com	CarryMinati on X	125.211	0
+gen-00268	Numbers	desktop			budget.numbers	142.006	1
+gen-00269	Google Chrome	browser	Google Chrome	netflix.com	Friends season 2 - Netflix	457.516	0
+gen-00270	Google Chrome	browser	Google Chrome	chatgpt.com	debugging slow query in timescaledb	242.962	1
+gen-00271	Google Chrome	browser	Google Chrome	reddit.com	r/nba - top plays of the week	595.16	0
+gen-00272	Google Chrome	browser	Google Chrome	youtube.com	COMP 540 Lecture 5: dynamic programming - YouTube	287.932	1
+gen-00273	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing Fortnite - Twitch	810.152	0
+gen-00274	PyCharm	desktop			session.js - esp32-voice	520.306	1
+gen-00275	Google Chrome	browser	Google Chrome	youtube.com	#shorts no context memes	263.496	0
+gen-00276	Google Chrome	browser	Google Chrome	arxiv.org	[2596.6781] attention is all you need	227.181	1
+gen-00277	Google Chrome	browser	Google Chrome	youtube.com	Diljit Dosanjh - Levitating (Official Video) - YouTube	197.773	0
+gen-00278	Google Chrome	browser	Google Chrome	github.com	Pull Request #261: fix timeout by sofia-dev	1062.492	1
+gen-00279	Discord	desktop			#memes - Valorant Squad	183.882	0
+gen-00280	Google Chrome	browser	Google Chrome	github.com	mentor-engine/app.py at main	295.223	1
+gen-00281	Google Chrome	browser	Google Chrome	twitch.tv	CarryMinati playing CS2 - Twitch	395.917	0
+gen-00282	Google Chrome	browser	Google Chrome	github.com	(7566) Issues - scikit-learn/esp32-voice	729.572	1
+gen-00283	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Believer (Official Video) - YouTube	338.004	0
+gen-00284	Google Chrome	browser	Google Chrome	youtube.com	COMP 322 Lecture 8: probability - YouTube	569.727	1
+gen-00285	Google Chrome	browser	Google Chrome	twitter.com	Samay Raina on X	256.499	0
+gen-00286	Google Chrome	browser	Google Chrome	github.com	timeseries-api/model.ipynb at main	152.464	1
+gen-00287	QuickTime Player	desktop			Stranger.Things.S01E08.mkv	145.801	0
+gen-00288	Google Chrome	browser	Google Chrome	youtube.com	Stanford CS229 Lecture 12: graph theory - YouTube	1631.453	1
+gen-00289	FIFA 26	desktop			FIFA 26	343.54	0
+gen-00290	Google Chrome	browser	Google Chrome	canvas.instructure.com	MATH 2415 - Assignment 6	1222.082	1
+gen-00291	VLC	desktop			Dark.S02E03.mkv	169.029	0
+gen-00292	Google Chrome	browser	Google Chrome	reddit.com	r/ExperiencedDevs - how do I use embeddings with python	765.295	1
+gen-00293	Steam	desktop			Library - Steam	194.95	0
+gen-00294	Sublime Text	desktop			session.js - portfolio	118.163	1
+gen-00295	Google Chrome	browser	Google Chrome	youtube.com	AP Dhillon - Paradise (Official Video) - YouTube	858.518	0
+gen-00296	Google Chrome	browser	Google Chrome	docs.docker.com	websockets - Docker documentation	90.798	1
+gen-00297	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing Apex Legends - Twitch	606.175	0
+gen-00298	Google Chrome	browser	Google Chrome	google.com	javascript kubernetes import cycle - Google Search	251.725	1
+gen-00299	Google Chrome	browser	Google Chrome	x.com	Technoblade on X	124.154	0
+gen-00300	Google Chrome	browser	Google Chrome	canvas.instructure.com	Berkeley CS61A - Assignment 8	833.73	1
+gen-00301	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing Elden Ring - Twitch	252.572	0
+gen-00302	Google Chrome	browser	Google Chrome	github.com	Pull Request #277: fix slow query by kritazya	389.32	1
+gen-00303	Google Chrome	browser	Google Chrome	youtube.com	Karan Aujla - Viva La Vida (Official Video) - YouTube	85.635	0
+gen-00304	MATLAB	desktop			analysis.m - MATLAB	44.156	1
+gen-00305	Google Chrome	browser	Google Chrome	reddit.com	r/funny - grandma texting fails	244.443	0
+gen-00306	Notion	desktop			portfolio - notes	360.157	1
+gen-00307	Music	desktop			Coldplay - Viva La Vida	68.715	0
+gen-00308	Google Chrome	browser	Google Chrome	github.com	(881) Issues - scikit-learn/mentor-engine	1375.396	1
+gen-00309	Google Chrome	browser	Google Chrome	youtube.com	#shorts found this in my attic	68.918	0
+gen-00310	Google Chrome	browser	Google Chrome	github.com	(3915) Issues - vercel/esp32-voice	488.05	1
+gen-00311	Google Chrome	browser	Google Chrome	youtube.com	Taylor Swift - Cruel Summer (Official Video) - YouTube	338.701	0
+gen-00312	Discord	desktop			#buddy-dev - HackRice	2533.797	1
+gen-00313	Spotify	desktop			Diljit Dosanjh - Blinding Lights	279.867	0
+gen-00314	Google Chrome	browser	Google Chrome	youtube.com	MATH 2415 Lecture 1: signal processing - YouTube	357.755	1
+gen-00315	Google Chrome	browser	Google Chrome	twitter.com	(8089) Home / X	212.609	0
+gen-00316	Google Chrome	browser	Google Chrome	docs.google.com	Interview prep - Google Docs	368.801	1
+gen-00317	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing Apex Legends - Twitch	288.56	0
+gen-00318	Cursor	desktop			session.js - Buddy	262.244	1
+gen-00319	Google Chrome	browser	Google Chrome	youtube.com	#shorts trade rumors megathread	237.015	0
+gen-00320	Google Chrome	browser	Google Chrome	arxiv.org	[2526.1994] attention is all you need	210.502	1
+gen-00321	Google Chrome	browser	Google Chrome	netflix.com	Dark season 1 - Netflix	569.639	0
+gen-00322	Microsoft Teams	desktop			#general - Rice CS	530.031	1
+gen-00323	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing Elden Ring - Twitch	183.709	0
+gen-00324	Google Chrome	browser	Google Chrome	stackoverflow.com	bash - how to fix timeout in logistic regression - Stack Overflow	343.249	1
+gen-00325	Minecraft	desktop			Minecraft	364.883	0
+gen-00326	Google Chrome	browser	Google Chrome	github.com	timeseries-api/store.py at main	1081.711	1
+gen-00327	Spotify	desktop			AP Dhillon - Cruel Summer	242.41	0
+gen-00328	Ghostty	desktop			hackrice - git log --oneline	354.635	1
+gen-00329	Google Chrome	browser	Google Chrome	youtube.com	(7441) #shorts nobody: absolutely nobody:	228.651	0
+gen-00330	Google Chrome	browser	Google Chrome	canvas.instructure.com	ECE 445 - Assignment 2	1715.5	1
+gen-00331	Google Chrome	browser	Google Chrome	youtube.com	(78) CarryMinati - I survived 50 hours in a box - YouTube	257.473	0
+gen-00332	Google Chrome	browser	Google Chrome	github.com	Issues - scikit-learn/activity-logger	236.945	1
+gen-00333	Google Chrome	browser	Google Chrome	youtube.com	MrBeast - reacting to my old videos - YouTube	376.663	0
+gen-00334	Google Chrome	browser	Google Chrome	claude.ai	debugging deadlock in kubernetes	2681.862	1
+gen-00335	Google Chrome	browser	Google Chrome	twitter.com	Ashish Chanchlani on X	44.073	0
+gen-00336	Google Chrome	browser	Google Chrome	github.com	dotfiles/index.html at main	201.956	1
+gen-00337	Discord	desktop			#valorant-lfg - Valorant Squad	403.015	0
+gen-00338	Google Chrome	browser	Google Chrome	youtube.com	MATH 2415 Lecture 9: dynamic programming - YouTube	203.608	1
+gen-00339	QuickTime Player	desktop			Peaky.Blinders.S03E09.mkv	64.516	0
+gen-00340	Google Chrome	browser	Google Chrome	github.com	timeseries-api/app.py at main	351.271	1
+gen-00341	Zoom	desktop			family call with dad	233.835	0
+gen-00342	Ghostty	desktop			hackrice - git rebase -i main	47.295	1
+gen-00343	Fortnite	desktop			Fortnite	58.704	0
+gen-00344	Jupyter	desktop			Dockerfile.ipynb	795.859	1
+gen-00345	Steam	desktop			Apex Legends - Steam	1489.004	0
+gen-00346	Google Chrome	browser	Google Chrome	reddit.com	r/ExperiencedDevs - how do I use pytorch with go	713.275	1
+gen-00347	Google Chrome	browser	Google Chrome	twitch.tv	CarryMinati playing Apex Legends - Twitch	498.754	0
+gen-00348	Sublime Text	desktop			index.html - Buddy	726.602	1
+gen-00349	Discord	desktop			#anime - Chill Zone	237.476	0
+gen-00350	Notion	desktop			hackrice - containers	451.561	1
+gen-00351	Instagram	desktop			For You	149.084	0
+gen-00352	Google Chrome	browser	Google Chrome	youtube.com	STAT 310 Lecture 15: linear algebra - YouTube	168.764	1
+gen-00353	Google Chrome	browser	Google Chrome	youtube.com	Markiplier - I survived 50 hours in a box - YouTube	181.825	0
+gen-00354	Google Chrome	browser	Google Chrome	arxiv.org	[2456.6079] deep residual learning	587.52	1
+gen-00355	Google Chrome	browser	Google Chrome	netflix.com	Peaky Blinders season 4 - Netflix	262.361	0
+gen-00356	Google Chrome	browser	Google Chrome	stackoverflow.com	sql - how to fix deadlock in react - Stack Overflow	1350.935	1
+gen-00357	Music	desktop			Diljit Dosanjh - Cruel Summer	131.412	0
+gen-00358	Zoom	desktop			advisor check-in	942.367	1
+gen-00359	Google Chrome	browser	Google Chrome	youtube.com	Taylor Swift - Kesariya (Official Video) - YouTube	36.509	0
+gen-00360	Google Chrome	browser	Google Chrome	google.com	javascript kafka race condition - Google Search	1875.317	1
+gen-00361	Google Chrome	browser	Google Chrome	youtube.com	Arijit Singh - Blinding Lights (Official Video) - YouTube	111.834	0
+gen-00362	Warp	desktop			portfolio - psql buddy	1734.335	1
+gen-00363	Google Chrome	browser	Google Chrome	netflix.com	Stranger Things season 5 - Netflix	1770.463	0
+gen-00364	Xcode	desktop			index.html - senior-design	2255.37	1
+gen-00365	Music	desktop			Drake - Cruel Summer	186.472	0
+gen-00366	Xcode	desktop			README.md - esp32-voice	419.802	1
+gen-00367	Steam	desktop			Steam	143.823	0
+gen-00368	Google Chrome	browser	Google Chrome	youtube.com	STAT 310 Lecture 17: control systems - YouTube	309.802	1
+gen-00369	Zoom	desktop			family call with grandma	191.006	0
+gen-00370	Google Chrome	browser	Google Chrome	github.com	Pull Request #278: fix deadlock by sofia-dev	566.181	1
+gen-00371	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Paradise (Official Video) - YouTube	51.124	0
+gen-00372	Google Chrome	browser	Google Chrome	github.com	timeseries-api/Dockerfile at main	418.236	1
+gen-00373	Music	desktop			Arijit Singh - Brown Munde	436.084	0
+gen-00374	Google Chrome	browser	Google Chrome	stackoverflow.com	typescript - how to fix deadlock in postgres - Stack Overflow	108.234	1
+gen-00375	Google Chrome	browser	Google Chrome	youtube.com	(6925) #shorts my new battlestation	198.374	0
+gen-00376	Slack	desktop			#standup - Buddy Team	259.854	1
+gen-00377	Netflix	desktop			Money.Heist.S01E08.mkv	106.752	0
+gen-00378	Google Chrome	browser	Google Chrome	colab.research.google.com	queue.ipynb - Colab	340.151	1
+gen-00379	Twitch	desktop			For You	141.769	0
+gen-00380	Google Chrome	browser	Google Chrome	claude.ai	debugging deadlock in react	640.382	1
+gen-00381	Google Chrome	browser	Google Chrome	twitter.com	Technoblade on X	150.719	0
+gen-00382	Google Chrome	browser	Google Chrome	youtube.com	Computerphile - pytorch tutorial for beginners - YouTube	174.946	1
+gen-00383	Music	desktop			The Weeknd - Blinding Lights	279.251	0
+gen-00384	Google Chrome	browser	Google Chrome	github.com	esp32-voice/train.py at main	159.96	1
+gen-00385	Google Chrome	browser	Google Chrome	youtube.com	Technoblade - reacting to my old videos - YouTube	44.459	0
+gen-00386	Numbers	desktop			survey responses.numbers	307.478	1
+gen-00387	VLC	desktop			Money.Heist.S04E06.mkv	362.425	0
+gen-00388	Docker Desktop	desktop			portfolio - postgres	797.31	1
+gen-00389	Google Chrome	browser	Google Chrome	youtube.com	Samay Raina - we tried the impossible challenge - YouTube	551.322	0
+gen-00390	Microsoft Excel	desktop			grade tracker.xlsx	911.116	1
+gen-00391	Steam	desktop			FIFA 26 - Steam	689.596	0
+gen-00392	Google Chrome	browser	Google Chrome	youtube.com	MIT 18.06 Lecture 19: operating systems - YouTube	270.95	1
+gen-00393	Steam	desktop			Fortnite - Steam	106.905	0
+gen-00394	Google Chrome	browser	Google Chrome	youtube.com	Two Minute Papers - tf-idf tutorial for beginners - YouTube	135.169	1
+gen-00395	QuickTime Player	desktop			Peaky.Blinders.S02E02.mkv	467.122	0
+gen-00396	Google Chrome	browser	Google Chrome	github.com	activity-logger/queue.js at main	312.854	1
+gen-00397	Google Chrome	browser	Google Chrome	youtube.com	#shorts greatest innings of all time	210.312	0
+gen-00398	Warp	desktop			senior-design - pytest -q	767.861	1
+gen-00399	Google Chrome	browser	Google Chrome	netflix.com	Breaking Bad season 2 - Netflix	299.989	0
+gen-00400	Google Chrome	browser	Google Chrome	github.com	Issues - fastapi/timeseries-api	160.905	1
+gen-00401	Google Chrome	browser	Google Chrome	reddit.com	r/dankmemes - cursed image thread	14.385	0
+gen-00402	Terminal	desktop			esp32-voice - psql buddy	652.508	1
+gen-00403	Google Chrome	browser	Google Chrome	youtube.com	Coldplay - Kesariya (Official Video) - YouTube	116.128	0
+gen-00404	Google Chrome	browser	Google Chrome	colab.research.google.com	(1980) Dockerfile.ipynb - Colab	484.754	1
+gen-00405	Google Chrome	browser	Google Chrome	twitch.tv	CarryMinati playing Fortnite - Twitch	204.115	0
+gen-00406	Zoom	desktop			COMP 322 lecture	368.276	1
+gen-00407	Google Chrome	browser	Google Chrome	netflix.com	Friends season 5 - Netflix	274.747	0
+gen-00408	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use tensorflow with bash	471.175	1
+gen-00409	Google Chrome	browser	Google Chrome	youtube.com	Coldplay - Levitating (Official Video) - YouTube	341.404	0
+gen-00410	Microsoft Excel	desktop			budget.xlsx	766.236	1
+gen-00411	Google Chrome	browser	Google Chrome	youtube.com	#shorts finally beat the final boss	55.549	0
+gen-00412	Google Chrome	browser	Google Chrome	google.com	java postgres import cycle - Google Search	424.844	1
+gen-00413	Google Chrome	browser	Google Chrome	youtube.com	Technoblade - worst roommate stories - YouTube	665.445	0
+gen-00414	Google Chrome	browser	Google Chrome	canvas.instructure.com	(8254) MATH 2415 - Assignment 9	323.704	1
+gen-00415	Messages	desktop			sister	303.196	0
+gen-00416	Google Chrome	browser	Google Chrome	github.com	Pull Request #59: fix race condition by anita	655.139	1
+gen-00417	TikTok	desktop			Following	327.425	0
+gen-00418	Google Chrome	browser	Google Chrome	scikit-learn.org	pandas - scikit-learn documentation	532.19	1
+gen-00419	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing Valorant - Twitch	487.363	0
+gen-00420	Google Chrome	browser	Google Chrome	github.com	Issues - fastapi/portfolio	520.755	1
+gen-00421	Google Chrome	browser	Google Chrome	reddit.com	r/cricket - greatest innings of all time	109.76	0
+gen-00422	Ghostty	desktop			hackrice - docker compose up	470.1	1
+gen-00423	Google Chrome	browser	Google Chrome	youtube.com	Dude Perfect - reacting to my old videos - YouTube	390.14	0
+gen-00424	Google Chrome	browser	Google Chrome	colab.research.google.com	trigger.ipynb - Colab	574.331	1
+gen-00425	Google Chrome	browser	Google Chrome	youtube.com	CarryMinati - worst roommate stories - YouTube	60.595	0
+gen-00426	Google Chrome	browser	Google Chrome	youtube.com	Fireship - redis tutorial for beginners - YouTube	124.068	1
+gen-00427	Google Chrome	browser	Google Chrome	youtube.com	(6202) Coldplay - Cruel Summer (Official Video) - YouTube	593.274	0
+gen-00428	Google Chrome	browser	Google Chrome	github.com	anita/timeseries-api: opencv for backpropagation	403.021	1
+gen-00429	Spotify	desktop			Karan Aujla - Believer	872.375	0
+gen-00430	Google Chrome	browser	Google Chrome	stackoverflow.com	java - how to fix memory leak in redis - Stack Overflow	1268.755	1
+gen-00431	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Levitating (Official Video) - YouTube	606.915	0
+gen-00432	Google Chrome	browser	Google Chrome	youtube.com	CS231n Lecture 10: operating systems - YouTube	952.464	1
+gen-00433	Google Chrome	browser	Google Chrome	reddit.com	r/aww - rescued puppy first day home	338.358	0
+gen-00434	Google Chrome	browser	Google Chrome	fastapi.tiangolo.com	logistic regression - FastAPI documentation	108.393	1
+gen-00435	Google Chrome	browser	Google Chrome	x.com	MrBeast on X	560.718	0
+gen-00436	Google Chrome	browser	Google Chrome	youtube.com	Stanford CS229 Lecture 1: backpropagation - YouTube	1157.873	1
+gen-00437	Instagram	desktop			Feed	18.791	0
+gen-00438	Google Chrome	browser	Google Chrome	claude.ai	debugging cors error in fastapi	384.894	1
+gen-00439	WhatsApp	desktop			Sofia	1220.899	0
+gen-00440	Google Chrome	browser	Google Chrome	google.com	(6736) sql websockets slow query - Google Search	129.846	1
+gen-00441	Google Chrome	browser	Google Chrome	youtube.com	Diljit Dosanjh - Believer (Official Video) - YouTube	945.473	0
+gen-00442	Google Chrome	browser	Google Chrome	youtube.com	(488) ECE 445 Lecture 18: compilers - YouTube	743.156	1
+gen-00443	Netflix	desktop			Friends.S02E06.mkv	65.833	0
+gen-00444	Discord	desktop			#standup - HackRice	113.826	1
+gen-00445	Discord	desktop			#memes - Chill Zone	80.23	0
+gen-00446	Google Chrome	browser	Google Chrome	chatgpt.com	debugging type error in opencv	483.88	1
+gen-00447	Google Chrome	browser	Google Chrome	twitch.tv	Samay Raina playing CS2 - Twitch	37.758	0
+gen-00448	Google Chrome	browser	Google Chrome	chatgpt.com	debugging race condition in bluetooth le	1581.7	1
+gen-00449	Google Chrome	browser	Google Chrome	twitch.tv	(5201) Technoblade playing FIFA 26 - Twitch	525.523	0
+gen-00450	Google Chrome	browser	Google Chrome	arxiv.org	[2354.9860] attention is all you need	174.807	1
+gen-00451	Spotify	desktop			The Weeknd - Softly	107.174	0
+gen-00452	Google Chrome	browser	Google Chrome	reddit.com	r/embedded - how do I use logistic regression with go	988.42	1
+gen-00453	VLC	desktop			The.Office.S02E09.mkv	60.48	0
+gen-00454	Google Chrome	browser	Google Chrome	github.com	esp32-voice/trigger.py at main	338.259	1
+gen-00455	Google Chrome	browser	Google Chrome	netflix.com	(7825) Dark season 2 - Netflix	117.016	0
+gen-00456	Microsoft Teams	desktop			#code-review - Rice CS	71.625	1
+gen-00457	QuickTime Player	desktop			Peaky.Blinders.S01E03.mkv	98.744	0
+gen-00458	Google Chrome	browser	Google Chrome	claude.ai	(1869) debugging flaky test in tensorflow	193.081	1
+gen-00459	Google Chrome	browser	Google Chrome	x.com	Samay Raina on X	58.202	0
+gen-00460	Google Chrome	browser	Google Chrome	canvas.instructure.com	Stanford CS229 - Assignment 4	816.182	1
+gen-00461	Spotify	desktop			Imagine Dragons - Levitating	80.261	0
+gen-00462	Google Chrome	browser	Google Chrome	github.com	Pull Request #219: fix timeout by rahulm	635.292	1
+gen-00463	Google Chrome	browser	Google Chrome	netflix.com	Breaking Bad season 3 - Netflix	107.061	0
+gen-00464	Numbers	desktop			parts list.numbers	714.482	1
+gen-00465	Discord	desktop			#gaming - Gamers United	252.684	0
+gen-00466	Google Chrome	browser	Google Chrome	youtube.com	3Blue1Brown - sqlalchemy tutorial for beginners - YouTube	526.863	1
+gen-00467	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Brown Munde (Official Video) - YouTube	208.661	0
+gen-00468	Google Chrome	browser	Google Chrome	stackoverflow.com	swift - how to fix deadlock in esp32 - Stack Overflow	339.533	1
+gen-00469	Google Chrome	browser	Google Chrome	youtube.com	#shorts cable management attempt	36.485	0
+gen-00470	Jupyter	desktop			main.ipynb	166.024	1
+gen-00471	Google Chrome	browser	Google Chrome	youtube.com	(5789) Diljit Dosanjh - Blinding Lights (Official Video) - YouTube	103.702	0
+gen-00472	Terminal	desktop			senior-design - python -m ml.train	1033.267	1
+gen-00473	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing FIFA 26 - Twitch	114.571	0
+gen-00474	Google Chrome	browser	Google Chrome	google.com	python pytorch connection pool exhausted - Google Search	142.341	1
+gen-00475	Google Chrome	browser	Google Chrome	netflix.com	Dark season 3 - Netflix	555.03	0
+gen-00476	iTerm2	desktop			Buddy - uvicorn engine.app:app	638.986	1
+gen-00477	VLC	desktop			Peaky.Blinders.S02E07.mkv	183.9	0
+gen-00478	Google Chrome	browser	Google Chrome	figma.com	hackrice dashboard - Figma	286.988	1
+gen-00479	VLC	desktop			Dark.S02E04.mkv	151.303	0
+gen-00480	Google Chrome	browser	Google Chrome	youtube.com	MIT 18.06 Lecture 17: dynamic programming - YouTube	226.401	1
+gen-00481	Google Chrome	browser	Google Chrome	reddit.com	r/memes - monday morning mood	955.742	0
+gen-00482	Zoom	desktop			Senior Design weekly	673.404	1
+gen-00483	Google Chrome	browser	Google Chrome	twitch.tv	Dude Perfect playing GTA V - Twitch	87.714	0
+gen-00484	Cursor	desktop			index.html - esp32-voice	331.763	1
+gen-00485	Netflix	desktop			Breaking.Bad.S01E04.mkv	709.548	0
+gen-00486	Google Chrome	browser	Google Chrome	google.com	java postgres type error - Google Search	202.733	1
+gen-00487	Netflix	desktop			Breaking.Bad.S04E09.mkv	69.217	0
+gen-00488	Google Chrome	browser	Google Chrome	docs.docker.com	pytorch - Docker documentation	103.731	1
+gen-00489	Google Chrome	browser	Google Chrome	netflix.com	The Office season 2 - Netflix	388.01	0
+gen-00490	Google Chrome	browser	Google Chrome	reddit.com	r/learnprogramming - how do I use kubernetes with rust	181.529	1
+gen-00491	Elden Ring	desktop			Elden Ring	45.457	0
+gen-00492	Google Chrome	browser	Google Chrome	reddit.com	r/embedded - how do I use sqlalchemy with javascript	1154.417	1
+gen-00493	Photos	desktop			Summer 2025	168.881	0
+gen-00494	Google Chrome	browser	Google Chrome	overleaf.com	Meeting notes - Overleaf, Online LaTeX Editor	251.939	1
+gen-00495	VLC	desktop			The.Office.S04E09.mkv	94.473	0
+gen-00496	Docker Desktop	desktop			portfolio - API	1283.636	1
+gen-00497	Google Chrome	browser	Google Chrome	youtube.com	Taylor Swift - Blinding Lights (Official Video) - YouTube	121.624	0
+gen-00498	Terminal	desktop			hackrice - arduino-cli compile	179.024	1
+gen-00499	Google Chrome	browser	Google Chrome	youtube.com	Samay Raina - my honest apartment tour - YouTube	2149.1	0
+gen-00500	Google Chrome	browser	Google Chrome	canvas.instructure.com	ECE 445 - Assignment 8	1224.893	1
+gen-00501	Music	desktop			Taylor Swift - Viva La Vida	99.508	0
+gen-00502	Docker Desktop	desktop			Buddy - postgres	641.418	1
+gen-00503	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Kesariya (Official Video) - YouTube	42.834	0
+gen-00504	Google Chrome	browser	Google Chrome	overleaf.com	Interview prep - Overleaf, Online LaTeX Editor	163.353	1
+gen-00505	Google Chrome	browser	Google Chrome	twitch.tv	Dude Perfect playing Elden Ring - Twitch	73.207	0
+gen-00506	Google Chrome	browser	Google Chrome	youtube.com	CS231n Lecture 17: control systems - YouTube	137.262	1
+gen-00507	Spotify	desktop			Drake - Softly	125.522	0
+gen-00508	Docker Desktop	desktop			portfolio - containers	1367.442	1
+gen-00509	Google Chrome	browser	Google Chrome	twitch.tv	Dude Perfect playing Fortnite - Twitch	320.543	0
+gen-00510	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use kubernetes with javascript	223.264	1
+gen-00511	Discord	desktop			#random - Valorant Squad	109.513	0
+gen-00512	Sublime Text	desktop			train.py - portfolio	744.265	1
+gen-00513	Google Chrome	browser	Google Chrome	youtube.com	AP Dhillon - Softly (Official Video) - YouTube	598.491	0
+gen-00514	Pages	desktop			Demo script.pages	131.125	1
+gen-00515	Steam	desktop			League of Legends - Steam	155.902	0
+gen-00516	Google Chrome	browser	Google Chrome	chatgpt.com	debugging slow query in opencv	40.611	1
+gen-00517	VLC	desktop			Friends.S01E04.mkv	546.034	0
+gen-00518	Google Chrome	browser	Google Chrome	github.com	activity-logger/main.py at main	179.644	1
+gen-00519	Google Chrome	browser	Google Chrome	netflix.com	Friends season 1 - Netflix	813.415	0
+gen-00520	Google Chrome	browser	Google Chrome	github.com	senior-design/README.md at main	416.67	1
+gen-00521	Google Chrome	browser	Google Chrome	netflix.com	Dark season 4 - Netflix	292.236	0
+gen-00522	Microsoft PowerPoint	desktop			Interview prep.pptx	66.439	1
+gen-00523	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Viva La Vida (Official Video) - YouTube	33.836	0
+gen-00524	Visual Studio Code	desktop			plot_score.m - esp32-voice	1117.443	1
+gen-00525	QuickTime Player	desktop			The.Office.S01E09.mkv	150.166	0
+gen-00526	Google Chrome	browser	Google Chrome	github.com	(5973) Pull Request #254: fix cors error by tarunk	489.466	1
+gen-00527	Google Chrome	browser	Google Chrome	youtube.com	Technoblade - I survived 50 hours in a box - YouTube	113.422	0
+gen-00528	Google Chrome	browser	Google Chrome	youtube.com	Berkeley CS61A Lecture 20: dynamic programming - YouTube	981.661	1
+gen-00529	VLC	desktop			Friends.S02E05.mkv	103.243	0
+gen-00530	DBeaver	desktop			esp32-voice - API	804.001	1
+gen-00531	Spotify	desktop			Coldplay - Cruel Summer	112.137	0
+gen-00532	Google Chrome	browser	Google Chrome	youtube.com	Andrej Karpathy - asyncio tutorial for beginners - YouTube	2845.679	1
+gen-00533	Google Chrome	browser	Google Chrome	reddit.com	r/funny - my dog stole the remote	264.939	0
+gen-00534	Google Chrome	browser	Google Chrome	stackoverflow.com	typescript - how to fix memory leak in tf-idf - Stack Overflow	376.265	1
+gen-00535	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Levitating (Official Video) - YouTube	360.07	0
+gen-00536	Google Chrome	browser	Google Chrome	chatgpt.com	(1853) debugging race condition in redis	1245.992	1
+gen-00537	Google Chrome	browser	Google Chrome	netflix.com	Peaky Blinders season 3 - Netflix	561.829	0
+gen-00538	Microsoft Teams	desktop			#general - Senior Design	610.693	1
+gen-00539	Google Chrome	browser	Google Chrome	reddit.com	(959) r/funny - worst haircut ever	637.765	0
+gen-00540	Google Chrome	browser	Google Chrome	youtube.com	freeCodeCamp - fastapi tutorial for beginners - YouTube	3600.0	1
+gen-00541	Google Chrome	browser	Google Chrome	youtube.com	#shorts baby otter holding hands	114.624	0
+gen-00542	Google Chrome	browser	Google Chrome	stackoverflow.com	python - how to fix race condition in fastapi - Stack Overflow	441.707	1
+gen-00543	Netflix	desktop			Stranger.Things.S03E04.mkv	275.705	0
+gen-00544	Jupyter	desktop			index.ipynb	123.257	1
+gen-00545	Music	desktop			Taylor Swift - Cruel Summer	321.387	0
+gen-00546	Google Chrome	browser	Google Chrome	arxiv.org	[2399.5474] efficient transformers	314.488	1
+gen-00547	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing Minecraft - Twitch	719.253	0
+gen-00548	Google Chrome	browser	Google Chrome	reddit.com	(1524) r/learnprogramming - how do I use opencv with go	796.969	1
+gen-00549	Netflix	desktop			Friends.S01E07.mkv	326.692	0
+gen-00550	Google Chrome	browser	Google Chrome	github.com	esp32-voice/Dockerfile at main	248.017	1
+gen-00551	Google Chrome	browser	Google Chrome	youtube.com	(1536) Drake - Blinding Lights (Official Video) - YouTube	140.547	0
+gen-00552	Xcode	desktop			agent.swift - senior-design	705.062	1
+gen-00553	QuickTime Player	desktop			The.Office.S04E08.mkv	102.655	0
+gen-00554	Slack	desktop			#help-python - Senior Design	614.925	1
+gen-00555	Google Chrome	browser	Google Chrome	youtube.com	Ashish Chanchlani - worst roommate stories - YouTube	174.515	0
+gen-00556	Google Chrome	browser	Google Chrome	google.com	rust fastapi timeout - Google Search	1459.159	1
+gen-00557	VLC	desktop			Peaky.Blinders.S04E04.mkv	139.044	0
+gen-00558	Google Chrome	browser	Google Chrome	youtube.com	MIT 18.06 Lecture 6: backpropagation - YouTube	1117.075	1
+gen-00559	Google Chrome	browser	Google Chrome	youtube.com	Karan Aujla - Blinding Lights (Official Video) - YouTube	145.731	0
+gen-00560	Google Chrome	browser	Google Chrome	google.com	javascript asyncio race condition - Google Search	258.519	1
+gen-00561	QuickTime Player	desktop			Breaking.Bad.S02E01.mkv	131.911	0
+gen-00562	Google Chrome	browser	Google Chrome	reactjs.org	opencv - React documentation	1525.509	1
+gen-00563	QuickTime Player	desktop			Money.Heist.S02E04.mkv	188.974	0
+gen-00564	Google Chrome	browser	Google Chrome	chatgpt.com	debugging timeout in bluetooth le	395.206	1
+gen-00565	VLC	desktop			Squid.Game.S01E04.mkv	197.199	0
+gen-00566	Google Chrome	browser	Google Chrome	github.com	Issues - vercel/dotfiles	824.049	1
+gen-00567	Google Chrome	browser	Google Chrome	youtube.com	#shorts cursed image thread	130.11	0
+gen-00568	Google Chrome	browser	Google Chrome	github.com	buddy/train.py at main	164.102	1
+gen-00569	Google Chrome	browser	Google Chrome	youtube.com	#shorts rescued puppy first day home	521.3	0
+gen-00570	Google Chrome	browser	Google Chrome	github.com	Issues - scikit-learn/timeseries-api	237.106	1
+gen-00571	Steam	desktop			Valorant - Steam	330.676	0
+gen-00572	Google Chrome	browser	Google Chrome	stackoverflow.com	sql - how to fix race condition in scikit-learn - Stack Overflow	96.82	1
+gen-00573	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing League of Legends - Twitch	63.393	0
+gen-00574	iTerm2	desktop			esp32-voice - ssh pi@buddy.local	119.549	1
+gen-00575	Google Chrome	browser	Google Chrome	youtube.com	(4519) Technoblade - we tried the impossible challenge - YouTube	367.459	0
+gen-00576	Microsoft Word	desktop			Lab writeup.docx	259.712	1
+gen-00577	Google Chrome	browser	Google Chrome	youtube.com	Arijit Singh - Paradise (Official Video) - YouTube	374.204	0
+gen-00578	Cursor	desktop			plot_score.m - senior-design	242.161	1
+gen-00579	Messages	desktop			mom	139.586	0
+gen-00580	Google Chrome	browser	Google Chrome	reddit.com	r/learnpython - how do I use pytorch with javascript	99.29	1
+gen-00581	Google Chrome	browser	Google Chrome	youtube.com	Dude Perfect - we tried the impossible challenge - YouTube	291.117	0
+gen-00582	Google Chrome	browser	Google Chrome	reddit.com	r/MachineLearning - how do I use pandas with swift	208.204	1
+gen-00583	Google Chrome	browser	Google Chrome	youtube.com	#shorts deep fried friday	271.753	0
+gen-00584	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use sqlalchemy with rust	121.768	1
+gen-00585	Spotify	desktop			The Weeknd - Kesariya	262.154	0
+gen-00586	Figma	desktop			Buddy - notes	257.675	1
+gen-00587	Google Chrome	browser	Google Chrome	reddit.com	r/memes - nobody: absolutely nobody:	530.68	0
+gen-00588	Google Chrome	browser	Google Chrome	reddit.com	r/learnpython - how do I use i2s audio with java	562.931	1
+gen-00589	Google Chrome	browser	Google Chrome	reddit.com	r/nba - game thread lakers vs celtics	41.195	0
+gen-00590	Google Chrome	browser	Google Chrome	canvas.instructure.com	MIT 18.06 - Assignment 3	653.26	1
+gen-00591	VLC	desktop			Squid.Game.S03E07.mkv	28.211	0
+gen-00592	Google Chrome	browser	Google Chrome	claude.ai	debugging type error in i2s audio	1181.045	1
+gen-00593	Music	desktop			The Weeknd - Cruel Summer	613.444	0
+gen-00594	Google Chrome	browser	Google Chrome	claude.ai	debugging deadlock in pandas	113.309	1
+gen-00595	Music	desktop			Karan Aujla - Believer	100.169	0
+gen-00596	Google Chrome	browser	Google Chrome	github.com	Pull Request #231: fix flaky test by anita	324.976	1
+gen-00597	Music	desktop			Diljit Dosanjh - Viva La Vida	118.015	0
+gen-00598	Visual Studio Code	desktop			buddy.ino - senior-design	345.703	1
+gen-00599	Spotify	desktop			The Weeknd - Believer	72.705	0
+gen-00600	Google Chrome	browser	Google Chrome	github.com	(3617) hackrice-16/plot_score.m at main	252.437	1
+gen-00601	Google Chrome	browser	Google Chrome	youtube.com	Dude Perfect - spending $10000 in 10 minutes - YouTube	285.349	0
+gen-00602	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use scikit-learn with bash	876.313	1
+gen-00603	Google Chrome	browser	Google Chrome	twitch.tv	Samay Raina playing Minecraft - Twitch	225.427	0
+gen-00604	Google Chrome	browser	Google Chrome	stackoverflow.com	(8805) rust - how to fix import cycle in redis - Stack Overflow	800.394	1
+gen-00605	Google Chrome	browser	Google Chrome	youtube.com	Coldplay - Softly (Official Video) - YouTube	472.883	0
+gen-00606	Google Chrome	browser	Google Chrome	arxiv.org	[2475.8340] a survey of activity recognition	198.792	1
+gen-00607	Google Chrome	browser	Google Chrome	netflix.com	Stranger Things season 4 - Netflix	128.104	0
+gen-00608	Google Chrome	browser	Google Chrome	youtube.com	MATH 2415 Lecture 11: control systems - YouTube	197.714	1
+gen-00609	Google Chrome	browser	Google Chrome	twitter.com	Dude Perfect on X	465.453	0
+gen-00610	Google Chrome	browser	Google Chrome	github.com	timeseries-api/session.js at main	119.833	1
+gen-00611	VLC	desktop			Breaking.Bad.S02E04.mkv	113.883	0
+gen-00612	Notion	desktop			esp32-voice - API	1291.479	1
+gen-00613	Google Chrome	browser	Google Chrome	youtube.com	(4114) AP Dhillon - Brown Munde (Official Video) - YouTube	621.733	0
+gen-00614	Google Chrome	browser	Google Chrome	chatgpt.com	debugging import cycle in i2s audio	661.789	1
+gen-00615	Music	desktop			Drake - Blinding Lights	112.25	0
+gen-00616	Visual Studio Code	desktop			session.js - hackrice	99.687	1
+gen-00617	Google Chrome	browser	Google Chrome	reddit.com	r/memes - this meme is too real	322.086	0
+gen-00618	Preview	desktop			problem_set_4.pdf	676.463	1
+gen-00619	WhatsApp	desktop			dad	45.266	0
+gen-00620	Google Chrome	browser	Google Chrome	claude.ai	debugging connection pool exhausted in nginx	995.068	1
+gen-00621	Google Chrome	browser	Google Chrome	netflix.com	Dark season 5 - Netflix	201.736	0
+gen-00622	Google Chrome	browser	Google Chrome	youtube.com	ECE 445 Lecture 5: graph theory - YouTube	1105.741	1
+gen-00623	QuickTime Player	desktop			Peaky.Blinders.S04E08.mkv	65.42	0
+gen-00624	Google Chrome	browser	Google Chrome	youtube.com	3Blue1Brown - kafka tutorial for beginners - YouTube	570.933	1
+gen-00625	VLC	desktop			Money.Heist.S04E01.mkv	339.678	0
+gen-00626	Google Chrome	browser	Google Chrome	arxiv.org	[2388.2457] batch normalization	1201.454	1
+gen-00627	Google Chrome	browser	Google Chrome	youtube.com	Taylor Swift - Viva La Vida (Official Video) - YouTube	99.041	0
+gen-00628	Google Chrome	browser	Google Chrome	youtube.com	COMP 540 Lecture 20: backpropagation - YouTube	251.722	1
+gen-00629	QuickTime Player	desktop			Stranger.Things.S01E07.mkv	195.267	0
+gen-00630	Google Chrome	browser	Google Chrome	stackoverflow.com	java - how to fix deadlock in esp32 - Stack Overflow	162.127	1
+gen-00631	Google Chrome	browser	Google Chrome	youtube.com	Drake - Viva La Vida (Official Video) - YouTube	566.785	0
+gen-00632	Google Chrome	browser	Google Chrome	youtube.com	COMP 540 Lecture 8: probability - YouTube	635.03	1
+gen-00633	Google Chrome	browser	Google Chrome	youtube.com	(3635) Imagine Dragons - Believer (Official Video) - YouTube	68.065	0
+gen-00634	Neovim	desktop			prep.py - Buddy	817.652	1
+gen-00635	Discord	desktop			#random - Chill Zone	958.512	0
+gen-00636	Google Chrome	browser	Google Chrome	github.com	Issues - vercel/buddy	1691.333	1
+gen-00637	Spotify	desktop			The Weeknd - Levitating	159.139	0
+gen-00638	Google Chrome	browser	Google Chrome	github.com	portfolio/session.js at main	883.573	1
+gen-00639	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Believer (Official Video) - YouTube	232.331	0
+gen-00640	Google Chrome	browser	Google Chrome	youtube.com	ECE 445 Lecture 16: dynamic programming - YouTube	204.878	1
+gen-00641	Netflix	desktop			Wednesday.S01E01.mkv	149.075	0
+gen-00642	Warp	desktop			senior-design - uvicorn engine.app:app	390.149	1
+gen-00643	Google Chrome	browser	Google Chrome	netflix.com	The Office season 5 - Netflix	273.001	0
+gen-00644	Google Chrome	browser	Google Chrome	docs.google.com	Lab writeup - Google Docs	668.861	1
+gen-00645	Netflix	desktop			Stranger.Things.S03E05.mkv	36.233	0
+gen-00646	Google Chrome	browser	Google Chrome	colab.research.google.com	schema.ipynb - Colab	185.397	1
+gen-00647	Music	desktop			AP Dhillon - Levitating	235.547	0
+gen-00648	Google Chrome	browser	Google Chrome	github.com	(2540) sofia-dev/buddy: react for compilers	244.144	1
+gen-00649	Google Chrome	browser	Google Chrome	youtube.com	Ashish Chanchlani - reacting to my old videos - YouTube	145.72	0
+gen-00650	Google Chrome	browser	Google Chrome	reddit.com	r/learnpython - how do I use asyncio with bash	150.048	1
+gen-00651	Music	desktop			Imagine Dragons - Viva La Vida	166.8	0
+gen-00652	Google Chrome	browser	Google Chrome	canvas.instructure.com	ECE 445 - Assignment 4	757.533	1
+gen-00653	Google Chrome	browser	Google Chrome	netflix.com	Wednesday season 1 - Netflix	118.695	0
+gen-00654	Google Chrome	browser	Google Chrome	claude.ai	debugging slow query in transformers	2192.748	1
+gen-00655	QuickTime Player	desktop			Wednesday.S02E09.mkv	217.959	0
+gen-00656	Google Chrome	browser	Google Chrome	youtube.com	COMP 322 Lecture 19: probability - YouTube	303.453	1
+gen-00657	Spotify	desktop			Drake - Levitating	169.603	0
+gen-00658	Google Chrome	browser	Google Chrome	stackoverflow.com	(8220) rust - how to fix memory leak in tensorflow - Stack Overflow	387.332	1
+gen-00659	Google Chrome	browser	Google Chrome	youtube.com	Drake - Levitating (Official Video) - YouTube	343.793	0
+gen-00660	Jupyter	desktop			styles.ipynb	1749.204	1
+gen-00661	Google Chrome	browser	Google Chrome	twitter.com	MrBeast on X	285.196	0
+gen-00662	Docker Desktop	desktop			Buddy - board	1465.721	1
+gen-00663	Google Chrome	browser	Google Chrome	netflix.com	Money Heist season 1 - Netflix	374.904	0
+gen-00664	Google Chrome	browser	Google Chrome	reactjs.org	bluetooth le - React documentation	382.711	1
+gen-00665	Spotify	desktop			Arijit Singh - Brown Munde	60.208	0
+gen-00666	Google Chrome	browser	Google Chrome	github.com	activity-logger/buddy.ino at main	561.18	1
+gen-00667	Spotify	desktop			Dua Lipa - Kesariya	801.085	0
+gen-00668	Google Chrome	browser	Google Chrome	arxiv.org	(3098) [2497.5341] deep residual learning	2234.264	1
+gen-00669	Music	desktop			AP Dhillon - Paradise	88.404	0
+gen-00670	Google Chrome	browser	Google Chrome	canvas.instructure.com	MATH 2415 - Assignment 8	244.999	1
+gen-00671	Google Chrome	browser	Google Chrome	youtube.com	MrBeast - my honest apartment tour - YouTube	132.133	0
+gen-00672	Google Chrome	browser	Google Chrome	google.com	javascript fastapi slow query - Google Search	62.453	1
+gen-00673	Netflix	desktop			Stranger.Things.S01E02.mkv	176.172	0
+gen-00674	Google Chrome	browser	Google Chrome	chatgpt.com	debugging import cycle in docker	179.53	1
+gen-00675	Music	desktop			Coldplay - Paradise	280.298	0
+gen-00676	Neovim	desktop			queue.js - Buddy	1256.885	1
+gen-00677	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Softly (Official Video) - YouTube	357.474	0
+gen-00678	Obsidian	desktop			senior-design - postgres	1809.588	1
+gen-00679	VLC	desktop			Wednesday.S01E03.mkv	166.526	0
+gen-00680	Google Chrome	browser	Google Chrome	reddit.com	r/datascience - how do I use webrtc with bash	366.171	1
+gen-00681	Discord	desktop			#memes - Gamers United	51.219	0
+gen-00682	Google Chrome	browser	Google Chrome	reddit.com	r/embedded - how do I use nginx with python	215.3	1
+gen-00683	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing Rocket League - Twitch	461.011	0
+gen-00684	Google Chrome	browser	Google Chrome	reactjs.org	pytorch - React documentation	1930.926	1
+gen-00685	Discord	desktop			#gaming - Chill Zone	170.216	0
+gen-00686	Google Chrome	browser	Google Chrome	youtube.com	Two Minute Papers - postgres tutorial for beginners - YouTube	2112.971	1
+gen-00687	QuickTime Player	desktop			Stranger.Things.S02E04.mkv	145.427	0
+gen-00688	Microsoft PowerPoint	desktop			Demo script.pptx	1289.667	1
+gen-00689	QuickTime Player	desktop			Peaky.Blinders.S04E04.mkv	244.767	0
+gen-00690	Google Chrome	browser	Google Chrome	github.com	esp32-voice/plot_score.m at main	270.532	1
+gen-00691	Google Chrome	browser	Google Chrome	youtube.com	Diljit Dosanjh - Viva La Vida (Official Video) - YouTube	121.286	0
+gen-00692	Google Chrome	browser	Google Chrome	colab.research.google.com	prep.ipynb - Colab	458.649	1
+gen-00693	QuickTime Player	desktop			Friends.S01E07.mkv	198.234	0
+gen-00694	Google Chrome	browser	Google Chrome	arxiv.org	(2151) [2386.7639] efficient transformers	479.53	1
+gen-00695	Netflix	desktop			The.Office.S04E05.mkv	243.927	0
+gen-00696	Docker Desktop	desktop			portfolio - board	412.562	1
+gen-00697	Google Chrome	browser	Google Chrome	reddit.com	r/gaming - finally beat the final boss	86.05	0
+gen-00698	Google Chrome	browser	Google Chrome	claude.ai	debugging timeout in random forest	446.536	1
+gen-00699	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing FIFA 26 - Twitch	288.267	0
+gen-00700	Google Chrome	browser	Google Chrome	google.com	python pytorch slow query - Google Search	313.04	1
+gen-00701	Netflix	desktop			Breaking.Bad.S01E05.mkv	133.831	0
+gen-00702	Google Chrome	browser	Google Chrome	stackoverflow.com	(40) sql - how to fix race condition in kafka - Stack Overflow	631.846	1
+gen-00703	Music	desktop			Diljit Dosanjh - Blinding Lights	218.309	0
+gen-00704	Google Chrome	browser	Google Chrome	canvas.instructure.com	Stanford CS229 - Assignment 5	471.999	1
+gen-00705	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing CS2 - Twitch	75.823	0
+gen-00706	Google Chrome	browser	Google Chrome	github.com	Issues - timescale/buddy	144.426	1
+gen-00707	Google Chrome	browser	Google Chrome	twitter.com	CarryMinati on X	13.512	0
+gen-00708	Xcode	desktop			Dockerfile - portfolio	368.365	1
+gen-00709	Google Chrome	browser	Google Chrome	twitch.tv	(1775) Dude Perfect playing League of Legends - Twitch	537.534	0
+gen-00710	Google Chrome	browser	Google Chrome	reddit.com	r/embedded - how do I use opencv with go	531.378	1
+gen-00711	Google Chrome	browser	Google Chrome	youtube.com	Drake - Softly (Official Video) - YouTube	594.343	0
+gen-00712	Google Chrome	browser	Google Chrome	youtube.com	COMP 540 Lecture 10: linear algebra - YouTube	223.24	1
+gen-00713	Google Chrome	browser	Google Chrome	netflix.com	Wednesday season 4 - Netflix	238.428	0
+gen-00714	Google Chrome	browser	Google Chrome	github.com	Issues - scikit-learn/senior-design	1950.163	1
+gen-00715	Google Chrome	browser	Google Chrome	netflix.com	Money Heist season 4 - Netflix	341.8	0
+gen-00716	Google Chrome	browser	Google Chrome	youtube.com	freeCodeCamp - websockets tutorial for beginners - YouTube	284.655	1
+gen-00717	Google Chrome	browser	Google Chrome	youtube.com	Coldplay - Paradise (Official Video) - YouTube	134.101	0
+gen-00718	Google Chrome	browser	Google Chrome	youtube.com	sentdex - tf-idf tutorial for beginners - YouTube	866.229	1
+gen-00719	Google Chrome	browser	Google Chrome	youtube.com	#shorts worst ui in a modern game	488.443	0
+gen-00720	Google Chrome	browser	Google Chrome	reddit.com	r/cscareerquestions - how do I use transformers with sql	954.28	1
+gen-00721	QuickTime Player	desktop			The.Office.S03E06.mkv	118.604	0
+gen-00722	Google Chrome	browser	Google Chrome	github.com	Issues - espressif/buddy	88.663	1
+gen-00723	Google Chrome	browser	Google Chrome	netflix.com	Squid Game season 2 - Netflix	30.83	0
+gen-00724	Google Chrome	browser	Google Chrome	youtube.com	Tech With Tim - chrome extension tutorial for beginners - YouTube	378.204	1
+gen-00725	Google Chrome	browser	Google Chrome	netflix.com	Stranger Things season 1 - Netflix	539.525	0
+gen-00726	Google Chrome	browser	Google Chrome	arxiv.org	[2356.1997] batch normalization	244.713	1
+gen-00727	Google Chrome	browser	Google Chrome	youtube.com	MrBeast - we tried the impossible challenge - YouTube	279.205	0
+gen-00728	Ghostty	desktop			esp32-voice - pytest -q	629.377	1
+gen-00729	QuickTime Player	desktop			The.Office.S03E05.mkv	163.204	0
+gen-00730	Google Chrome	browser	Google Chrome	stackoverflow.com	javascript - how to fix type error in sqlalchemy - Stack Overflow	324.969	1
+gen-00731	Music	desktop			The Weeknd - Kesariya	426.67	0
+gen-00732	Google Chrome	browser	Google Chrome	reddit.com	r/embedded - how do I use tensorflow with sql	636.699	1
+gen-00733	Netflix	desktop			Money.Heist.S04E05.mkv	141.671	0
+gen-00734	Google Chrome	browser	Google Chrome	github.com	esp32-voice/README.md at main	339.819	1
+gen-00735	Google Chrome	browser	Google Chrome	youtube.com	Karan Aujla - Cruel Summer (Official Video) - YouTube	36.71	0
+gen-00736	Google Chrome	browser	Google Chrome	github.com	mentor-engine/styles.css at main	443.014	1
+gen-00737	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing GTA V - Twitch	1452.365	0
+gen-00738	Google Chrome	browser	Google Chrome	google.com	typescript i2s audio memory leak - Google Search	795.301	1
+gen-00739	Google Chrome	browser	Google Chrome	youtube.com	#shorts this cat is me at 3am	59.089	0
+gen-00740	Google Chrome	browser	Google Chrome	google.com	bash numpy memory leak - Google Search	382.944	1
+gen-00741	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Viva La Vida (Official Video) - YouTube	176.077	0
+gen-00742	DBeaver	desktop			Buddy - containers	286.45	1
+gen-00743	VLC	desktop			Breaking.Bad.S01E01.mkv	281.174	0
+gen-00744	Google Chrome	browser	Google Chrome	google.com	go timescaledb connection pool exhausted - Google Search	149.916	1
+gen-00745	VLC	desktop			Squid.Game.S03E01.mkv	1626.307	0
+gen-00746	Zoom	desktop			sprint planning	602.306	1
+gen-00747	Google Chrome	browser	Google Chrome	netflix.com	Squid Game season 3 - Netflix	128.366	0
+gen-00748	Google Chrome	browser	Google Chrome	youtube.com	Berkeley CS61A Lecture 7: probability - YouTube	1307.731	1
+gen-00749	Google Chrome	browser	Google Chrome	reddit.com	r/aww - this cat is me at 3am	558.257	0
+gen-00750	Google Chrome	browser	Google Chrome	youtube.com	ArjanCodes - react tutorial for beginners - YouTube	479.022	1
+gen-00751	Google Chrome	browser	Google Chrome	netflix.com	(3655) Friends season 3 - Netflix	87.676	0
+gen-00752	Google Chrome	browser	Google Chrome	stackoverflow.com	sql - how to fix type error in tf-idf - Stack Overflow	463.089	1
+gen-00753	Music	desktop			Coldplay - Blinding Lights	778.238	0
+gen-00754	Google Chrome	browser	Google Chrome	stackoverflow.com	(4584) swift - how to fix import cycle in bluetooth le - Stack Overflow	314.333	1
+gen-00755	Google Chrome	browser	Google Chrome	youtube.com	#shorts grandma texting fails	489.23	0
+gen-00756	Google Chrome	browser	Google Chrome	github.com	meiling/buddy: opencv for graph theory	219.168	1
+gen-00757	VLC	desktop			The.Office.S03E03.mkv	181.495	0
+gen-00758	Google Chrome	browser	Google Chrome	youtube.com	3Blue1Brown - asyncio tutorial for beginners - YouTube	85.378	1
+gen-00759	Music	desktop			Dua Lipa - Softly	211.436	0
+gen-00760	Google Chrome	browser	Google Chrome	canvas.instructure.com	STAT 310 - Assignment 1	673.759	1
+gen-00761	Discord	desktop			#gaming - Valorant Squad	17.544	0
+gen-00762	Slack	desktop			#standup - HackRice	155.322	1
+gen-00763	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing Minecraft - Twitch	153.129	0
+gen-00764	Neovim	desktop			buddy.ino - esp32-voice	957.458	1
+gen-00765	VLC	desktop			Stranger.Things.S04E05.mkv	84.645	0
+gen-00766	Terminal	desktop			senior-design - arduino-cli compile	1080.933	1
+gen-00767	Music	desktop			Imagine Dragons - Blinding Lights	261.462	0
+gen-00768	Google Chrome	browser	Google Chrome	arxiv.org	[2414.4808] a survey of activity recognition	314.891	1
+gen-00769	Spotify	desktop			The Weeknd - Paradise	35.983	0
+gen-00770	Google Chrome	browser	Google Chrome	docs.docker.com	asyncio - Docker documentation	376.2	1
+gen-00771	Discord	desktop			#music - Valorant Squad	162.857	0
+gen-00772	Google Chrome	browser	Google Chrome	google.com	typescript random forest slow query - Google Search	698.77	1
+gen-00773	Messages	desktop			dad	221.79	0
+gen-00774	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use tf-idf with sql	773.752	1
+gen-00775	VLC	desktop			Stranger.Things.S01E02.mkv	320.298	0
+gen-00776	Jupyter	desktop			model.ipynb	725.276	1
+gen-00777	Google Chrome	browser	Google Chrome	youtube.com	Dude Perfect - worst roommate stories - YouTube	321.162	0
+gen-00778	Google Chrome	browser	Google Chrome	claude.ai	debugging cors error in pandas	513.915	1
+gen-00779	Google Chrome	browser	Google Chrome	netflix.com	Wednesday season 3 - Netflix	251.791	0
+gen-00780	Google Chrome	browser	Google Chrome	stackoverflow.com	swift - how to fix flaky test in fastapi - Stack Overflow	1001.761	1
+gen-00781	QuickTime Player	desktop			Peaky.Blinders.S02E06.mkv	211.585	0
+gen-00782	Google Chrome	browser	Google Chrome	docs.python.org	bluetooth le - Python documentation	347.024	1
+gen-00783	Google Chrome	browser	Google Chrome	reddit.com	r/aww - baby otter holding hands	99.952	0
+gen-00784	Google Chrome	browser	Google Chrome	github.com	Issues - vercel/portfolio	525.543	1
+gen-00785	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing Fortnite - Twitch	245.654	0
+gen-00786	Discord	desktop			#general - HackRice	47.23	1
+gen-00787	Spotify	desktop			Diljit Dosanjh - Paradise	87.571	0
+gen-00788	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use asyncio with sql	1117.751	1
+gen-00789	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing Apex Legends - Twitch	111.918	0
+gen-00790	Google Chrome	browser	Google Chrome	youtube.com	Andrej Karpathy - esp32 tutorial for beginners - YouTube	3468.987	1
+gen-00791	Google Chrome	browser	Google Chrome	youtube.com	Samay Raina - reacting to my old videos - YouTube	300.43	0
+gen-00792	Google Chrome	browser	Google Chrome	youtube.com	Two Minute Papers - docker tutorial for beginners - YouTube	1047.514	1
+gen-00793	Google Chrome	browser	Google Chrome	youtube.com	Samay Raina - worst roommate stories - YouTube	448.884	0
+gen-00794	Microsoft Excel	desktop			parts list.xlsx	196.164	1
+gen-00795	Spotify	desktop			Coldplay - Brown Munde	109.258	0
+gen-00796	Discord	desktop			#help-python - Buddy Team	43.529	1
+gen-00797	Music	desktop			Coldplay - Softly	342.471	0
+gen-00798	Microsoft PowerPoint	desktop			Meeting notes.pptx	435.37	1
+gen-00799	Steam	desktop			Elden Ring - Steam	199.612	0
+gen-00800	Google Chrome	browser	Google Chrome	github.com	sofia-dev/timeseries-api: i2s audio for operating systems	87.959	1
+gen-00801	Google Chrome	browser	Google Chrome	youtube.com	Karan Aujla - Levitating (Official Video) - YouTube	178.072	0
+gen-00802	Google Chrome	browser	Google Chrome	reddit.com	r/datascience - how do I use asyncio with javascript	163.287	1
+gen-00803	Google Chrome	browser	Google Chrome	netflix.com	Breaking Bad season 4 - Netflix	506.308	0
+gen-00804	Google Chrome	browser	Google Chrome	reddit.com	r/rust - how do I use pandas with swift	1605.587	1
+gen-00805	QuickTime Player	desktop			Wednesday.S04E07.mkv	149.014	0
+gen-00806	Google Chrome	browser	Google Chrome	github.com	tarunk/portfolio: webrtc for dynamic programming	830.8	1
+gen-00807	Google Chrome	browser	Google Chrome	reddit.com	r/nextfuckinglevel - found this in my attic	134.755	0
+gen-00808	Google Chrome	browser	Google Chrome	colab.research.google.com	README.ipynb - Colab	414.467	1
+gen-00809	Google Chrome	browser	Google Chrome	youtube.com	Markiplier - my honest apartment tour - YouTube	28.894	0
+gen-00810	PyCharm	desktop			Dockerfile - esp32-voice	92.472	1
+gen-00811	Google Chrome	browser	Google Chrome	youtube.com	CarryMinati - spending $10000 in 10 minutes - YouTube	184.363	0
+gen-00812	Google Chrome	browser	Google Chrome	canvas.instructure.com	(2957) MATH 2415 - Assignment 5	166.855	1
+gen-00813	Google Chrome	browser	Google Chrome	netflix.com	The Office season 4 - Netflix	243.753	0
+gen-00814	Google Chrome	browser	Google Chrome	arxiv.org	[2528.9689] batch normalization	312.775	1
+gen-00815	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Viva La Vida (Official Video) - YouTube	79.245	0
+gen-00816	Google Chrome	browser	Google Chrome	google.com	swift react deadlock - Google Search	109.227	1
+gen-00817	Google Chrome	browser	Google Chrome	youtube.com	(8455) Diljit Dosanjh - Kesariya (Official Video) - YouTube	58.615	0
+gen-00818	Google Chrome	browser	Google Chrome	github.com	Pull Request #95: fix deadlock by sofia-dev	1068.023	1
+gen-00819	Spotify	desktop			AP Dhillon - Kesariya	241.504	0
+gen-00820	Terminal	desktop			Buddy - npm run dev	168.206	1
+gen-00821	Music	desktop			Taylor Swift - Levitating	73.151	0
+gen-00822	Google Chrome	browser	Google Chrome	youtube.com	ECE 445 Lecture 8: control systems - YouTube	973.51	1
+gen-00823	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing CS2 - Twitch	343.779	0
+gen-00824	Google Chrome	browser	Google Chrome	youtube.com	Fireship - pytorch tutorial for beginners - YouTube	206.555	1
+gen-00825	Music	desktop			Dua Lipa - Paradise	52.122	0
+gen-00826	Google Chrome	browser	Google Chrome	github.com	activity-logger/store.py at main	311.836	1
+gen-00827	Google Chrome	browser	Google Chrome	netflix.com	Squid Game season 1 - Netflix	160.464	0
+gen-00828	PyCharm	desktop			prep.py - esp32-voice	1228.376	1
+gen-00829	QuickTime Player	desktop			Friends.S03E03.mkv	406.331	0
+gen-00830	Google Chrome	browser	Google Chrome	scikit-learn.org	chrome extension - scikit-learn documentation	3600.0	1
+gen-00831	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing Minecraft - Twitch	220.3	0
+gen-00832	Google Chrome	browser	Google Chrome	stackoverflow.com	typescript - how to fix cors error in random forest - Stack Overflow	2252.451	1
+gen-00833	Google Chrome	browser	Google Chrome	twitch.tv	Ashish Chanchlani playing League of Legends - Twitch	118.625	0
+gen-00834	Google Chrome	browser	Google Chrome	arxiv.org	[2409.1618] batch normalization	541.13	1
+gen-00835	Spotify	desktop			AP Dhillon - Paradise	1072.999	0
+gen-00836	Postman	desktop			Buddy - containers	822.531	1
+gen-00837	Google Chrome	browser	Google Chrome	youtube.com	AP Dhillon - Cruel Summer (Official Video) - YouTube	62.235	0
+gen-00838	Google Chrome	browser	Google Chrome	fastapi.tiangolo.com	webrtc - FastAPI documentation	373.911	1
+gen-00839	QuickTime Player	desktop			Dark.S04E01.mkv	88.211	0
+gen-00840	Visual Studio Code	desktop			styles.css - Buddy	293.858	1
+gen-00841	Music	desktop			AP Dhillon - Viva La Vida	76.581	0
+gen-00842	Google Chrome	browser	Google Chrome	github.com	sofia-dev/buddy: kafka for compilers	338.007	1
+gen-00843	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Paradise (Official Video) - YouTube	217.342	0
+gen-00844	Google Chrome	browser	Google Chrome	developer.mozilla.org	numpy - MDN documentation	123.178	1
+gen-00845	Music	desktop			Imagine Dragons - Paradise	509.288	0
+gen-00846	iTerm2	desktop			hackrice - tail -f engine.log	126.609	1
+gen-00847	WhatsApp	desktop			Rahul	213.441	0
+gen-00848	Google Chrome	browser	Google Chrome	stackoverflow.com	sql - how to fix deadlock in i2s audio - Stack Overflow	1008.752	1
+gen-00849	Google Chrome	browser	Google Chrome	youtube.com	Coldplay - Blinding Lights (Official Video) - YouTube	82.779	0
+gen-00850	Google Chrome	browser	Google Chrome	fastapi.tiangolo.com	kubernetes - FastAPI documentation	719.882	1
+gen-00851	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Kesariya (Official Video) - YouTube	183.014	0
+gen-00852	iTerm2	desktop			esp32-voice - git rebase -i main	95.155	1
+gen-00853	Google Chrome	browser	Google Chrome	twitter.com	Markiplier on X	81.463	0
+gen-00854	Google Chrome	browser	Google Chrome	reactjs.org	numpy - React documentation	650.742	1
+gen-00855	Google Chrome	browser	Google Chrome	youtube.com	(1476) #shorts rgb overload build	253.969	0
+gen-00856	Notion	desktop			Buddy - board	92.025	1
+gen-00857	Google Chrome	browser	Google Chrome	netflix.com	Peaky Blinders season 2 - Netflix	318.808	0
+gen-00858	Google Chrome	browser	Google Chrome	youtube.com	MIT 18.06 Lecture 2: signal processing - YouTube	877.862	1
+gen-00859	Music	desktop			Drake - Viva La Vida	911.804	0
+gen-00860	Google Chrome	browser	Google Chrome	github.com	(6289) rahulm/buddy: nginx for operating systems	528.277	1
+gen-00861	QuickTime Player	desktop			Dark.S03E08.mkv	102.891	0
+gen-00862	Google Chrome	browser	Google Chrome	github.com	Pull Request #176: fix timeout by anita	1142.321	1
+gen-00863	Spotify	desktop			Dua Lipa - Levitating	248.802	0
+gen-00864	Google Chrome	browser	Google Chrome	github.com	sofia-dev/timeseries-api: kafka for compilers	73.217	1
+gen-00865	Netflix	desktop			The.Office.S04E04.mkv	718.14	0
+gen-00866	Google Chrome	browser	Google Chrome	google.com	javascript transformers connection pool exhausted - Google Search	161.256	1
+gen-00867	QuickTime Player	desktop			Wednesday.S01E06.mkv	177.001	0
+gen-00868	Google Chrome	browser	Google Chrome	github.com	dotfiles/agent.swift at main	93.286	1
+gen-00869	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Cruel Summer (Official Video) - YouTube	88.811	0
+gen-00870	Google Chrome	browser	Google Chrome	youtube.com	ECE 445 Lecture 3: probability - YouTube	1215.452	1
+gen-00871	Google Chrome	browser	Google Chrome	youtube.com	Technoblade - spending $10000 in 10 minutes - YouTube	250.168	0
+gen-00872	Google Chrome	browser	Google Chrome	pytorch.org	i2s audio - PyTorch documentation	794.987	1
+gen-00873	Netflix	desktop			Peaky.Blinders.S01E02.mkv	164.03	0
+gen-00874	Google Chrome	browser	Google Chrome	github.com	dotfiles/store.py at main	185.638	1
+gen-00875	Google Chrome	browser	Google Chrome	youtube.com	Samay Raina - 24 hours in the airport - YouTube	195.647	0
+gen-00876	Google Chrome	browser	Google Chrome	claude.ai	debugging memory leak in i2s audio	821.934	1
+gen-00877	QuickTime Player	desktop			Squid.Game.S01E06.mkv	492.702	0
+gen-00878	Google Chrome	browser	Google Chrome	github.com	meiling/mentor-engine: kafka for signal processing	168.065	1
+gen-00879	Music	desktop			Arijit Singh - Softly	121.135	0
+gen-00880	Sublime Text	desktop			store.py - portfolio	708.496	1
+gen-00881	Messages	desktop			Sofia	119.708	0
+gen-00882	Google Chrome	browser	Google Chrome	github.com	Pull Request #3: fix flaky test by tarunk	1768.139	1
+gen-00883	Spotify	desktop			Taylor Swift - Viva La Vida	192.991	0
+gen-00884	Ghostty	desktop			hackrice - arduino-cli compile	1224.023	1
+gen-00885	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Softly (Official Video) - YouTube	169.373	0
+gen-00886	Google Chrome	browser	Google Chrome	canvas.instructure.com	COMP 540 - Assignment 2	304.816	1
+gen-00887	Spotify	desktop			Drake - Paradise	533.503	0
+gen-00888	Neovim	desktop			model.ipynb - esp32-voice	1212.847	1
+gen-00889	Netflix	desktop			The.Office.S01E03.mkv	328.825	0
+gen-00890	Slack	desktop			#backend - HackRice	467.698	1
+gen-00891	Netflix	desktop			Friends.S03E08.mkv	75.291	0
+gen-00892	Google Chrome	browser	Google Chrome	claude.ai	debugging slow query in react	142.623	1
+gen-00893	Google Chrome	browser	Google Chrome	youtube.com	The Weeknd - Blinding Lights (Official Video) - YouTube	304.168	0
+gen-00894	Google Chrome	browser	Google Chrome	youtube.com	3Blue1Brown - fastapi tutorial for beginners - YouTube	294.872	1
+gen-00895	Google Chrome	browser	Google Chrome	netflix.com	Money Heist season 2 - Netflix	630.218	0
+gen-00896	Google Chrome	browser	Google Chrome	youtube.com	Berkeley CS61A Lecture 11: dynamic programming - YouTube	145.065	1
+gen-00897	Google Chrome	browser	Google Chrome	youtube.com	Drake - Paradise (Official Video) - YouTube	193.695	0
+gen-00898	Google Chrome	browser	Google Chrome	docs.timescale.com	websockets - Timescale documentation	120.403	1
+gen-00899	Google Chrome	browser	Google Chrome	twitch.tv	Dude Perfect playing Minecraft - Twitch	89.475	0
+gen-00900	Google Chrome	browser	Google Chrome	reddit.com	r/datascience - how do I use sqlalchemy with java	377.182	1
+gen-00901	Google Chrome	browser	Google Chrome	netflix.com	Money Heist season 3 - Netflix	379.005	0
+gen-00902	Google Chrome	browser	Google Chrome	chatgpt.com	debugging deadlock in sqlalchemy	203.115	1
+gen-00903	Spotify	desktop			Imagine Dragons - Cruel Summer	110.8	0
+gen-00904	Google Chrome	browser	Google Chrome	stackoverflow.com	python - how to fix flaky test in tensorflow - Stack Overflow	150.104	1
+gen-00905	Google Chrome	browser	Google Chrome	twitch.tv	Markiplier playing Apex Legends - Twitch	178.501	0
+gen-00906	Obsidian	desktop			senior-design - containers	1716.287	1
+gen-00907	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Kesariya (Official Video) - YouTube	162.048	0
+gen-00908	Google Chrome	browser	Google Chrome	reddit.com	r/learnpython - how do I use logistic regression with rust	870.325	1
+gen-00909	QuickTime Player	desktop			Breaking.Bad.S01E02.mkv	101.858	0
+gen-00910	Google Chrome	browser	Google Chrome	github.com	meiling/timeseries-api: bluetooth le for probability	887.272	1
+gen-00911	Google Chrome	browser	Google Chrome	netflix.com	Wednesday season 5 - Netflix	100.937	0
+gen-00912	Figma	desktop			esp32-voice - board	506.493	1
+gen-00913	Google Chrome	browser	Google Chrome	reddit.com	(8328) r/pcmasterrace - my new battlestation	118.346	0
+gen-00914	TablePlus	desktop			esp32-voice - notes	334.232	1
+gen-00915	Google Chrome	browser	Google Chrome	youtube.com	Markiplier - reacting to my old videos - YouTube	197.032	0
+gen-00916	TablePlus	desktop			Buddy - API	532.687	1
+gen-00917	Music	desktop			Taylor Swift - Believer	144.605	0
+gen-00918	Google Chrome	browser	Google Chrome	youtube.com	MIT 18.06 Lecture 7: control systems - YouTube	336.649	1
+gen-00919	Spotify	desktop			Taylor Swift - Kesariya	56.096	0
+gen-00920	Google Chrome	browser	Google Chrome	claude.ai	debugging connection pool exhausted in tensorflow	329.232	1
+gen-00921	Steam	desktop			Minecraft - Steam	50.304	0
+gen-00922	Google Chrome	browser	Google Chrome	reactjs.org	websockets - React documentation	1228.942	1
+gen-00923	Google Chrome	browser	Google Chrome	youtube.com	CarryMinati - we tried the impossible challenge - YouTube	148.724	0
+gen-00924	Google Chrome	browser	Google Chrome	google.com	c++ bluetooth le import cycle - Google Search	1207.025	1
+gen-00925	Google Chrome	browser	Google Chrome	netflix.com	Squid Game season 5 - Netflix	142.555	0
+gen-00926	Docker Desktop	desktop			senior-design - postgres	289.408	1
+gen-00927	Netflix	desktop			Wednesday.S02E05.mkv	81.865	0
+gen-00928	Google Chrome	browser	Google Chrome	youtube.com	Andrej Karpathy - timescaledb tutorial for beginners - YouTube	790.257	1
+gen-00929	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Blinding Lights (Official Video) - YouTube	191.441	0
+gen-00930	Slack	desktop			#general - HackRice	788.307	1
+gen-00931	Spotify	desktop			Coldplay - Believer	58.745	0
+gen-00932	Google Chrome	browser	Google Chrome	google.com	swift numpy memory leak - Google Search	559.835	1
+gen-00933	Music	desktop			AP Dhillon - Kesariya	755.592	0
+gen-00934	Visual Studio Code	desktop			buddy.ino - portfolio	731.171	1
+gen-00935	Spotify	desktop			Karan Aujla - Kesariya	147.029	0
+gen-00936	Google Chrome	browser	Google Chrome	google.com	javascript webrtc memory leak - Google Search	681.455	1
+gen-00937	Spotify	desktop			Dua Lipa - Paradise	159.334	0
+gen-00938	Sublime Text	desktop			styles.css - esp32-voice	377.119	1
+gen-00939	Google Chrome	browser	Google Chrome	youtube.com	Imagine Dragons - Cruel Summer (Official Video) - YouTube	168.767	0
+gen-00940	Google Chrome	browser	Google Chrome	claude.ai	debugging race condition in esp32	78.7	1
+gen-00941	Netflix	desktop			Money.Heist.S01E06.mkv	152.226	0
+gen-00942	Google Chrome	browser	Google Chrome	github.com	(1559) Issues - fastapi/hackrice-16	271.851	1
+gen-00943	Music	desktop			Karan Aujla - Viva La Vida	508.5	0
+gen-00944	Google Chrome	browser	Google Chrome	github.com	(7093) Pull Request #185: fix flaky test by sofia-dev	845.321	1
+gen-00945	Google Chrome	browser	Google Chrome	youtube.com	CarryMinati - my honest apartment tour - YouTube	631.979	0
+gen-00946	Google Chrome	browser	Google Chrome	stackoverflow.com	rust - how to fix race condition in nginx - Stack Overflow	592.985	1
+gen-00947	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing League of Legends - Twitch	219.873	0
+gen-00948	Obsidian	desktop			hackrice - API	38.56	1
+gen-00949	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing GTA V - Twitch	272.499	0
+gen-00950	Google Chrome	browser	Google Chrome	github.com	Pull Request #129: fix deadlock by leo	739.805	1
+gen-00951	Google Chrome	browser	Google Chrome	youtube.com	Diljit Dosanjh - Brown Munde (Official Video) - YouTube	176.292	0
+gen-00952	Google Chrome	browser	Google Chrome	arxiv.org	[2427.7446] deep residual learning	511.038	1
+gen-00953	Netflix	desktop			Friends.S01E06.mkv	203.904	0
+gen-00954	Google Chrome	browser	Google Chrome	chatgpt.com	debugging memory leak in kubernetes	213.423	1
+gen-00955	VLC	desktop			Stranger.Things.S01E04.mkv	258.411	0
+gen-00956	Google Chrome	browser	Google Chrome	google.com	javascript i2s audio memory leak - Google Search	127.636	1
+gen-00957	VLC	desktop			The.Office.S04E03.mkv	98.659	0
+gen-00958	Neovim	desktop			styles.css - senior-design	199.522	1
+gen-00959	Google Chrome	browser	Google Chrome	netflix.com	Stranger Things season 2 - Netflix	496.154	0
+gen-00960	Google Chrome	browser	Google Chrome	youtube.com	COMP 540 Lecture 18: operating systems - YouTube	525.068	1
+gen-00961	VLC	desktop			The.Office.S03E02.mkv	37.821	0
+gen-00962	Postman	desktop			esp32-voice - postgres	168.531	1
+gen-00963	Music	desktop			Dua Lipa - Believer	94.084	0
+gen-00964	Google Chrome	browser	Google Chrome	github.com	hackrice-16/trigger.py at main	302.325	1
+gen-00965	Google Chrome	browser	Google Chrome	youtube.com	Arijit Singh - Believer (Official Video) - YouTube	53.369	0
+gen-00966	Neovim	desktop			store.py - senior-design	301.208	1
+gen-00967	Music	desktop			Imagine Dragons - Cruel Summer	193.656	0
+gen-00968	Google Chrome	browser	Google Chrome	arxiv.org	[2588.1413] deep residual learning	215.96	1
+gen-00969	Google Chrome	browser	Google Chrome	youtube.com	(6292) Samay Raina - I survived 50 hours in a box - YouTube	215.48	0
+gen-00970	Figma	desktop			senior-design - postgres	216.972	1
+gen-00971	Music	desktop			Drake - Believer	488.721	0
+gen-00972	Google Chrome	browser	Google Chrome	docs.python.org	scikit-learn - Python documentation	1128.361	1
+gen-00973	QuickTime Player	desktop			Wednesday.S04E05.mkv	134.594	0
+gen-00974	Google Chrome	browser	Google Chrome	claude.ai	debugging deadlock in fastapi	1060.843	1
+gen-00975	Music	desktop			Dua Lipa - Cruel Summer	83.821	0
+gen-00976	Google Chrome	browser	Google Chrome	github.com	Issues - espressif/dotfiles	85.455	1
+gen-00977	Spotify	desktop			Drake - Believer	314.882	0
+gen-00978	Notion	desktop			Buddy - API	592.745	1
+gen-00979	Google Chrome	browser	Google Chrome	twitch.tv	MrBeast playing GTA V - Twitch	118.439	0
+gen-00980	Google Chrome	browser	Google Chrome	google.com	(8850) sql tf-idf flaky test - Google Search	262.077	1
+gen-00981	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing Rocket League - Twitch	41.246	0
+gen-00982	Google Chrome	browser	Google Chrome	github.com	sofia-dev/dotfiles: numpy for dynamic programming	362.165	1
+gen-00983	Steam	desktop			Rocket League - Steam	264.487	0
+gen-00984	Google Chrome	browser	Google Chrome	youtube.com	Computerphile - bluetooth le tutorial for beginners - YouTube	188.243	1
+gen-00985	Spotify	desktop			Diljit Dosanjh - Cruel Summer	357.536	0
+gen-00986	Google Chrome	browser	Google Chrome	github.com	dotfiles/model.ipynb at main	1136.675	1
+gen-00987	Google Chrome	browser	Google Chrome	twitch.tv	Technoblade playing Elden Ring - Twitch	253.134	0
+gen-00988	Google Chrome	browser	Google Chrome	github.com	leo/timeseries-api: timescaledb for linear algebra	162.2	1
+gen-00989	Google Chrome	browser	Google Chrome	youtube.com	Dua Lipa - Brown Munde (Official Video) - YouTube	219.071	0
+gen-00990	Ghostty	desktop			esp32-voice - docker compose up	476.133	1
+gen-00991	Steam	desktop			CS2 - Steam	78.435	0
+gen-00992	Sublime Text	desktop			README.md - hackrice	108.188	1
+gen-00993	Music	desktop			The Weeknd - Viva La Vida	346.48	0
+gen-00994	Google Chrome	browser	Google Chrome	docs.docker.com	logistic regression - Docker documentation	754.271	1
+gen-00995	Music	desktop			Dua Lipa - Viva La Vida	206.468	0
+gen-00996	Sublime Text	desktop			schema.sql - hackrice	608.108	1
+gen-00997	Spotify	desktop			The Weeknd - Cruel Summer	249.658	0
+gen-00998	Warp	desktop			Buddy - pytest -q	1031.193	1
+gen-00999	VLC	desktop			Breaking.Bad.S01E05.mkv	42.404	0
