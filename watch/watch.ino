@@ -52,6 +52,10 @@ const char* PENDING_URL = "/pending-speech";
 #define MAX_REC_BYTES   (SAMPLE_RATE * (BIT_DEPTH / 8) * MAX_REC_S)  // 256 kB
 #define PLAY_CHUNK      2048   // I2S write chunk for streaming playback
 
+// Set to 1 to test mic: hold button, speak, release — hear yourself on the speaker (no cloud).
+// Set back to 0 when mic is verified and you want POST /voice again.
+#define MIC_LOOPBACK_TEST 1
+
 // ---------------------------------------------------------------------------
 // Globals
 // ---------------------------------------------------------------------------
@@ -134,7 +138,7 @@ void setup() {
     .mode                 = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
     .sample_rate          = SAMPLE_RATE,
     .bits_per_sample      = I2S_BITS_PER_SAMPLE_16BIT,
-    .channel_format       = I2S_CHANNEL_FMT_ONLY_LEFT,
+    .channel_format       = I2S_CHANNEL_FMT_RIGHT_LEFT,  // stereo: probe L and R (L/R pin)
     .communication_format = I2S_COMM_FORMAT_STAND_I2S,
     .intr_alloc_flags     = ESP_INTR_FLAG_LEVEL1,
     .dma_buf_count        = 8,
@@ -245,7 +249,43 @@ void recordAndSend() {
     return;
   }
 
+  
+  // Stereo peak: INMP441/SPH0645 put audio on L or R depending on L/R pin
+  {
+    int16_t peakL = 0, peakR = 0;
+    size_t frames = recBytes / 4;  // L+R int16 pairs
+    const int16_t* s = (const int16_t*)recBuf;
+    for (size_t i = 0; i < frames; i++) {
+      int16_t l = s[i * 2];
+      int16_t r = s[i * 2 + 1];
+      if (l < 0) l = -l;
+      if (r < 0) r = -r;
+      if (l > peakL) peakL = l;
+      if (r > peakR) peakR = r;
+    }
+    Serial.printf("[mic] bytes=%u peakL=%d peakR=%d (speak near mic; one side should be >> 500)\n",
+                  (unsigned)recBytes, (int)peakL, (int)peakR);
+
+    // Collapse to mono for loopback using the louder channel
+    int useRight = (peakR >= peakL);
+    int16_t* mono = (int16_t*)recBuf;
+    for (size_t i = 0; i < frames; i++) {
+      mono[i] = s[i * 2 + (useRight ? 1 : 0)];
+    }
+    recBytes = frames * 2;
+    Serial.printf("[mic] using %s channel for loopback\n", useRight ? "RIGHT" : "LEFT");
+  }
+
+#if MIC_LOOPBACK_TEST
+  // Local mic -> speaker loopback (no Wi-Fi / no /voice)
+  showState(S_SPEAKING);
+  playPCM(recBuf, recBytes);
+  showState(S_IDLE);
+  return;
+#endif
+
   showState(S_THINKING);
+
 
   if (WiFi.status() != WL_CONNECTED) {
     playFile("/goals_ok.wav");
