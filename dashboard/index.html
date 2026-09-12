@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Buddy Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root { --bg: #0f1117; --card: #1a1d27; --accent: #6366f1; --green: #22c55e; --red: #ef4444; --text: #f1f5f9; --muted: #64748b; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; padding: 1.5rem; }
+  h1 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+  h1 span { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .card { background: var(--card); border-radius: 12px; padding: 1.25rem; }
+  .card h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 1rem; }
+  .score-big { font-size: 4rem; font-weight: 700; }
+  .score-big.good { color: var(--green); }
+  .score-big.bad  { color: var(--red); }
+  .task { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid #ffffff10; font-size: .9rem; }
+  .task:last-child { border-bottom: none; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .dot.done { background: var(--green); }
+  .incident { font-size: .8rem; color: var(--muted); padding: .3rem 0; border-bottom: 1px solid #ffffff08; }
+  .incident .app { color: var(--red); font-weight: 600; }
+  canvas { width: 100% !important; }
+  .tag { font-size: .7rem; padding: 2px 8px; border-radius: 20px; background: #6366f120; color: var(--accent); }
+  .tag.bad { background: #ef444420; color: var(--red); }
+</style>
+</head>
+<body>
+<h1>Buddy <span>Productivity</span></h1>
+
+<div class="grid">
+  <!-- Live score -->
+  <div class="card" style="grid-column: span 2">
+    <h2>Score over time</h2>
+    <canvas id="scoreChart" height="120"></canvas>
+  </div>
+
+  <!-- Current -->
+  <div class="card">
+    <h2>Current score</h2>
+    <div class="score-big" id="liveScore">—</div>
+    <div id="liveApp" style="margin-top:.5rem; color:var(--muted); font-size:.85rem"></div>
+  </div>
+
+  <!-- Tasks -->
+  <div class="card">
+    <h2>Today's tasks</h2>
+    <div id="taskList"></div>
+  </div>
+
+  <!-- Incidents -->
+  <div class="card">
+    <h2>Coaching incidents</h2>
+    <div id="incidentList"></div>
+  </div>
+</div>
+
+<script>
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://127.0.0.1:8000'
+  : 'http://LAPTOP_IP:8000';   // ← replace LAPTOP_IP for venue Wi-Fi
+
+// Fixture data (renders immediately; real data overwrites on load)
+const FIXTURE = {
+  stats: [
+    {bucket:"2026-09-12T20:00:00", avg_score:72},
+    {bucket:"2026-09-12T20:05:00", avg_score:80},
+    {bucket:"2026-09-12T20:10:00", avg_score:68},
+    {bucket:"2026-09-12T21:10:00", avg_score:55},
+    {bucket:"2026-09-12T21:14:00", avg_score:12},
+    {bucket:"2026-09-12T21:20:00", avg_score:78},
+  ],
+  tasks: [
+    {id:"t1", title:"Email professor", status:"open", priority:1},
+    {id:"t2", title:"Senior design", status:"open", priority:2, deadline:"2026-09-12T22:00:00"},
+  ],
+  events: [
+    {ts:"2026-09-12T21:14:03", app:"League of Legends", score:12},
+  ],
+};
+
+// Chart
+const ctx = document.getElementById('scoreChart').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: { labels: [], datasets: [{
+    label: 'Score',
+    data: [],
+    borderColor: '#6366f1',
+    backgroundColor: '#6366f115',
+    fill: true,
+    tension: 0.3,
+    pointRadius: 3,
+  }]},
+  options: {
+    scales: {
+      y: { min: 0, max: 100, grid: { color:'#ffffff10' }, ticks:{color:'#64748b'} },
+      x: { ticks: { color:'#64748b', maxTicksLimit: 8 }, grid:{color:'#ffffff08'} },
+    },
+    plugins: { legend:{display:false} },
+    animation: false,
+  },
+});
+
+// Add slump line annotation manually
+function drawSlumpLine(chart) {
+  const yAxis = chart.scales.y;
+  const xAxis = chart.scales.x;
+  const y = yAxis.getPixelForValue(35);
+  const ctx = chart.ctx;
+  ctx.save();
+  ctx.setLineDash([6,4]);
+  ctx.strokeStyle = '#ef4444';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(xAxis.left, y);
+  ctx.lineTo(xAxis.right, y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+chart.options.plugins.afterDraw = drawSlumpLine;
+
+function updateChart(stats) {
+  chart.data.labels = stats.map(s => s.bucket.slice(11,16));
+  chart.data.datasets[0].data = stats.map(s => s.avg_score);
+  chart.update();
+}
+
+function updateTasks(tasks) {
+  const el = document.getElementById('taskList');
+  el.innerHTML = tasks.map(t => {
+    const done = t.status === 'done';
+    const dl = t.deadline ? ` <span style="color:var(--muted);font-size:.75rem">→ ${t.deadline.slice(11,16)}</span>` : '';
+    return `<div class="task"><div class="dot ${done?'done':''}"></div>${done?'<s>':''
+    }${t.title}${done?'</s>':''}${dl}</div>`;
+  }).join('');
+}
+
+function updateLive(events) {
+  if (!events.length) return;
+  const last = events[0];
+  const el = document.getElementById('liveScore');
+  el.textContent = last.score;
+  el.className = 'score-big ' + (last.score >= 35 ? 'good' : 'bad');
+  document.getElementById('liveApp').textContent = last.app;
+}
+
+function updateIncidents(events) {
+  const bad = events.filter(e => e.score < 35 && e.app);
+  document.getElementById('incidentList').innerHTML = bad.slice(0,8).map(e =>
+    `<div class="incident">${e.ts.slice(11,16)} — <span class="app">${e.app}</span> (score ${e.score})</div>`
+  ).join('') || '<div class="incident" style="color:var(--muted)">No incidents yet.</div>';
+}
+
+// Render fixture immediately
+updateChart(FIXTURE.stats);
+updateTasks(FIXTURE.tasks);
+updateLive(FIXTURE.events);
+updateIncidents(FIXTURE.events);
+
+// Fetch real data
+async function refresh() {
+  try {
+    const [stats, tasks, events] = await Promise.all([
+      fetch(`${API}/stats`).then(r=>r.json()),
+      fetch(`${API}/tasks`).then(r=>r.json()),
+      fetch(`${API}/events?limit=200`).then(r=>r.json()),
+    ]);
+    if (stats.length)  updateChart(stats);
+    if (tasks.length)  updateTasks(tasks);
+    if (events.length) { updateLive(events); updateIncidents(events); }
+  } catch (_) {}
+}
+
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>
