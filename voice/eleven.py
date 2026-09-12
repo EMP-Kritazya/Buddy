@@ -100,7 +100,13 @@ def generate_canned() -> None:
         "Then you have a straight run at senior design until 10."
     )
 
-    for name, text in (("off_task.wav", off_task), ("goals_ok.wav", goals_ok)):
+    network_issue = "Sorry I am facing network issue right now."
+
+    for name, text in (
+        ("off_task.wav", off_task),
+        ("goals_ok.wav", goals_ok),
+        ("network_issue.wav", network_issue),
+    ):
         wav = speak_wav(text)
         for dest in (audio_dir / name, watch_data / name):
             dest.write_bytes(wav)

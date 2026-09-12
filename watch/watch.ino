@@ -1,10 +1,10 @@
-﻿/*
+/*
   Buddy Watch firmware â€” LilyGO T-Display-S3 (ESP32-S3)
   I2S0 = mic (RX), I2S1 = amp (TX)
   Button GPIO 16 (pull-up, LOW = pressed), fallback GPIO 14
   Display: TFT_eSPI with LilyGO T-Display-S3 user setup
 
-  Canned WAVs stored in FFat under /goals_ok.wav and /off_task.wav.
+  Canned WAVs in FFat: /goals_ok.wav, /off_task.wav, /network_issue.wav.
   Upload them once with the Arduino FFat upload tool or PlatformIO
   after running: python voice/eleven.py  (generates audio/*.wav).
 */
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------------------
 const char* WIFI_SSID   = "Rice Visitor";
 const char* WIFI_PASS   = "";
-const char* SERVER      = "http://168.5.130.8:8000";  // laptop LAN IP
+const char* SERVER      = "http://168.5.148.43:8000";  // laptop LAN IP
 const char* VOICE_URL   = "/voice";
 const char* PENDING_URL = "/pending-speech";
 
@@ -49,13 +49,19 @@ const char* PENDING_URL = "/pending-speech";
 // ---------------------------------------------------------------------------
 #define SAMPLE_RATE     16000
 #define BIT_DEPTH       16
-#define MAX_REC_S       8
-#define MAX_REC_BYTES   (SAMPLE_RATE * (BIT_DEPTH / 8) * MAX_REC_S)  // 256 kB
+#define MAX_REC_S       45  // hold-to-talk; hard ceiling so PSRAM can't be exhausted
+#define MAX_REC_BYTES   (SAMPLE_RATE * 4 * MAX_REC_S)  // 32-bit I2S words while holding
+
+// Tap-to-talk + end-on-silence (VAD). True "Hey Buddy" wake word is not on-device yet.
+#define VAD_SPEECH_THRESH  1200   // abs PCM peak to count as speech (after >>15)
+#define VAD_SILENCE_MS     1200   // stop after this much quiet once user has spoken
+#define VAD_MIN_SPEECH_MS   400   // need at least this much speech before silence can end
+#define VAD_MAX_WAIT_MS   12000   // if no speech after tap, give up
 #define PLAY_CHUNK      2048   // I2S write chunk for streaming playback
 
 // Set to 1 to test mic: hold button, speak, release — hear yourself on the speaker (no cloud).
 // Set back to 0 when mic is verified and you want POST /voice again.
-#define MIC_LOOPBACK_TEST 1
+#define MIC_LOOPBACK_TEST 0
 
 // Digital playback boost (1=unity, 2= +6dB-ish, 3=louder). Soft-clips to avoid harsh square waves.
 #define SPEAKER_GAIN 4
@@ -135,9 +141,10 @@ void setup() {
     }
   } else {
     Serial.println("[ok] FFat mounted");
-    Serial.printf("[fs] goals_ok=%d off_task=%d\n",
+    Serial.printf("[fs] goals_ok=%d off_task=%d network_issue=%d\n",
                   FFat.exists("/goals_ok.wav"),
-                  FFat.exists("/off_task.wav"));
+                  FFat.exists("/off_task.wav"),
+                  FFat.exists("/network_issue.wav"));
   }
 
   // I2S0 â€” mic
@@ -217,10 +224,20 @@ void setup() {
 // Loop
 // ---------------------------------------------------------------------------
 void loop() {
+  static bool prevBtn = false;
   bool btnPressed = (digitalRead(BTN_PIN) == LOW) || (digitalRead(BTN_FALLBK) == LOW);
 
-  if (btnPressed) {
+  // Tap edge (press) starts a listen session — no need to hold
+  if (btnPressed && !prevBtn) {
+    // wait for release so the tap doesn't immediately cancel
+    delay(30);
+    while ((digitalRead(BTN_PIN) == LOW) || (digitalRead(BTN_FALLBK) == LOW)) {
+      delay(10);
+    }
     recordAndSend();
+    prevBtn = false;
+  } else {
+    prevBtn = btnPressed;
   }
 
   if (millis() - lastPollMs > POLL_INTERVAL) {
@@ -240,26 +257,83 @@ void loop() {
 // Record while button held â†’ POST raw PCM to /voice â†’ stream reply to speaker
 // ---------------------------------------------------------------------------
 void recordAndSend() {
+  // Tap-to-talk: listen until silence (or max), then POST /voice
   showState(S_LISTENING);
   i2s_zero_dma_buffer(I2S_NUM_0);
   recBytes = 0;
 
+  bool heardSpeech = false;
+  unsigned long t0 = millis();
+  unsigned long lastVoiceMs = 0;
+  unsigned long speechMs = 0;
   size_t bytesRead = 0;
-  while ((digitalRead(BTN_PIN) == LOW || digitalRead(BTN_FALLBK) == LOW)
-         && recBytes < MAX_REC_BYTES) {
-    i2s_read(I2S_NUM_0, recBuf + recBytes,
-             min((size_t)512, MAX_REC_BYTES - recBytes),
-             &bytesRead, portMAX_DELAY);
+
+  Serial.println("[mic] listening — speak; auto-stops on silence (max 45s)");
+
+  while (recBytes + 512 <= MAX_REC_BYTES) {
+    // Second tap cancels / finishes early
+    if ((digitalRead(BTN_PIN) == LOW) || (digitalRead(BTN_FALLBK) == LOW)) {
+      delay(20);
+      if ((digitalRead(BTN_PIN) == LOW) || (digitalRead(BTN_FALLBK) == LOW)) {
+        Serial.println("[mic] button — end listen");
+        while ((digitalRead(BTN_PIN) == LOW) || (digitalRead(BTN_FALLBK) == LOW)) delay(10);
+        break;
+      }
+    }
+
+    i2s_read(I2S_NUM_0, recBuf + recBytes, 512, &bytesRead, portMAX_DELAY);
+    if (bytesRead < 4) continue;
+
+    // Quick peak on this 32-bit chunk (same >>15 as final convert)
+    int16_t chunkPeak = 0;
+    size_t words = bytesRead / 4;
+    const int32_t* w = (const int32_t*)(recBuf + recBytes);
+    for (size_t i = 0; i < words; i++) {
+      int32_t sample = w[i] >> 15;
+      if (sample > 32767) sample = 32767;
+      if (sample < -32768) sample = -32768;
+      int16_t a = (int16_t)sample;
+      if (a < 0) a = -a;
+      if (a > chunkPeak) chunkPeak = a;
+    }
     recBytes += bytesRead;
+
+    unsigned long now = millis();
+    if (chunkPeak >= VAD_SPEECH_THRESH) {
+      if (!heardSpeech) {
+        heardSpeech = true;
+        Serial.printf("[mic] speech detected (peak=%d)\n", (int)chunkPeak);
+      }
+      lastVoiceMs = now;
+      speechMs += (words * 1000) / SAMPLE_RATE;
+    }
+
+    if (!heardSpeech) {
+      if (now - t0 > VAD_MAX_WAIT_MS) {
+        Serial.println("[mic] no speech — cancel");
+        showState(S_IDLE);
+        return;
+      }
+      continue;
+    }
+
+    if (speechMs >= VAD_MIN_SPEECH_MS && (now - lastVoiceMs) >= VAD_SILENCE_MS) {
+      Serial.println("[mic] end of utterance (silence)");
+      break;
+    }
+
+    if (recBytes + 512 > MAX_REC_BYTES) {
+      Serial.printf("[mic] hit max listen length (%d s)\n", MAX_REC_S);
+      break;
+    }
   }
 
-  if (recBytes < 3200) {   // < 0.1 s â€” ignore tap
+  if (recBytes < 3200) {   // too short — ignore
     showState(S_IDLE);
     return;
   }
 
-  
-  // 32-bit I2S words -> 16-bit PCM (take upper 16 / shift)
+  // 32-bit I2S words -> 16-bit PCM (take upper bits)
   {
     size_t words = recBytes / 4;
     const int32_t* w = (const int32_t*)recBuf;
@@ -297,7 +371,7 @@ void recordAndSend() {
 
 
   if (WiFi.status() != WL_CONNECTED) {
-    playFile("/goals_ok.wav");
+    playFile("/network_issue.wav");
     showState(S_IDLE);
     return;
   }
@@ -314,7 +388,7 @@ void recordAndSend() {
     streamAndPlay(*http.getStreamPtr(), http.getSize());
   } else {
     Serial.printf("[warn] POST /voice â†’ HTTP %d\n", code);
-    playFile("/goals_ok.wav");
+    playFile("/network_issue.wav");
   }
 
   http.end();
@@ -632,7 +706,7 @@ void animateUI() {
       tft.drawString("hey", SCR_W / 2, 118);
       tft.setTextColor(tft.color565(160, 170, 190), tft.color565(22, 26, 42));
       tft.setTextSize(1);
-      tft.drawString("hold button to talk", SCR_W / 2, 138);
+      tft.drawString("tap to talk", SCR_W / 2, 138);
       break;
     }
     case S_LISTENING:
@@ -677,7 +751,7 @@ void showState(BuddyState s) {
   switch (s) {
     case S_IDLE:
       title = "hey";
-      sub = "hold button to talk";
+      sub = "tap to talk";
       break;
     case S_LISTENING:
       title = "listening";
@@ -762,8 +836,10 @@ bool downloadToFFat(const char* urlPath, const char* destPath) {
 void ensureCannedWavs() {
   bool ok1 = downloadToFFat("/audio/goals_ok.wav", "/goals_ok.wav");
   bool ok2 = downloadToFFat("/audio/off_task.wav", "/off_task.wav");
-  Serial.printf("[fs] goals_ok=%d off_task=%d\n",
+  bool ok3 = downloadToFFat("/audio/network_issue.wav", "/network_issue.wav");
+  Serial.printf("[fs] goals_ok=%d off_task=%d network_issue=%d\n",
                 ok1 && FFat.exists("/goals_ok.wav"),
-                ok2 && FFat.exists("/off_task.wav"));
+                ok2 && FFat.exists("/off_task.wav"),
+                ok3 && FFat.exists("/network_issue.wav"));
 }
 
