@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Buddy Activity Capture",
+  "version": "0.1.0",
+  "description": "Captures focused-tab sessions for Buddy, your productivity mentor.",
+  "minimum_chrome_version": "116",
+  "permissions": ["tabs", "idle", "alarms", "storage"],
+  "host_permissions": ["http://127.0.0.1:8000/*", "http://localhost:8000/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Buddy",
+    "default_popup": "popup.html"
+  }
+}

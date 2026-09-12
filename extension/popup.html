@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font: 13px/1.4 system-ui, sans-serif; width: 300px; margin: 0; padding: 12px; color: #1f2328; }
+      h1 { font-size: 15px; margin: 0 0 10px; display: flex; justify-content: space-between; align-items: center; }
+      .badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px; background: #eaeef2; }
+      .badge.tracking { background: #dafbe1; color: #1a7f37; }
+      .badge.paused { background: #fff8c5; color: #9a6700; }
+      .card { background: #f6f8fa; border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+      .label { color: #656d76; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+      .muted { color: #656d76; }
+      .wrap { overflow-wrap: anywhere; }
+      .row { display: flex; justify-content: space-between; gap: 8px; }
+      .err { color: #cf222e; font-size: 12px; overflow-wrap: anywhere; }
+      button { flex: 1; padding: 6px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; cursor: pointer; font: inherit; }
+      button:hover { background: #f3f4f6; }
+    </style>
+  </head>
+  <body>
+    <h1>Buddy <span id="state" class="badge"></span></h1>
+    <div class="card">
+      <div class="label">Current session</div>
+      <div id="domain" class="wrap"></div>
+      <div id="title" class="wrap muted"></div>
+      <div id="elapsed"></div>
+    </div>
+    <div class="card">
+      <div class="row"><span class="muted">Queued records</span><span id="queued"></span></div>
+      <div class="row"><span class="muted">Last sync</span><span id="sync"></span></div>
+      <div id="error" class="err"></div>
+    </div>
+    <div class="row">
+      <button id="pause"></button>
+      <button id="flush">Sync now</button>
+    </div>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
