@@ -1,0 +1,2 @@
+# No third-party deps required (stdlib urllib + ctypes).
+# Optional: pip install requests  # only if you prefer requests over urllib

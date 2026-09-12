@@ -1,66 +1,57 @@
-# pc-agent/ — Windows Window Logger + Coaching Trigger
+# pc-agent/ — PC scrape → label → local model → MATLAB
 
-**Owner:** Suyog (P1 / P4 overlap)  
-**Platform:** Windows only (uses `ctypes.windll`)
+**Owner:** Suyog  
+**Branch:** `Suyog`  
+**Platform:** Windows (`ctypes.windll`)
 
-## What lives here
+## Your job in the pipeline
 
-| File | Purpose |
+```
+PC scrape (app, title, idle)
+  → light label (kind)
+  → Kritazya ml.classify → score 0–100
+  → buddy_score.csv  (MATLAB plots this)
+  → optional POST /events  (Tiger Data timeline for later Gemini context)
+```
+
+**Not your job:** `POST /coach` / talking to Gemini. Sandesh’s MATLAB (or backend) triggers Gemini with Tiger context when the productivity series dips.
+
+## Files
+
+| File | Role |
 |---|---|
-| `agent.py` | Foreground app poller → classify → POST /events → CSV → slump trigger |
-| `triggers.json` | Tunable thresholds — edit live, no restart needed |
+| `agent.py` | Scrape loop, label, call `ml.classify`, write CSVs, optional `/events` |
+| `scrape_log.csv` | Runtime: raw labeled scrapes (debug / model training) |
+| `../buddy_score.csv` | Runtime: `timestamp,score,app` for MATLAB |
+| `../ml/classify.py` | Kritazya’s local scorer (Layer A rules tonight) |
+| `triggers.json` | Kept for the team — **MATLAB / coach side**, not used by this agent anymore |
+| `requirements.txt` | `requests` |
 
-## What it does every second
+## Run
 
-```
-app, title = foreground window
-idle_s     = seconds since last key/mouse
-if changed or 5s elapsed:
-    classify(app, title, idle_s, open_tasks)  → score 0–100
-    POST /events
-    append buddy_score.csv
-    if rolling_avg < score_threshold for streak_seconds:
-        POST /coach  {tasks, now, app, score, streak_s, last_productive_app}
-```
-
-## Trigger settings (`triggers.json`)
-
-| Key | Default | Meaning |
-|---|---|---|
-| `score_threshold` | 35 | Rolling avg score that counts as a slump |
-| `streak_seconds` | 45 | How long the slump must last before coaching fires |
-| `cooldown_seconds` | 180 | Minimum gap between two coaching events |
-| `require_open_deadline_task` | true | Only coach when at least one open task has a deadline |
-
-Edit this file while `agent.py` is running — it reloads triggers on each poll cycle.
-
-## CSV format (`../buddy_score.csv`)
-
-```
-timestamp,score,app
-2026-09-12T21:14:03+00:00,12,League of Legends
+```powershell
+cd D:\Buddy\pc-agent
+pip install -r requirements.txt
+python agent.py --dry-run
 ```
 
-MATLAB and Lovable both read from this file.
+Against the backend (Tiger `/events`):
 
-## How to run
-
-```bash
-cd pc-agent
-pip install requests
+```powershell
+$env:BUDDY_API = "http://127.0.0.1:8000"
 python agent.py
 ```
 
-Set `BUDDY_API` env var if the backend is not on `127.0.0.1:8000`:
-
-```bash
-set BUDDY_API=http://192.168.1.100:8000
-python agent.py
-```
+| Flag | Effect |
+|---|---|
+| `--dry-run` | No HTTP; still scrape / label / score / CSVs |
+| `--no-events` | CSV only, skip `POST /events` |
+| `--api-base URL` | Backend root (same as `BUDDY_API`) |
 
 ## Tonight exit
 
-- [ ] Console prints foreground app name on every change
-- [ ] `buddy_score.csv` grows with real rows
-- [ ] After alt-tabbing to a game for 45 s: `[coach] fired →` line appears in console
-- [ ] `POST /coach` reaches the backend and returns a coaching sentence
+- [ ] Console prints foreground app on change
+- [ ] `D:\Buddy\buddy_score.csv` grows (`timestamp,score,app`)
+- [ ] `pc-agent/scrape_log.csv` grows with `kind` labels
+- [ ] MATLAB can plot the score CSV
+- [ ] No `[coach]` lines from this process (that’s intentional)

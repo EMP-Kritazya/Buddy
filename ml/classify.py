@@ -9,10 +9,10 @@ from dataclasses import dataclass
 
 @dataclass
 class Classification:
-    score: int          # 0–100
+    score: int          # 0-100
     label: str          # productive | unproductive | mixed | idle | break
     category: str       # work | comms | gaming | video | social | idle | other
-    confidence: float   # 0.0–1.0
+    confidence: float   # 0.0-1.0
 
 
 # ---------------------------------------------------------------------------
@@ -36,9 +36,15 @@ _COMMS_APPS = {"slack", "outlook", "thunderbird", "teams", "discord"}
 _COMMS_TITLES = re.compile(r"gmail|inbox|email|outlook|slack|teams", re.I)
 
 _GAMING_APPS = {
-    "league of legends", "steam", "epicgames", "epicgameslauncher",
+    "league of legends", "leagueclient", "leagueclientux", "league of legends.exe",
+    "riotclientservices", "riot client",
+    "steam", "epicgames", "epicgameslauncher",
     "valorant", "csgo", "cs2", "fortnite", "minecraft",
 }
+_GAMING_TITLES = re.compile(
+    r"league of legends|valorant|counter-strike|fortnite|minecraft|steam",
+    re.I,
+)
 _SOCIAL_TITLES = re.compile(r"instagram|tiktok|twitter|facebook|reddit", re.I)
 _VIDEO_APPS = {"netflix", "hulu", "disneyplus", "vlc", "mpc-hc"}
 _SHORTS_TITLES = re.compile(r"youtube shorts|shorts", re.I)
@@ -53,6 +59,7 @@ def classify(
 ) -> Classification:
     app_lc = app.lower().strip()
     title_lc = window_title.lower().strip()
+    blob = f"{app_lc} {title_lc}"
 
     # idle overrides everything when a deadline task is open
     has_deadline_task = any(
@@ -64,8 +71,8 @@ def classify(
     if idle_s > 300:
         return Classification(0, "idle", "idle", 0.99)
 
-    # gaming
-    if any(g in app_lc for g in _GAMING_APPS):
+    # gaming — process name OR window title (venue HTML title trick)
+    if any(g in app_lc for g in _GAMING_APPS) or _GAMING_TITLES.search(title_lc):
         return Classification(12, "unproductive", "gaming", 0.97)
 
     # social / shorts
@@ -79,7 +86,7 @@ def classify(
         return Classification(8, "unproductive", "video", 0.95)
 
     # YouTube — distinguish tutorial vs casual
-    if "youtube" in app_lc or "youtube" in title_lc:
+    if "youtube" in blob:
         if _TUTORIAL_TITLES.search(title_lc):
             return Classification(70, "mixed", "video", 0.75)
         return Classification(25, "unproductive", "video", 0.82)
@@ -88,12 +95,16 @@ def classify(
     if any(p in app_lc for p in _PRODUCTIVE_APPS) or _PRODUCTIVE_TITLES.search(title_lc):
         return Classification(85, "productive", "work", 0.92)
 
+    # Discord is unproductive for demo (chat drift), unless title looks like work
+    if "discord" in app_lc:
+        return Classification(25, "unproductive", "comms", 0.85)
+
     # comms — mixed productivity
     if any(c in app_lc for c in _COMMS_APPS) or _COMMS_TITLES.search(title_lc):
         return Classification(55, "mixed", "comms", 0.78)
 
     # generic browser
-    if "chrome" in app_lc or "firefox" in app_lc or "edge" in app_lc:
+    if "chrome" in app_lc or "firefox" in app_lc or "msedge" in app_lc or "edge" in app_lc:
         return Classification(50, "mixed", "other", 0.60)
 
     return Classification(50, "mixed", "other", 0.50)
@@ -105,7 +116,8 @@ def classify(
 
 def load_model(model_path: str = "ml/buddy_model.pkl"):
     """Load a pre-trained sklearn pipeline if it exists."""
-    import pickle, pathlib
+    import pickle
+    import pathlib
     p = pathlib.Path(model_path)
     if p.exists():
         with open(p, "rb") as f:
@@ -141,11 +153,12 @@ def classify_ml(
 if __name__ == "__main__":
     tests = [
         ("League of Legends", "League of Legends", 0),
-        ("Code", "buddy — Visual Studio Code", 0),
-        ("chrome", "YouTube — tutorial how to use timescaledb", 0),
+        ("chrome", "League of Legends", 0),  # HTML title trick
+        ("Code", "buddy - Visual Studio Code", 0),
+        ("chrome", "YouTube - tutorial how to use timescaledb", 0),
         ("chrome", "YouTube Shorts", 0),
         ("Code", "VS Code", 65),  # idle during deadline
     ]
     for app, title, idle in tests:
-        c = classify(app, title, idle, [{"deadline": "2026-09-12T22:00:00", "status": "open"}])
-        print(f"{app:30s} | {title:45s} | idle={idle:3d}s → {c.score:3d} {c.label:15s} ({c.confidence:.2f})")
+        c = classify(app, title, idle, [{"deadline": "2099-09-12T22:00:00", "status": "open"}])
+        print(f"{app:30s} | {title:45s} | idle={idle:3d}s -> {c.score:3d} {c.label:15s} ({c.confidence:.2f})")

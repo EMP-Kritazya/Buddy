@@ -1,6 +1,7 @@
-{
+﻿{
   "score_threshold": 35,
   "streak_seconds": 45,
   "cooldown_seconds": 180,
-  "require_open_deadline_task": true
+  "require_open_deadline_task": true,
+  "_note": "Used by MATLAB / coach trigger (Sandesh), NOT by pc-agent/agent.py"
 }

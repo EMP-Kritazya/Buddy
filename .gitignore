@@ -180,3 +180,13 @@ service-account.json
 *.psd
 *.sketch
 *.thumb
+pc-agent/scrape_log.csv
+buddy_score.csv
+
+# Runtime PC agent / MATLAB data — never commit (local only)
+buddy_score.csv
+**/buddy_score.csv
+pc-agent/scrape_log.csv
+**/scrape_log.csv
+pc-agent/*.csv
+matlab/*.csv
