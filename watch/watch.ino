@@ -12,7 +12,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <driver/i2s.h>
-#include <TFT_eSPI.h>
+#include "TFT_eSPI.h"
+#include <FS.h>
 #include <LittleFS.h>
 
 // ---------------------------------------------------------------------------
@@ -335,7 +336,7 @@ void playFile(const char* path) {
     return;
   }
 
-  File f = LittleFS.open(path, "r");
+  fs::File f = LittleFS.open(path, "r");
   if (!f) return;
 
   showState(S_SPEAKING);
