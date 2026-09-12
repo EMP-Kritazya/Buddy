@@ -1,53 +1,56 @@
 # watch/ — ESP32-S3 Firmware
 
-**Owner:** Suyog (P1)  
-**Hardware:** LilyGO T-Display-S3 (ESP32-S3, 170×320, 8 MB PSRAM)
+**Board:** LilyGO T-Display-S3 (ESP32-S3, 170×320, 8 MB PSRAM, 16 MB flash)
 
-## What lives here
+## Before flashing
 
-| File | Purpose |
-|---|---|
-| `buddy.ino` | Main Arduino sketch — mic, amp, button, display, Wi-Fi |
+1. Open `buddy.ino` and set your Wi-Fi credentials and laptop IP:
+   ```cpp
+   const char* WIFI_SSID = "your_network";
+   const char* WIFI_PASS = "your_password";
+   const char* SERVER    = "http://192.168.x.x:8000";
+   ```
 
-## Responsibilities
+2. Arduino IDE board settings:
+   - Board: **ESP32S3 Dev Module**
+   - USB CDC On Boot: **Enabled**
+   - PSRAM: **OPI PSRAM**
+   - Flash Size: **16 MB**
+   - Partition Scheme: **16M Flash (3MB APP / 9.9MB FATFS)**
 
-- GPIO 15 HIGH at boot (LCD + header rail power)
-- I2S0 (RX) — INMP441/SPH0645 mic at 16 kHz 16-bit mono
-- I2S1 (TX) — MAX98357A amp at 16 kHz 16-bit mono
-- Button GPIO 16 (INPUT_PULLUP, LOW = pressed), fallback GPIO 14
-- TFT_eSPI display — screens: `BUDDY / LISTENING / THINKING / SPEAKING / ON TASK / OFF TASK`
-- Record to PSRAM (max 8 s), POST raw PCM to `http://LAPTOP:8000/voice`
-- Play WAV/PCM response on I2S1
-- Poll `GET /pending-speech` every 2 s for proactive coaching audio
+3. Libraries needed:
+   - TFT_eSPI (configure for LilyGO T-Display-S3)
+   - ESP32 Arduino core ≥ 2.0
+
+## Uploading canned WAVs (offline fallback)
+
+Run `python voice/eleven.py` first — it writes `audio/goals_ok.wav` and `audio/off_task.wav`.
+
+Then copy both files into `watch/data/`:
+```
+watch/data/goals_ok.wav
+watch/data/off_task.wav
+```
+
+Upload to LittleFS using the [Arduino LittleFS Upload plugin](https://github.com/earlephilhower/arduino-littlefs-upload)
+or with PlatformIO: `pio run --target uploadfs`.
+
+## Loopback test (no cloud)
+
+With no backend running, hold the button and speak. Release — the watch plays
+the canned `goals_ok.wav` from LittleFS through the speaker.
 
 ## Pin map
 
 | Signal | GPIO |
 |---|---|
-| LCD power enable | 15 |
+| Power enable | 15 |
 | Mic BCLK | 1 |
-| Mic LRCLK | 2 |
+| Mic WS | 2 |
 | Mic DATA | 3 |
 | Amp BCLK | 10 |
 | Amp LRCLK | 11 |
 | Amp DIN | 12 |
-| Amp SD/SHDN | 13 |
-| Talk button | 16 (14 fallback) |
-
-## Arduino / PlatformIO settings
-
-- Board: `ESP32S3 Dev Module`
-- USB CDC On Boot: Enabled
-- PSRAM: OPI PSRAM
-- Flash: 16 MB
-
-## Before you flash
-
-1. Edit `WIFI_SSID`, `WIFI_PASS`, and `SERVER` (laptop IP) in `buddy.ino`
-2. Confirm mic wiring with a 2-second loopback test before any cloud call
-
-## Tonight exit
-
-- [ ] LCD shows `BUDDY` at boot
-- [ ] Button held → `LISTENING` → release → audio plays back on 3 W speaker (loopback — no cloud needed yet)
-- [ ] Watch POSTs to `/voice` over Wi-Fi and plays the response WAV
+| Amp SD/EN | 13 |
+| Talk button | 16 |
+| Fallback button | 14 |

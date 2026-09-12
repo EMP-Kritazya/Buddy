@@ -3,62 +3,77 @@
   I2S0 = mic (RX), I2S1 = amp (TX)
   Button GPIO 16 (pull-up, LOW = pressed), fallback GPIO 14
   Display: TFT_eSPI with LilyGO T-Display-S3 user setup
+
+  Canned WAVs stored in LittleFS under /goals_ok.wav and /off_task.wav.
+  Upload them once with the Arduino LittleFS upload tool or PlatformIO
+  after running: python voice/eleven.py  (generates audio/*.wav).
 */
 
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <driver/i2s.h>
 #include <TFT_eSPI.h>
+#include <LittleFS.h>
 
 // ---------------------------------------------------------------------------
-// Wi-Fi / server
+// Wi-Fi / server  — edit before flashing
 // ---------------------------------------------------------------------------
-const char* WIFI_SSID     = "YOUR_WIFI";
-const char* WIFI_PASS     = "YOUR_PASS";
-const char* SERVER        = "http://192.168.1.100:8000";   // laptop IP
-const char* VOICE_URL     = "/voice";
-const char* PENDING_URL   = "/pending-speech";
+const char* WIFI_SSID   = "Rice Visitor";
+const char* WIFI_PASS   = "";
+const char* SERVER      = "http://192.168.1.100:8000";  // laptop LAN IP
+const char* VOICE_URL   = "/voice";
+const char* PENDING_URL = "/pending-speech";
 
 // ---------------------------------------------------------------------------
 // Pin map
 // ---------------------------------------------------------------------------
-#define PWR_EN      15   // must be HIGH at boot
-#define BTN_PIN     16   // push-to-talk
+#define PWR_EN      15   // must be HIGH at boot — powers LCD + header rails
+#define BTN_PIN     16   // push-to-talk (external)
 #define BTN_FALLBK  14   // onboard button 2
 
-// I2S0 mic
-#define MIC_SCK     1
-#define MIC_WS      2
-#define MIC_SD      3
+// I2S0 — mic (RX)
+#define MIC_SCK   1
+#define MIC_WS    2
+#define MIC_SD    3
 
-// I2S1 amp
-#define AMP_BCLK    10
-#define AMP_LRCK    11
-#define AMP_DIN     12
-#define AMP_SD      13   // HIGH = amp enabled
+// I2S1 — amp (TX)
+#define AMP_BCLK  10
+#define AMP_LRCK  11
+#define AMP_DIN   12
+#define AMP_SD    13   // HIGH = amp enabled
 
 // ---------------------------------------------------------------------------
 // Audio config
 // ---------------------------------------------------------------------------
-#define SAMPLE_RATE   16000
-#define BIT_DEPTH     16
-#define MAX_REC_S     8
-#define MAX_REC_BYTES (SAMPLE_RATE * (BIT_DEPTH/8) * MAX_REC_S)
+#define SAMPLE_RATE     16000
+#define BIT_DEPTH       16
+#define MAX_REC_S       8
+#define MAX_REC_BYTES   (SAMPLE_RATE * (BIT_DEPTH / 8) * MAX_REC_S)  // 256 kB
+#define PLAY_CHUNK      2048   // I2S write chunk for streaming playback
 
 // ---------------------------------------------------------------------------
 // Globals
 // ---------------------------------------------------------------------------
 TFT_eSPI tft = TFT_eSPI();
 
-uint8_t* recBuf    = nullptr;
-size_t   recBytes  = 0;
+uint8_t* recBuf   = nullptr;
+size_t   recBytes = 0;
 
 unsigned long lastPollMs = 0;
 const unsigned long POLL_INTERVAL = 2000;
 
-// Display state enum
 enum BuddyState { S_IDLE, S_LISTENING, S_THINKING, S_SPEAKING, S_ON_TASK, S_OFF_TASK };
 BuddyState curState = S_IDLE;
+
+// ---------------------------------------------------------------------------
+// Forward declarations
+// ---------------------------------------------------------------------------
+void showState(BuddyState s);
+void recordAndSend();
+void pollPendingSpeech();
+void streamAndPlay(WiFiClient& stream, int contentLen);
+void playPCM(const uint8_t* data, size_t len);
+void playFile(const char* path);
 
 // ---------------------------------------------------------------------------
 // Setup
@@ -75,7 +90,7 @@ void setup() {
   pinMode(AMP_SD, OUTPUT);
   digitalWrite(AMP_SD, HIGH);
 
-  // Button
+  // Buttons
   pinMode(BTN_PIN,    INPUT_PULLUP);
   pinMode(BTN_FALLBK, INPUT_PULLUP);
 
@@ -84,11 +99,18 @@ void setup() {
   tft.setRotation(1);
   showState(S_IDLE);
 
-  // Allocate PSRAM record buffer
+  // PSRAM record buffer
   recBuf = (uint8_t*)ps_malloc(MAX_REC_BYTES);
   if (!recBuf) {
     tft.println("PSRAM alloc fail");
     while (true) delay(1000);
+  }
+
+  // LittleFS — canned WAV fallbacks
+  if (!LittleFS.begin(false)) {
+    Serial.println("[warn] LittleFS mount failed — offline canned WAVs unavailable");
+  } else {
+    Serial.println("[ok] LittleFS mounted");
   }
 
   // I2S0 — mic
@@ -141,13 +163,22 @@ void setup() {
     delay(500);
     attempts++;
   }
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.print("IP: "); Serial.println(WiFi.localIP());
-  } else {
-    Serial.println("Wi-Fi failed — offline mode");
-  }
 
-  showState(S_IDLE);
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.print("[ok] Wi-Fi IP: ");
+    Serial.println(WiFi.localIP());
+    showState(S_IDLE);
+  } else {
+    Serial.println("[warn] Wi-Fi failed — offline mode");
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+    tft.setTextSize(3);
+    tft.setCursor(20, 70);
+    tft.println("BUDDY");
+    tft.setTextSize(2);
+    tft.setCursor(20, 120);
+    tft.println("(offline)");
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -160,7 +191,6 @@ void loop() {
     recordAndSend();
   }
 
-  // Poll for proactive coaching
   if (millis() - lastPollMs > POLL_INTERVAL) {
     lastPollMs = millis();
     pollPendingSpeech();
@@ -168,7 +198,7 @@ void loop() {
 }
 
 // ---------------------------------------------------------------------------
-// Record while button held, then POST to /voice
+// Record while button held → POST raw PCM to /voice → stream reply to speaker
 // ---------------------------------------------------------------------------
 void recordAndSend() {
   showState(S_LISTENING);
@@ -184,96 +214,156 @@ void recordAndSend() {
     recBytes += bytesRead;
   }
 
-  if (recBytes < 3200) {   // < 0.1 s — ignore
+  if (recBytes < 3200) {   // < 0.1 s — ignore tap
     showState(S_IDLE);
     return;
   }
 
   showState(S_THINKING);
 
-  // Build WAV in-place (prepend 44-byte header by shifting buffer is expensive;
-  // instead send PCM with Content-Type audio/l16 and let the server wrap it)
   if (WiFi.status() != WL_CONNECTED) {
-    playFile("/audio/goals_ok.wav");
+    playFile("/goals_ok.wav");
     showState(S_IDLE);
     return;
   }
 
   HTTPClient http;
-  String url = String(SERVER) + VOICE_URL;
-  http.begin(url);
+  http.begin(String(SERVER) + VOICE_URL);
+  http.setTimeout(15000);
   http.addHeader("Content-Type", "audio/l16; rate=16000; channels=1");
+
   int code = http.POST(recBuf, recBytes);
 
   if (code == 200) {
     showState(S_SPEAKING);
-    int len = http.getSize();
-    uint8_t* resp = (uint8_t*)malloc(len);
-    if (resp) {
-      http.getStream().readBytes(resp, len);
-      playPCM(resp, len);
-      free(resp);
-    }
+    streamAndPlay(*http.getStreamPtr(), http.getSize());
   } else {
-    Serial.printf("POST /voice failed: %d\n", code);
-    playFile("/audio/goals_ok.wav");
+    Serial.printf("[warn] POST /voice → HTTP %d\n", code);
+    playFile("/goals_ok.wav");
   }
+
   http.end();
   showState(S_IDLE);
 }
 
 // ---------------------------------------------------------------------------
-// Poll /pending-speech
+// Poll /pending-speech every 2 s — plays proactive coaching with no button press
 // ---------------------------------------------------------------------------
 void pollPendingSpeech() {
   if (WiFi.status() != WL_CONNECTED) return;
 
   HTTPClient http;
   http.begin(String(SERVER) + PENDING_URL);
+  http.setTimeout(3000);
+
   int code = http.GET();
 
-  if (code == 200) {
-    int len = http.getSize();
-    uint8_t* buf = (uint8_t*)malloc(len);
-    if (buf) {
-      showState(S_SPEAKING);
-      http.getStream().readBytes(buf, len);
-      playPCM(buf, len);
-      free(buf);
-      showState(S_IDLE);
-    }
+  if (code == 200 && http.getSize() != 0) {
+    showState(S_SPEAKING);
+    streamAndPlay(*http.getStreamPtr(), http.getSize());
+    showState(S_IDLE);
   }
+
   http.end();
 }
 
 // ---------------------------------------------------------------------------
-// Play raw PCM (16-bit, 16 kHz mono) — skips WAV header if present
+// Stream HTTP body directly to I2S — no heap alloc, handles chunked transfer
+// ---------------------------------------------------------------------------
+void streamAndPlay(WiFiClient& stream, int contentLen) {
+  static uint8_t chunk[PLAY_CHUNK];
+  bool headerSkipped = false;
+  int remaining = contentLen;  // -1 when chunked (Content-Length absent)
+
+  while (true) {
+    int toRead = (remaining > 0) ? min((int)PLAY_CHUNK, remaining) : PLAY_CHUNK;
+    int got = stream.readBytes(chunk, toRead);
+    if (got <= 0) break;
+
+    uint8_t* ptr = chunk;
+    size_t   len = (size_t)got;
+
+    // Skip 44-byte WAV header on first chunk
+    if (!headerSkipped) {
+      headerSkipped = true;
+      if (len > 44 && chunk[0] == 'R' && chunk[1] == 'I' &&
+          chunk[2] == 'F' && chunk[3] == 'F') {
+        ptr += 44;
+        len -= 44;
+      }
+    }
+
+    size_t written = 0;
+    i2s_write(I2S_NUM_1, ptr, len, &written, portMAX_DELAY);
+
+    if (remaining > 0) {
+      remaining -= got;
+      if (remaining <= 0) break;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Play raw PCM or WAV already in RAM
 // ---------------------------------------------------------------------------
 void playPCM(const uint8_t* data, size_t len) {
-  // Skip 44-byte WAV header if present
   size_t offset = 0;
   if (len > 44 && data[0] == 'R' && data[1] == 'I' && data[2] == 'F' && data[3] == 'F') {
     offset = 44;
   }
 
-  size_t written = 0;
+  size_t written  = 0;
   size_t remaining = len - offset;
   const uint8_t* ptr = data + offset;
 
   while (remaining > 0) {
-    size_t chunk = min(remaining, (size_t)2048);
-    i2s_write(I2S_NUM_1, ptr, chunk, &written, portMAX_DELAY);
+    size_t n = min(remaining, (size_t)PLAY_CHUNK);
+    i2s_write(I2S_NUM_1, ptr, n, &written, portMAX_DELAY);
     ptr       += written;
     remaining -= written;
   }
 }
 
 // ---------------------------------------------------------------------------
-// Play a canned file from SPIFFS (not implemented in base build)
+// Play a canned WAV from LittleFS (offline fallback)
+// Upload audio/goals_ok.wav and audio/off_task.wav to LittleFS as
+// /goals_ok.wav and /off_task.wav using the Arduino LittleFS upload tool.
 // ---------------------------------------------------------------------------
-void playFile(const char* /*path*/) {
-  // Canned WAVs are served from the laptop in this build.
-  // Extend with SPIFFS if the laptop is unreachable.
+void playFile(const char* path) {
+  if (!LittleFS.exists(path)) {
+    Serial.printf("[warn] canned file missing: %s\n", path);
+    return;
+  }
+
+  File f = LittleFS.open(path, "r");
+  if (!f) return;
+
+  showState(S_SPEAKING);
+
+  static uint8_t fileBuf[PLAY_CHUNK];
+  bool headerSkipped = false;
+
+  while (f.available()) {
+    int got = f.read(fileBuf, sizeof(fileBuf));
+    if (got <= 0) break;
+
+    uint8_t* ptr = fileBuf;
+    size_t   len = (size_t)got;
+
+    if (!headerSkipped) {
+      headerSkipped = true;
+      if (len > 44 && fileBuf[0] == 'R' && fileBuf[1] == 'I' &&
+          fileBuf[2] == 'F' && fileBuf[3] == 'F') {
+        ptr += 44;
+        len -= 44;
+      }
+    }
+
+    size_t written = 0;
+    i2s_write(I2S_NUM_1, ptr, len, &written, portMAX_DELAY);
+  }
+
+  f.close();
 }
 
 // ---------------------------------------------------------------------------
