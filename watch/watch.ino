@@ -15,6 +15,7 @@
 #include "TFT_eSPI.h"
 #include "FS.h"
 #include "FFat.h"
+#include <string.h>
 
 // ---------------------------------------------------------------------------
 // Wi-Fi / server  â€” edit before flashing
@@ -56,6 +57,9 @@ const char* PENDING_URL = "/pending-speech";
 // Set back to 0 when mic is verified and you want POST /voice again.
 #define MIC_LOOPBACK_TEST 1
 
+// Digital playback boost (1=unity, 2= +6dB-ish, 3=louder). Soft-clips to avoid harsh square waves.
+#define SPEAKER_GAIN 4
+
 // ---------------------------------------------------------------------------
 // Globals
 // ---------------------------------------------------------------------------
@@ -83,6 +87,9 @@ void recordAndSend();
 void pollPendingSpeech();
 void streamAndPlay(WiFiClient& stream, int contentLen);
 void playPCM(const uint8_t* data, size_t len);
+void stopSpeaker();
+void startSpeaker();
+void i2sWriteGained(const uint8_t* data, size_t len);
 void playFile(const char* path);
 void ensureCannedWavs();
 bool downloadToFFat(const char* urlPath, const char* destPath);
@@ -134,11 +141,12 @@ void setup() {
   }
 
   // I2S0 â€” mic
+  // Many I2S MEMS mics (INMP441 / SPH0645) need 32-bit slots; audio sits in the top bits.
   i2s_config_t mic_cfg = {
     .mode                 = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
     .sample_rate          = SAMPLE_RATE,
-    .bits_per_sample      = I2S_BITS_PER_SAMPLE_16BIT,
-    .channel_format       = I2S_CHANNEL_FMT_RIGHT_LEFT,  // stereo: probe L and R (L/R pin)
+    .bits_per_sample      = I2S_BITS_PER_SAMPLE_32BIT,
+    .channel_format       = I2S_CHANNEL_FMT_ONLY_LEFT,
     .communication_format = I2S_COMM_FORMAT_STAND_I2S,
     .intr_alloc_flags     = ESP_INTR_FLAG_LEVEL1,
     .dma_buf_count        = 8,
@@ -174,6 +182,7 @@ void setup() {
   };
   i2s_driver_install(I2S_NUM_1, &amp_cfg, 0, nullptr);
   i2s_set_pin(I2S_NUM_1, &amp_pins);
+  digitalWrite(AMP_SD, LOW);  // Mute amp until we actually play
 
   // Wi-Fi
   showState(S_THINKING);
@@ -250,30 +259,30 @@ void recordAndSend() {
   }
 
   
-  // Stereo peak: INMP441/SPH0645 put audio on L or R depending on L/R pin
+  // 32-bit I2S words -> 16-bit PCM (take upper 16 / shift)
   {
-    int16_t peakL = 0, peakR = 0;
-    size_t frames = recBytes / 4;  // L+R int16 pairs
-    const int16_t* s = (const int16_t*)recBuf;
-    for (size_t i = 0; i < frames; i++) {
-      int16_t l = s[i * 2];
-      int16_t r = s[i * 2 + 1];
-      if (l < 0) l = -l;
-      if (r < 0) r = -r;
-      if (l > peakL) peakL = l;
-      if (r > peakR) peakR = r;
-    }
-    Serial.printf("[mic] bytes=%u peakL=%d peakR=%d (speak near mic; one side should be >> 500)\n",
-                  (unsigned)recBytes, (int)peakL, (int)peakR);
-
-    // Collapse to mono for loopback using the louder channel
-    int useRight = (peakR >= peakL);
+    size_t words = recBytes / 4;
+    const int32_t* w = (const int32_t*)recBuf;
     int16_t* mono = (int16_t*)recBuf;
-    for (size_t i = 0; i < frames; i++) {
-      mono[i] = s[i * 2 + (useRight ? 1 : 0)];
+    int16_t peak = 0;
+    uint32_t nonzero = 0;
+    for (size_t i = 0; i < words; i++) {
+      // INMP441: 24-bit left-justified in 32-bit slot; >> 14 is a common scale
+      int32_t sample = w[i] >> 15;  // balance loudness vs clip for SPH0645
+      if (sample > 32767) sample = 32767;
+      if (sample < -32768) sample = -32768;
+      int16_t s16 = (int16_t)sample;
+      mono[i] = s16;
+      int16_t a = s16 < 0 ? -s16 : s16;
+      if (a > peak) peak = a;
+      if (s16 != 0) nonzero++;
     }
-    recBytes = frames * 2;
-    Serial.printf("[mic] using %s channel for loopback\n", useRight ? "RIGHT" : "LEFT");
+    recBytes = words * 2;
+    Serial.printf("[mic] 32bit words=%u peak=%d nonzero=%u (want peak>>500, nonzero>>0)\n",
+                  (unsigned)words, (int)peak, (unsigned)nonzero);
+    if (peak < 10) {
+      Serial.println("[mic] HINT: still dead -> check VDD=3.3V, DOUT->GPIO3, BCLK->1, WS->2, L/R to GND then 3.3V, swap BCLK/WS if unsure");
+    }
   }
 
 #if MIC_LOOPBACK_TEST
@@ -337,6 +346,7 @@ void pollPendingSpeech() {
 // Stream HTTP body directly to I2S â€” no heap alloc, handles chunked transfer
 // ---------------------------------------------------------------------------
 void streamAndPlay(WiFiClient& stream, int contentLen) {
+  startSpeaker();
   static uint8_t chunk[PLAY_CHUNK];
   bool headerSkipped = false;
   int remaining = contentLen;  // -1 when chunked (Content-Length absent)
@@ -359,8 +369,7 @@ void streamAndPlay(WiFiClient& stream, int contentLen) {
       }
     }
 
-    size_t written = 0;
-    i2s_write(I2S_NUM_1, ptr, len, &written, portMAX_DELAY);
+    i2sWriteGained(ptr, len);
 
     if (remaining > 0) {
       remaining -= got;
@@ -372,22 +381,75 @@ void streamAndPlay(WiFiClient& stream, int contentLen) {
 // ---------------------------------------------------------------------------
 // Play raw PCM or WAV already in RAM
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Mute / unmute amp cleanly so I2S underrun doesn't hiss forever
+// ---------------------------------------------------------------------------
+
+// Boost int16 PCM into I2S1 (mono). Soft-clips instead of wrapping.
+void i2sWriteGained(const uint8_t* data, size_t len) {
+  // Process in small chunks so we don't need a huge temp buffer
+  static int16_t out[PLAY_CHUNK / 2];
+  size_t offset = 0;
+  while (offset + 1 < len) {
+    size_t nbytes = len - offset;
+    if (nbytes > sizeof(out)) nbytes = sizeof(out);
+    nbytes &= ~size_t(1);  // even
+    size_t nsamp = nbytes / 2;
+    const int16_t* in = (const int16_t*)(data + offset);
+    for (size_t i = 0; i < nsamp; i++) {
+      int32_t v = (int32_t)in[i] * SPEAKER_GAIN;
+      if (v > 32767) v = 32767;
+      if (v < -32768) v = -32768;
+      out[i] = (int16_t)v;
+    }
+    size_t written = 0;
+    size_t left = nsamp * 2;
+    const uint8_t* ptr = (const uint8_t*)out;
+    while (left > 0) {
+      i2s_write(I2S_NUM_1, ptr, left, &written, portMAX_DELAY);
+      ptr += written;
+      left -= written;
+    }
+    offset += nbytes;
+  }
+}
+
+void startSpeaker() {
+  digitalWrite(AMP_SD, HIGH);
+  delay(10);
+}
+
+void stopSpeaker() {
+  static uint8_t silence[PLAY_CHUNK];
+  memset(silence, 0, sizeof(silence));
+  size_t written = 0;
+  // ~100ms of digital silence to drain the TX DMA
+  for (int i = 0; i < 8; i++) {
+    i2s_write(I2S_NUM_1, silence, sizeof(silence), &written, portMAX_DELAY);
+  }
+  i2s_zero_dma_buffer(I2S_NUM_1);
+  digitalWrite(AMP_SD, LOW);  // shut off MAX98357 class-D
+}
+
 void playPCM(const uint8_t* data, size_t len) {
   size_t offset = 0;
   if (len > 44 && data[0] == 'R' && data[1] == 'I' && data[2] == 'F' && data[3] == 'F') {
     offset = 44;
   }
 
+  startSpeaker();
   size_t written  = 0;
   size_t remaining = len - offset;
   const uint8_t* ptr = data + offset;
 
   while (remaining > 0) {
     size_t n = min(remaining, (size_t)PLAY_CHUNK);
-    i2s_write(I2S_NUM_1, ptr, n, &written, portMAX_DELAY);
-    ptr       += written;
-    remaining -= written;
+    i2sWriteGained(ptr, n);
+    ptr       += n;
+    remaining -= n;
   }
+  stopSpeaker();
 }
 
 // ---------------------------------------------------------------------------
@@ -405,6 +467,7 @@ void playFile(const char* path) {
   if (!f) return;
 
   showState(S_SPEAKING);
+  startSpeaker();
 
   static uint8_t fileBuf[PLAY_CHUNK];
   bool headerSkipped = false;
@@ -425,11 +488,11 @@ void playFile(const char* path) {
       }
     }
 
-    size_t written = 0;
-    i2s_write(I2S_NUM_1, ptr, len, &written, portMAX_DELAY);
+    i2sWriteGained(ptr, len);
   }
 
   f.close();
+  stopSpeaker();
 }
 
 // ---------------------------------------------------------------------------
