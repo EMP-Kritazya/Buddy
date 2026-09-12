@@ -1,11 +1,11 @@
-/*
-  Buddy Watch firmware — LilyGO T-Display-S3 (ESP32-S3)
+﻿/*
+  Buddy Watch firmware â€” LilyGO T-Display-S3 (ESP32-S3)
   I2S0 = mic (RX), I2S1 = amp (TX)
   Button GPIO 16 (pull-up, LOW = pressed), fallback GPIO 14
   Display: TFT_eSPI with LilyGO T-Display-S3 user setup
 
-  Canned WAVs stored in LittleFS under /goals_ok.wav and /off_task.wav.
-  Upload them once with the Arduino LittleFS upload tool or PlatformIO
+  Canned WAVs stored in FFat under /goals_ok.wav and /off_task.wav.
+  Upload them once with the Arduino FFat upload tool or PlatformIO
   after running: python voice/eleven.py  (generates audio/*.wav).
 */
 
@@ -13,31 +13,31 @@
 #include <HTTPClient.h>
 #include <driver/i2s.h>
 #include "TFT_eSPI.h"
-#include <FS.h>
-#include <LittleFS.h>
+#include "FS.h"
+#include "FFat.h"
 
 // ---------------------------------------------------------------------------
-// Wi-Fi / server  — edit before flashing
+// Wi-Fi / server  â€” edit before flashing
 // ---------------------------------------------------------------------------
 const char* WIFI_SSID   = "Rice Visitor";
 const char* WIFI_PASS   = "";
-const char* SERVER      = "http://192.168.1.100:8000";  // laptop LAN IP
+const char* SERVER      = "http://168.5.130.8:8000";  // laptop LAN IP
 const char* VOICE_URL   = "/voice";
 const char* PENDING_URL = "/pending-speech";
 
 // ---------------------------------------------------------------------------
 // Pin map
 // ---------------------------------------------------------------------------
-#define PWR_EN      15   // must be HIGH at boot — powers LCD + header rails
+#define PWR_EN      15   // must be HIGH at boot â€” powers LCD + header rails
 #define BTN_PIN     16   // push-to-talk (external)
 #define BTN_FALLBK  14   // onboard button 2
 
-// I2S0 — mic (RX)
+// I2S0 â€” mic (RX)
 #define MIC_SCK   1
 #define MIC_WS    2
 #define MIC_SD    3
 
-// I2S1 — amp (TX)
+// I2S1 â€” amp (TX)
 #define AMP_BCLK  10
 #define AMP_LRCK  11
 #define AMP_DIN   12
@@ -65,16 +65,23 @@ const unsigned long POLL_INTERVAL = 2000;
 
 enum BuddyState { S_IDLE, S_LISTENING, S_THINKING, S_SPEAKING, S_ON_TASK, S_OFF_TASK };
 BuddyState curState = S_IDLE;
+uint8_t animFrame = 0;
+unsigned long lastAnimMs = 0;
+bool wifiOk = false;
 
 // ---------------------------------------------------------------------------
 // Forward declarations
 // ---------------------------------------------------------------------------
 void showState(BuddyState s);
+void animateUI();
+void drawChrome(uint16_t accent, const char* title, const char* subtitle);
 void recordAndSend();
 void pollPendingSpeech();
 void streamAndPlay(WiFiClient& stream, int contentLen);
 void playPCM(const uint8_t* data, size_t len);
 void playFile(const char* path);
+void ensureCannedWavs();
+bool downloadToFFat(const char* urlPath, const char* destPath);
 
 // ---------------------------------------------------------------------------
 // Setup
@@ -82,7 +89,7 @@ void playFile(const char* path);
 void setup() {
   Serial.begin(115200);
 
-  // Power rail — must be first
+  // Power rail â€” must be first
   pinMode(PWR_EN, OUTPUT);
   digitalWrite(PWR_EN, HIGH);
   delay(100);
@@ -107,14 +114,22 @@ void setup() {
     while (true) delay(1000);
   }
 
-  // LittleFS — canned WAV fallbacks
-  if (!LittleFS.begin(false)) {
-    Serial.println("[warn] LittleFS mount failed — offline canned WAVs unavailable");
+    // FFat — canned WAV fallbacks (format once if empty / wrong partition)
+  if (!FFat.begin(false)) {
+    Serial.println("[warn] FFat mount failed — formatting...");
+    if (!FFat.begin(true)) {
+      Serial.println("[err] FFat format failed. In Arduino: Tools → Partition Scheme → 16M Flash (3MB APP / 9.9MB FATFS) then re-flash + Upload FFat.");
+    } else {
+      Serial.println("[ok] FFat formatted (empty). Upload watch/data/*.wav via FFat uploader.");
+    }
   } else {
-    Serial.println("[ok] LittleFS mounted");
+    Serial.println("[ok] FFat mounted");
+    Serial.printf("[fs] goals_ok=%d off_task=%d\n",
+                  FFat.exists("/goals_ok.wav"),
+                  FFat.exists("/off_task.wav"));
   }
 
-  // I2S0 — mic
+  // I2S0 â€” mic
   i2s_config_t mic_cfg = {
     .mode                 = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
     .sample_rate          = SAMPLE_RATE,
@@ -135,7 +150,7 @@ void setup() {
   i2s_driver_install(I2S_NUM_0, &mic_cfg, 0, nullptr);
   i2s_set_pin(I2S_NUM_0, &mic_pins);
 
-  // I2S1 — amp
+  // I2S1 â€” amp
   i2s_config_t amp_cfg = {
     .mode                 = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
     .sample_rate          = SAMPLE_RATE,
@@ -168,9 +183,12 @@ void setup() {
   if (WiFi.status() == WL_CONNECTED) {
     Serial.print("[ok] Wi-Fi IP: ");
     Serial.println(WiFi.localIP());
+    wifiOk = true;
+    ensureCannedWavs();
     showState(S_IDLE);
   } else {
-    Serial.println("[warn] Wi-Fi failed — offline mode");
+    wifiOk = false;
+    Serial.println("[warn] Wi-Fi failed â€” offline mode");
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_RED, TFT_BLACK);
     tft.setTextSize(3);
@@ -196,10 +214,17 @@ void loop() {
     lastPollMs = millis();
     pollPendingSpeech();
   }
+
+  // ~12 fps UI animation for listening / thinking / speaking / idle pulse
+  if (millis() - lastAnimMs > 80) {
+    lastAnimMs = millis();
+    animFrame++;
+    animateUI();
+  }
 }
 
 // ---------------------------------------------------------------------------
-// Record while button held → POST raw PCM to /voice → stream reply to speaker
+// Record while button held â†’ POST raw PCM to /voice â†’ stream reply to speaker
 // ---------------------------------------------------------------------------
 void recordAndSend() {
   showState(S_LISTENING);
@@ -215,7 +240,7 @@ void recordAndSend() {
     recBytes += bytesRead;
   }
 
-  if (recBytes < 3200) {   // < 0.1 s — ignore tap
+  if (recBytes < 3200) {   // < 0.1 s â€” ignore tap
     showState(S_IDLE);
     return;
   }
@@ -239,7 +264,7 @@ void recordAndSend() {
     showState(S_SPEAKING);
     streamAndPlay(*http.getStreamPtr(), http.getSize());
   } else {
-    Serial.printf("[warn] POST /voice → HTTP %d\n", code);
+    Serial.printf("[warn] POST /voice â†’ HTTP %d\n", code);
     playFile("/goals_ok.wav");
   }
 
@@ -248,7 +273,7 @@ void recordAndSend() {
 }
 
 // ---------------------------------------------------------------------------
-// Poll /pending-speech every 2 s — plays proactive coaching with no button press
+// Poll /pending-speech every 2 s â€” plays proactive coaching with no button press
 // ---------------------------------------------------------------------------
 void pollPendingSpeech() {
   if (WiFi.status() != WL_CONNECTED) return;
@@ -269,7 +294,7 @@ void pollPendingSpeech() {
 }
 
 // ---------------------------------------------------------------------------
-// Stream HTTP body directly to I2S — no heap alloc, handles chunked transfer
+// Stream HTTP body directly to I2S â€” no heap alloc, handles chunked transfer
 // ---------------------------------------------------------------------------
 void streamAndPlay(WiFiClient& stream, int contentLen) {
   static uint8_t chunk[PLAY_CHUNK];
@@ -326,17 +351,17 @@ void playPCM(const uint8_t* data, size_t len) {
 }
 
 // ---------------------------------------------------------------------------
-// Play a canned WAV from LittleFS (offline fallback)
-// Upload audio/goals_ok.wav and audio/off_task.wav to LittleFS as
-// /goals_ok.wav and /off_task.wav using the Arduino LittleFS upload tool.
+// Play a canned WAV from FFat (offline fallback)
+// Upload audio/goals_ok.wav and audio/off_task.wav to FFat as
+// /goals_ok.wav and /off_task.wav using the Arduino FFat upload tool.
 // ---------------------------------------------------------------------------
 void playFile(const char* path) {
-  if (!LittleFS.exists(path)) {
+  if (!FFat.exists(path)) {
     Serial.printf("[warn] canned file missing: %s\n", path);
     return;
   }
 
-  fs::File f = LittleFS.open(path, "r");
+  fs::File f = FFat.open(path, "r");
   if (!f) return;
 
   showState(S_SPEAKING);
@@ -370,19 +395,272 @@ void playFile(const char* path) {
 // ---------------------------------------------------------------------------
 // Display
 // ---------------------------------------------------------------------------
-void showState(BuddyState s) {
-  curState = s;
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(3);
-  tft.setCursor(20, 80);
 
+// ---------------------------------------------------------------------------
+// Display — 320x170 landscape (rotation 1)
+// ---------------------------------------------------------------------------
+static const int SCR_W = 320;
+static const int SCR_H = 170;
+
+uint16_t accentFor(BuddyState s) {
   switch (s) {
-    case S_IDLE:      tft.println("BUDDY");     break;
-    case S_LISTENING: tft.println("LISTENING"); break;
-    case S_THINKING:  tft.println("THINKING");  break;
-    case S_SPEAKING:  tft.println("SPEAKING");  break;
-    case S_ON_TASK:   tft.println("ON TASK");   break;
-    case S_OFF_TASK:  tft.println("OFF TASK");  break;
+    case S_IDLE:      return tft.color565(80, 160, 255);   // buddy blue
+    case S_LISTENING: return tft.color565(255, 80, 120);   // hot pink
+    case S_THINKING:  return tft.color565(180, 120, 255);  // purple
+    case S_SPEAKING:  return tft.color565(60, 220, 160);   // mint
+    case S_ON_TASK:   return tft.color565(60, 200, 100);   // green
+    case S_OFF_TASK:  return tft.color565(255, 160, 40);   // amber
+  }
+  return TFT_WHITE;
+}
+
+void drawChrome(uint16_t accent, const char* title, const char* subtitle) {
+  tft.fillScreen(tft.color565(10, 12, 20));
+
+  // Top accent bar
+  tft.fillRect(0, 0, SCR_W, 6, accent);
+  // Soft header strip
+  tft.fillRect(0, 6, SCR_W, 28, tft.color565(18, 22, 36));
+  tft.setTextDatum(TL_DATUM);
+  tft.setTextColor(accent, tft.color565(18, 22, 36));
+  tft.setTextSize(2);
+  tft.drawString("BUDDY", 12, 12);
+
+  // Wi-Fi pill
+  if (wifiOk) {
+    tft.fillRoundRect(SCR_W - 78, 10, 66, 18, 4, tft.color565(30, 50, 40));
+    tft.setTextColor(tft.color565(80, 220, 140), tft.color565(30, 50, 40));
+    tft.setTextSize(1);
+    tft.drawString("Wi-Fi", SCR_W - 60, 15);
+  } else {
+    tft.fillRoundRect(SCR_W - 78, 10, 66, 18, 4, tft.color565(50, 30, 30));
+    tft.setTextColor(tft.color565(255, 120, 120), tft.color565(50, 30, 30));
+    tft.setTextSize(1);
+    tft.drawString("Offline", SCR_W - 68, 15);
+  }
+
+  // Main card
+  tft.fillRoundRect(16, 46, SCR_W - 32, 100, 10, tft.color565(22, 26, 42));
+  tft.drawRoundRect(16, 46, SCR_W - 32, 100, 10, accent);
+
+  // Title
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextColor(TFT_WHITE, tft.color565(22, 26, 42));
+  tft.setTextSize(3);
+  tft.drawString(title, SCR_W / 2, 88);
+
+  // Subtitle
+  tft.setTextColor(tft.color565(160, 170, 190), tft.color565(22, 26, 42));
+  tft.setTextSize(1);
+  tft.drawString(subtitle, SCR_W / 2, 122);
+
+  // Bottom accent dots
+  for (int i = 0; i < 5; i++) {
+    int x = SCR_W / 2 - 40 + i * 20;
+    tft.fillCircle(x, SCR_H - 10, 3, (i == (animFrame / 4) % 5) ? accent : tft.color565(40, 45, 60));
   }
 }
+
+void drawIdleOrb() {
+  int cx = SCR_W / 2;
+  int cy = 72;
+  uint16_t accent = accentFor(S_IDLE);
+  int pulse = 18 + (animFrame % 16);
+  if (animFrame % 32 > 16) pulse = 18 + (32 - (animFrame % 32));
+  tft.fillCircle(cx, cy, pulse + 8, tft.color565(20, 40, 70));
+  tft.fillCircle(cx, cy, pulse, accent);
+  tft.fillCircle(cx - 4, cy - 4, pulse / 3, tft.color565(180, 220, 255));
+}
+
+void drawWaveform(uint16_t accent) {
+  // Clear wave area inside card
+  int baseY = 78;
+  int left = 40;
+  int width = SCR_W - 80;
+  tft.fillRect(left, 55, width, 50, tft.color565(22, 26, 42));
+  for (int i = 0; i < 16; i++) {
+    int h = 6 + ((animFrame * 3 + i * 5) % 17);
+    if ((animFrame + i) % 7 == 0) h += 10;
+    int x = left + i * (width / 16) + 4;
+    tft.fillRoundRect(x, baseY - h / 2, 8, h, 2, accent);
+  }
+}
+
+void drawThinkingDots(uint16_t accent) {
+  int cy = 78;
+  int cx = SCR_W / 2;
+  tft.fillRect(cx - 50, 60, 100, 40, tft.color565(22, 26, 42));
+  for (int i = 0; i < 3; i++) {
+    int phase = (animFrame / 3 + i) % 3;
+    int r = 5 + phase * 2;
+    int y = cy - phase * 2;
+    tft.fillCircle(cx - 24 + i * 24, y, r, accent);
+  }
+}
+
+void drawSpeakerBars(uint16_t accent) {
+  int cx = SCR_W / 2;
+  int cy = 78;
+  tft.fillRect(cx - 60, 55, 120, 50, tft.color565(22, 26, 42));
+  // concentric arcs approximated as circles
+  for (int i = 0; i < 3; i++) {
+    int r = 12 + i * 10 + ((animFrame + i * 2) % 6);
+    tft.drawCircle(cx - 20, cy, r, accent);
+  }
+  tft.fillCircle(cx - 20, cy, 6, accent);
+  // right bars
+  for (int i = 0; i < 4; i++) {
+    int h = 8 + ((animFrame * 2 + i * 4) % 22);
+    tft.fillRoundRect(cx + 20 + i * 12, cy - h / 2, 8, h, 2, accent);
+  }
+}
+
+void animateUI() {
+  uint16_t accent = accentFor(curState);
+  switch (curState) {
+    case S_IDLE: {
+      // soft orb pulse on idle card (keep title)
+      tft.fillRoundRect(16, 46, SCR_W - 32, 100, 10, tft.color565(22, 26, 42));
+      tft.drawRoundRect(16, 46, SCR_W - 32, 100, 10, accent);
+      drawIdleOrb();
+      tft.setTextDatum(MC_DATUM);
+      tft.setTextColor(TFT_WHITE, tft.color565(22, 26, 42));
+      tft.setTextSize(3);
+      tft.drawString("hey", SCR_W / 2, 118);
+      tft.setTextColor(tft.color565(160, 170, 190), tft.color565(22, 26, 42));
+      tft.setTextSize(1);
+      tft.drawString("hold button to talk", SCR_W / 2, 138);
+      break;
+    }
+    case S_LISTENING:
+      drawWaveform(accent);
+      tft.setTextDatum(MC_DATUM);
+      tft.setTextColor(tft.color565(160, 170, 190), tft.color565(22, 26, 42));
+      tft.setTextSize(1);
+      tft.drawString("listening", SCR_W / 2, 130);
+      break;
+    case S_THINKING:
+      drawThinkingDots(accent);
+      tft.setTextDatum(MC_DATUM);
+      tft.setTextColor(tft.color565(160, 170, 190), tft.color565(22, 26, 42));
+      tft.setTextSize(1);
+      tft.drawString("thinking", SCR_W / 2, 130);
+      break;
+    case S_SPEAKING:
+      drawSpeakerBars(accent);
+      tft.setTextDatum(MC_DATUM);
+      tft.setTextColor(tft.color565(160, 170, 190), tft.color565(22, 26, 42));
+      tft.setTextSize(1);
+      tft.drawString("speaking", SCR_W / 2, 130);
+      break;
+    case S_ON_TASK:
+    case S_OFF_TASK:
+      // static cards — occasional bottom-dot shimmer only
+      break;
+  }
+  // bottom dots always animate lightly
+  for (int i = 0; i < 5; i++) {
+    int x = SCR_W / 2 - 40 + i * 20;
+    tft.fillCircle(x, SCR_H - 10, 3, (i == (animFrame / 4) % 5) ? accent : tft.color565(40, 45, 60));
+  }
+}
+
+void showState(BuddyState s) {
+  curState = s;
+  animFrame = 0;
+  uint16_t accent = accentFor(s);
+  const char* title = "BUDDY";
+  const char* sub = "";
+  switch (s) {
+    case S_IDLE:
+      title = "hey";
+      sub = "hold button to talk";
+      break;
+    case S_LISTENING:
+      title = "listening";
+      sub = "speak — release when done";
+      break;
+    case S_THINKING:
+      title = "thinking";
+      sub = "talking to Buddy…";
+      break;
+    case S_SPEAKING:
+      title = "buddy";
+      sub = "playing reply";
+      break;
+    case S_ON_TASK:
+      title = "on task";
+      sub = "nice — keep going";
+      break;
+    case S_OFF_TASK:
+      title = "off task";
+      sub = "nudge incoming";
+      break;
+  }
+  drawChrome(accent, title, sub);
+  // first animation paint
+  animateUI();
+}
+
+
+// ---------------------------------------------------------------------------
+// Download canned WAVs from laptop http.server into FFat (no Arduino uploader)
+// From D:\Buddy run:  python -m http.server 8000
+// ---------------------------------------------------------------------------
+bool downloadToFFat(const char* urlPath, const char* destPath) {
+  if (FFat.exists(destPath)) {
+    Serial.printf("[fs] already have %s\n", destPath);
+    return true;
+  }
+  HTTPClient http;
+  String url = String(SERVER) + urlPath;
+  Serial.printf("[fs] GET %s\n", url.c_str());
+  http.setTimeout(20000);
+  if (!http.begin(url)) {
+    Serial.println("[fs] http.begin failed");
+    return false;
+  }
+  int code = http.GET();
+  if (code != HTTP_CODE_OK) {
+    Serial.printf("[fs] GET failed HTTP %d\n", code);
+    http.end();
+    return false;
+  }
+  int len = http.getSize();
+  WiFiClient* stream = http.getStreamPtr();
+  fs::File f = FFat.open(destPath, FILE_WRITE);
+  if (!f) {
+    Serial.printf("[fs] open %s for write failed\n", destPath);
+    http.end();
+    return false;
+  }
+  uint8_t buf[1024];
+  int written = 0;
+  while (http.connected() && (len > 0 || len == -1)) {
+    size_t avail = stream->available();
+    if (!avail) {
+      delay(1);
+      continue;
+    }
+    size_t toRead = avail;
+    if (toRead > sizeof(buf)) toRead = sizeof(buf);
+    int n = stream->readBytes(buf, toRead);
+    if (n <= 0) break;
+    f.write(buf, n);
+    written += n;
+    if (len > 0) len -= n;
+  }
+  f.close();
+  http.end();
+  Serial.printf("[fs] wrote %s (%d bytes)\n", destPath, written);
+  return written > 44;
+}
+
+void ensureCannedWavs() {
+  bool ok1 = downloadToFFat("/audio/goals_ok.wav", "/goals_ok.wav");
+  bool ok2 = downloadToFFat("/audio/off_task.wav", "/off_task.wav");
+  Serial.printf("[fs] goals_ok=%d off_task=%d\n",
+                ok1 && FFat.exists("/goals_ok.wav"),
+                ok2 && FFat.exists("/off_task.wav"));
+}
+
