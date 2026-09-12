@@ -1,0 +1,182 @@
+# ============================================================
+# OS / Editor
+# ============================================================
+
+.DS_Store
+.DS_Store?
+._*
+*.swp
+*.swo
+.idea/
+.vscode/
+*.sublime-*
+
+
+# ============================================================
+# Node / React / JavaScript
+# ============================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.npm/
+.yarn/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.vite/
+
+# Coverage
+coverage/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+
+# ============================================================
+# Python / FastAPI
+# ============================================================
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.python-version
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Logs
+*.log
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# ============================================================
+# FastAPI / Local Development
+# ============================================================
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Local uploaded files
+uploads/
+
+# Temporary files
+tmp/
+temp/
+
+
+# ============================================================
+# Buddy Generated / User Data
+# ============================================================
+
+# Activity/session data
+sessions.jsonl
+*.jsonl
+
+# Local activity logs
+activity/
+data/local/
+data/raw/
+
+# Generated ML artifacts
+models/
+checkpoints/
+
+# Vector databases / embeddings
+chroma/
+chroma_db/
+*.faiss
+
+# Local caches
+.cache/
+
+
+# ============================================================
+# Secrets / Credentials
+# ============================================================
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+*.pem
+*.key
+credentials.json
+service-account.json
+
+
+# ============================================================
+# Misc
+# ============================================================
+
+*.backup
+*.backup.*
+*.bak
+*.back
+*.tmp
+*.temp
+
+*.psd
+*.sketch
+*.thumb
