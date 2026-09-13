@@ -15,8 +15,9 @@ import contextlib
 import logging
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from engine import api, config, db, goals, ingest, matlab, mentor, voice
+from engine import api, config, db, goals, ingest, matlab, mentor, voice, web
 from engine.score import ScoreKeeper
 from engine.scoring import Scorer
 
@@ -75,8 +76,20 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Buddy engine", lifespan=lifespan)
+
+# The dashboard runs on its own dev server, so its fetches are cross-origin. Only localhost is
+# allowed: the engine binds 0.0.0.0 for the watch, and this keeps a page on the same Wi-Fi from
+# reading someone's activity just because it can reach the port.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(ingest.router)
 app.include_router(api.router)
 app.include_router(goals.router)
 app.include_router(voice.router)
 app.include_router(voice.device)   # /pending-speech, /voice, /audio - the watch's contract
+app.include_router(web.router)     # /api/* - the dashboard's contract

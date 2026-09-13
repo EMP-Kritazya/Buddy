@@ -19,6 +19,7 @@ MP3 decoder, so samples go straight into the I2S buffer.
 from __future__ import annotations
 
 import logging
+import re
 import struct
 import uuid
 from dataclasses import dataclass, field
@@ -45,6 +46,7 @@ device = APIRouter(tags=["device"])
 _client = None               # built once; a client per nudge is pure overhead
 _pending: Clip | None = None
 _spoken = 0
+_last_poll: datetime | None = None   # when the watch last asked - our only liveness signal
 
 
 @dataclass
@@ -103,11 +105,27 @@ async def transcribe(wav_bytes: bytes) -> str | None:
         result = await _eleven().speech_to_text.convert(
             file=("audio.wav", wav_bytes, "audio/wav"),
             model_id=ELEVEN_STT_MODEL,
+            # Scribe labels non-speech audio by default - a second of room noise comes back as
+            # "[outro jingle]" or "[music]", which then gets asked to Gemini as if it were a
+            # question. We only ever want words here.
+            tag_audio_events=False,
         )
     except Exception as exc:
         log.warning("voice: stt failed (%s: %s)", type(exc).__name__, exc)
         return None
-    return (result.text or "").strip() or None
+    return _spoken_words(result.text or "")
+
+
+# Anything Scribe still wraps in brackets is a sound it recognised, not a word the user said.
+_TAG = re.compile(r"\[[^\]]*\]")
+
+
+def _spoken_words(text: str) -> str | None:
+    """Strip audio-event tags and return None when nothing was actually said."""
+    words = " ".join(_TAG.sub(" ", text).split())
+    # Keep the punctuation - a trailing "?" is the difference between a question and a
+    # statement to Gemini. Reject only what has no actual word left in it.
+    return words if any(ch.isalnum() for ch in words) else None
 
 
 def pcm_to_wav(pcm: bytes, sample_rate: int = SPEAK_SAMPLE_RATE,
@@ -149,13 +167,19 @@ def state() -> dict:
         "format": ELEVEN_FORMAT,
         "spoken": _spoken,
         "waiting": bool(_pending and _pending.delivered_at is None),
+        "watch_seen": None if _last_poll is None else _last_poll.isoformat(),
         "last": None if _pending is None else {
-            "id": _pending.id, "text": _pending.text,
+            "id": _pending.id, "text": _pending.text, "at": _pending.created_at.isoformat(),
             "seconds": round(_pending.seconds, 1),
             "collected": _pending.delivered_at is not None,
             "acked": _pending.done_at is not None,
         },
     }
+
+
+def seen_recently(within_s: float = 10.0) -> bool:
+    """True if the watch polled within the last few seconds - it polls every 2s."""
+    return _last_poll is not None and (now() - _last_poll).total_seconds() <= within_s
 
 
 # --- what the ESP32 calls ------------------------------------------------------------------
@@ -170,7 +194,10 @@ async def pending(format: str = Query("wav", pattern="^(wav|pcm)$")) -> Response
     Serving marks the clip collected, so a device that polls again mid-playback gets 204 rather
     than restarting the same line over itself.
     """
-    global _spoken
+    global _spoken, _last_poll
+    # The device polls on a timer whether or not there is anything to say, so the poll itself
+    # is the heartbeat - there is no other way to know the watch is alive.
+    _last_poll = now()
     if _pending is None or _pending.delivered_at is not None:
         return Response(status_code=204)
 

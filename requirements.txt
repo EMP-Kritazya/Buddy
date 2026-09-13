@@ -12,6 +12,11 @@ asyncpg>=0.29
 scikit-learn==1.9.1
 joblib==1.4.2
 
+# Lets the engine read macOS Location Services directly, so "how far is X" works without a
+# browser open. Optional and macOS-only: engine/locate.py degrades to None without it, and the
+# dashboard's browser fix remains the reliable source either way.
+pyobjc-framework-CoreLocation>=10.0; sys_platform == "darwin"
+
 # mentor voice (not wired up yet)
 google-genai>=0.3
 elevenlabs>=1.0

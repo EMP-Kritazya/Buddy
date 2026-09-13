@@ -10,6 +10,60 @@ from engine.config import DATABASE_URL, LOCAL_TZ
 log = logging.getLogger("uvicorn.error")
 
 SCHEMA = """
+-- Columns added after the table already existed somewhere. `create table if not exists` does
+-- nothing to a table that is already there, so new columns need saying explicitly. Postgres
+-- makes these no-ops on a database that already has them.
+alter table if exists user_profile add column if not exists lat double precision;
+alter table if exists user_profile add column if not exists lng double precision;
+alter table if exists user_profile add column if not exists location_accuracy_m double precision;
+alter table if exists user_profile add column if not exists location_at timestamptz;
+
+-- Every time Buddy speaks on its own. Without this a nudge exists only in memory and is gone
+-- on restart: the dashboard cannot show what happened today, and a demo cannot be replayed.
+-- Writes are bounded by the cooldown (at most one per MATLAB_HARD_COOLDOWN_S), so this is one
+-- small insert every 20+ seconds at worst, on a path that is already waiting on Gemini.
+create table if not exists nudge (
+    id         bigserial primary key,
+    at         timestamptz not null default now(),
+    level      int         not null,          -- 1 soft, 2 hard
+    reason     text,                          -- MATLAB's own words
+    score      double precision,              -- the running score when it fired
+    text       text        not null,          -- what Buddy actually said
+    spoken     boolean     not null default false,  -- did audio get rendered for the watch
+    -- what the user was doing at that moment, copied so the row stands alone
+    domain     text,
+    title      text,
+    duration_s double precision
+);
+create index if not exists nudge_at_idx on nudge (at desc);
+
+-- Who Buddy is talking to. One row, because Buddy runs on one person's machine - the fixed
+-- primary key makes that structural rather than a convention. The onboarding `goal` is the
+-- standing ambition ("graduate with a 3.8"), which is a different thing from the daily rows in
+-- `goals`; Gemini is given both, and it greets the user by name from here.
+create table if not exists user_profile (
+    id           text primary key,          -- always 'local'
+    name         text,
+    email        text,
+    university   text,
+    major        text,
+    level        text,                      -- freshman / senior / grad ...
+    study_hours  text,                      -- how much they intend to study
+    peak_time    text,                      -- when they focus best
+    distraction  text,                      -- what usually derails them
+    needs        text[],                    -- what they want help with
+    goal         text,                      -- the standing goal
+    -- Where the laptop last reported itself. Sent by the dashboard from the browser's
+    -- geolocation, which on macOS is Wi-Fi triangulation - roughly ten metres, and far better
+    -- than anything the engine can work out on its own.
+    lat          double precision,
+    lng          double precision,
+    location_accuracy_m double precision,
+    location_at  timestamptz,
+    onboarded_at timestamptz not null default now(),
+    updated_at   timestamptz not null default now()
+);
+
 -- What was said out loud, both directions. Append-only: Buddy should remember a conversation
 -- across an engine restart, so this cannot live in process memory. Only the plain spoken turns
 -- are kept - never the prompt Gemini is built with, and never the tool traffic.
@@ -251,6 +305,65 @@ async def completed_on(pool: asyncpg.Pool, day=None) -> list[dict]:
     return [dict(r) for r in rows]
 
 
+# --- what Buddy said, unprompted -----------------------------------------------------------
+
+async def record_nudge(pool: asyncpg.Pool, *, level: int, reason: str, score: float,
+                       text: str, spoken: bool, activity: dict | None) -> int:
+    async with pool.acquire() as conn:
+        return await conn.fetchval("""
+            insert into nudge (level, reason, score, text, spoken, domain, title, duration_s)
+            values ($1, $2, $3, $4, $5, $6, $7, $8) returning id""",
+            level, reason, score, text, spoken,
+            (activity or {}).get("domain"), (activity or {}).get("title"),
+            (activity or {}).get("duration_s"))
+
+
+async def nudges_between(pool: asyncpg.Pool, start, end) -> list[dict]:
+    """Everything Buddy said in a window, oldest first."""
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            "select * from nudge where at >= $1 and at < $2 order by at", start, end)
+    return [dict(r) for r in rows]
+
+
+# --- who the user is ----------------------------------------------------------------------
+
+PROFILE_FIELDS = ("name", "email", "university", "major", "level",
+                  "study_hours", "peak_time", "distraction", "needs", "goal")
+
+
+async def get_profile(pool: asyncpg.Pool) -> dict | None:
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow("select * from user_profile where id = 'local'")
+    return dict(row) if row else None
+
+
+async def save_location(pool: asyncpg.Pool, lat: float, lng: float,
+                        accuracy_m: float | None) -> None:
+    """Record where the laptop says it is. Kept on the profile so it survives a restart."""
+    async with pool.acquire() as conn:
+        await conn.execute("""
+            insert into user_profile (id, lat, lng, location_accuracy_m, location_at)
+            values ('local', $1, $2, $3, now())
+            on conflict (id) do update set
+                lat = $1, lng = $2, location_accuracy_m = $3,
+                location_at = now(), updated_at = now()""", lat, lng, accuracy_m)
+
+
+async def save_profile(pool: asyncpg.Pool, data: dict) -> dict:
+    """Upsert the single profile row. Re-running onboarding updates rather than duplicates."""
+    values = [data.get(f) for f in PROFILE_FIELDS]
+    sets = ", ".join(f"{f} = ${i + 2}" for i, f in enumerate(PROFILE_FIELDS))
+    cols = ", ".join(PROFILE_FIELDS)
+    holes = ", ".join(f"${i + 2}" for i in range(len(PROFILE_FIELDS)))
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow(
+            f"insert into user_profile (id, {cols}) values ($1, {holes}) "
+            f"on conflict (id) do update set {sets}, updated_at = now() returning *",
+            "local", *values)
+    return dict(row)
+
+
 # --- conversation ------------------------------------------------------------------------
 
 async def recent_conversation(pool: asyncpg.Pool, limit: int) -> list[tuple[str, str]]:
@@ -296,6 +409,59 @@ async def carry_over(pool: asyncpg.Pool, to_day=None) -> int:
             where g.goal_date = $1 - 1 and c.goal_id is null
             on conflict (goal_date, title) do nothing""", target)
     return int(result.split()[-1])
+
+
+# --- what the dashboard reads ------------------------------------------------------------
+# All of these are local-day aware: a productivity dashboard's "today" ends at the user's
+# midnight, not at 7pm when the UTC date rolls over.
+
+async def latest_activity(pool: asyncpg.Pool) -> dict | None:
+    """The most recently updated session - what the user is doing right now."""
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow(
+            "select * from activity order by updated_at desc limit 1")
+    return dict(row) if row else None
+
+
+async def score_series(pool: asyncpg.Pool, since, until=None) -> list[dict]:
+    """Every stored score point in a window, oldest first - the productivity line."""
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            "select end_ts, score_after from activity "
+            "where score_after is not null and end_ts >= $1 "
+            "  and ($2::timestamptz is null or end_ts <= $2) "
+            "order by end_ts", since, until)
+    return [{"ts": r["end_ts"], "score": float(r["score_after"])} for r in rows]
+
+
+async def day_stats(pool: asyncpg.Pool, start, end) -> dict:
+    """Totals for one local day, plus the hour the user was most productive.
+
+    `slumps` counts the number of times the score CROSSED below 0.5, not the number of rows
+    below it - sitting at 0.3 for an hour is one incident, not two hundred.
+    """
+    async with pool.acquire() as conn:
+        totals = await conn.fetchrow("""
+            select coalesce(sum(duration_s), 0)                            as tracked_s,
+                   coalesce(sum(duration_s * p) / nullif(sum(duration_s), 0), 0) as avg_p,
+                   count(*)                                                as sessions
+            from activity where end_ts >= $1 and end_ts < $2""", start, end)
+        slumps = await conn.fetchval("""
+            with ordered as (
+                select score_after,
+                       lag(score_after) over (order by end_ts) as prev
+                from activity where end_ts >= $1 and end_ts < $2 and score_after is not null)
+            select count(*) from ordered
+            where score_after < 0.5 and (prev is null or prev >= 0.5)""", start, end)
+        best = await conn.fetchrow("""
+            select date_trunc('hour', end_ts at time zone $3) as hour,
+                   sum(duration_s * p) / nullif(sum(duration_s), 0) as score
+            from activity where end_ts >= $1 and end_ts < $2
+            group by 1 having sum(duration_s) > 60
+            order by score desc nulls last limit 1""", start, end, LOCAL_TZ)
+    return {"tracked_s": float(totals["tracked_s"]), "avg_p": float(totals["avg_p"]),
+            "sessions": totals["sessions"], "slumps": slumps or 0,
+            "best_hour": best["hour"] if best else None}
 
 
 async def activity_since(pool: asyncpg.Pool, since, limit: int = 500) -> list[dict]:
