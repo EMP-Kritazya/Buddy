@@ -17,7 +17,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from engine import api, config, db, goals, ingest, matlab, mentor, voice, web
+from engine import api, config, db, goals, ingest, matlab, mentor, reminders, voice, web
 from engine.score import ScoreKeeper
 from engine.scoring import Scorer
 
@@ -60,6 +60,7 @@ async def lifespan(app: FastAPI):
     log.info("engine: model=%s score=%.3f resuming %d recent sessions",
              app.state.scorer.version, app.state.keeper.value, len(counted))
     log.info("engine: watch should use  SERVER = \"http://%s:8000\"", lan_address())
+    reminders.start(app.state.pool)
     matlab.start()
     matlab.prime(await db.recent_scores(app.state.pool, config.MATLAB_WINDOW))
     # A trigger MATLAB raises now has somewhere to go: gather context -> Gemini -> speak.
@@ -71,6 +72,7 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
+        await reminders.stop()
         await matlab.stop()
         await app.state.pool.close()
 

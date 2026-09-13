@@ -18,6 +18,18 @@ alter table if exists user_profile add column if not exists lng double precision
 alter table if exists user_profile add column if not exists location_accuracy_m double precision;
 alter table if exists user_profile add column if not exists location_at timestamptz;
 
+-- Things the user asked to be reminded of. In the database rather than a timer in memory,
+-- because a reminder set at 2pm has to survive the engine being restarted at 2:30.
+create table if not exists reminder (
+    id         bigserial primary key,
+    text       text        not null,   -- the exact sentence to say when the time comes
+    due_at     timestamptz not null,
+    created_at timestamptz not null default now(),
+    fired_at   timestamptz             -- null until it has been spoken
+);
+-- Partial index: the worker only ever asks for the unfired ones.
+create index if not exists reminder_due_idx on reminder (due_at) where fired_at is null;
+
 -- Every time Buddy speaks on its own. Without this a nudge exists only in memory and is gone
 -- on restart: the dashboard cannot show what happened today, and a demo cannot be replayed.
 -- Writes are bounded by the cooldown (at most one per MATLAB_HARD_COOLDOWN_S), so this is one
@@ -302,6 +314,39 @@ async def completed_on(pool: asyncpg.Pool, day=None) -> list[dict]:
         rows = await conn.fetch(
             "select * from completed_goals where goal_date = $1 order by completed_at",
             day or date.today())
+    return [dict(r) for r in rows]
+
+
+# --- reminders ----------------------------------------------------------------------------
+
+async def add_reminder(pool: asyncpg.Pool, text: str, due_at) -> dict:
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow(
+            "insert into reminder (text, due_at) values ($1, $2) returning *", text, due_at)
+    return dict(row)
+
+
+async def due_reminders(pool: asyncpg.Pool, at) -> list[dict]:
+    """Everything that should have gone off by now and has not.
+
+    Claimed in the same statement that reads them: if the worker is slow and a second pass
+    starts, a reminder must not be spoken twice.
+    """
+    async with pool.acquire() as conn:
+        rows = await conn.fetch("""
+            update reminder set fired_at = now()
+            where id in (select id from reminder
+                         where fired_at is null and due_at <= $1
+                         order by due_at limit 20)
+            returning *""", at)
+    return [dict(r) for r in rows]
+
+
+async def pending_reminders(pool: asyncpg.Pool) -> list[dict]:
+    """Set but not yet spoken - what Buddy should know it still owes the user."""
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            "select * from reminder where fired_at is null order by due_at limit 20")
     return [dict(r) for r in rows]
 
 

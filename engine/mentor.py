@@ -17,7 +17,7 @@ import asyncpg
 from engine import db, maps, voice
 from engine.config import (GEMINI_API_KEY, GEMINI_MAX_TOKENS, GEMINI_MODEL,
                            GEMINI_TEMPERATURE, GEMINI_THINKING, LOCAL_TZ)
-from engine.matlab import Trigger
+from engine.matlab import HARD, SOFT, Trigger
 from engine.store_helpers import now
 
 try:
@@ -111,6 +111,13 @@ HOW YOU BEHAVE
 No greetings as an opener, no sign-offs, no emoji, no markdown, no bullet points. Just say the
 thing, the way a person who respects them would say it."""
 
+# Said when Gemini cannot produce a line. Short, true regardless of context, and it does not
+# pretend to know anything it was not told.
+GEMINI_DOWN_LINE = "You have drifted off. Get back to what you said mattered today."
+
+# And when even text-to-speech is gone, these pre-rendered clips are what is left.
+FALLBACK_CLIP = {SOFT: "thinking_issue.wav", HARD: "off_task.wav"}
+
 # Built on first use and kept: constructing a client per nudge is pure overhead.
 _client = None
 
@@ -140,16 +147,29 @@ async def handle(trigger: Trigger, pool: asyncpg.Pool) -> Nudge | None:
 
     context = await gather_context(trigger, pool)
 
+    # FALLBACK 1 - Gemini is unreachable, out of quota, or returned nothing.
+    # The trigger was real: MATLAB saw the score drop, and staying silent would make the whole
+    # system look dead exactly when it should be speaking. A plain line still says the true
+    # thing, and ElevenLabs can usually still voice it.
     text = await compose(trigger, context)
-    if not text:
-        log.info("mentor: nothing to say")
-        return None
+    fell_back = not text
+    if fell_back:
+        text = GEMINI_DOWN_LINE
+        log.warning("mentor: Gemini gave nothing - falling back to a fixed line")
 
     nudge = Nudge(text=text, level=trigger.level, reason=trigger.reason,
                   score=trigger.score, at=now())
     log.warning("mentor: %s", text)
 
     spoken = await speak(nudge)
+    # FALLBACK 2 - text-to-speech is unavailable, so there is no fresh audio to send.
+    # The pre-rendered clips were made for exactly this: they live on disk and on the watch,
+    # and need no network at all. The words are generic, but the speaker still speaks.
+    if not spoken:
+        clip = await voice.say_canned(FALLBACK_CLIP.get(trigger.level, "off_task.wav"))
+        spoken = clip is not None
+        log.warning("mentor: no live audio - %s",
+                    "played a pre-rendered clip" if spoken else "and no clip on disk either")
     _last = nudge
 
     # Record it AFTER speaking, so `spoken` is the truth rather than an intention. This runs on
@@ -226,6 +246,14 @@ def _places(places: list) -> str:
             line += f" (productivity {float(place['p']):.2f})"
         parts.append(line)
     return "; ".join(parts)
+
+
+def _reminders(rows: list) -> str:
+    """So Buddy knows what it already owes them and does not set the same thing twice."""
+    if not rows:
+        return "none"
+    return "; ".join(
+        f"{r['due_at'].astimezone(ZoneInfo(LOCAL_TZ)):%H:%M} \"{r['text']}\"" for r in rows)
 
 
 def _goal_brief(goal: dict) -> dict:
@@ -354,6 +382,28 @@ def _tools():
                 },
                 required=["destination"])),
         types.FunctionDeclaration(
+            name="set_reminder",
+            description=(
+                "Remind the user of something after a delay. Call it whenever they ask to be "
+                "reminded, told, or nudged about something later. You are given the current "
+                "time, so work the delay out yourself: 'in twenty minutes' is 20, 'at 3pm' is "
+                "however many minutes away that is. Say it is set and when it will go off; do "
+                "not ask them to confirm."),
+            parameters=types.Schema(
+                type=types.Type.OBJECT,
+                properties={
+                    "text": types.Schema(
+                        type=types.Type.STRING,
+                        description=("The exact sentence to SAY OUT LOUD when the time comes. "
+                                     "Write it as speech addressed to them, not as a note: "
+                                     "'Time to call your advisor.' not 'call advisor'. You "
+                                     "will not be asked again, so it has to stand alone.")),
+                    "minutes": types.Schema(
+                        type=types.Type.INTEGER,
+                        description="How many minutes from now, at least 1."),
+                },
+                required=["text", "minutes"])),
+        types.FunctionDeclaration(
             name="confirm_goal",
             description=(
                 "Carry out whatever you last proposed - saving a new goal, or removing one. "
@@ -438,6 +488,16 @@ async def _call_tool(name: str, args: dict, pool) -> dict:
         _pending_goal = None
         return {"status": "cancelled"}
 
+    if name == "set_reminder":
+        minutes = max(1, int(args.get("minutes") or 1))
+        due = now() + timedelta(minutes=minutes)
+        saved = await db.add_reminder(pool, args["text"].strip(), due)
+        log.warning("reminder set for %s (%d min): %r",
+                    due.astimezone(ZoneInfo(LOCAL_TZ)).strftime("%H:%M"), minutes, saved["text"])
+        return {"status": "set", "id": saved["id"], "minutes": minutes,
+                "at": due.astimezone(ZoneInfo(LOCAL_TZ)).strftime("%H:%M"),
+                "next": "Tell them it is set and when. One sentence."}
+
     if name == "travel_time":
         result = await maps.travel(pool, args["destination"], args.get("mode", "walk"))
         if result["ok"]:
@@ -475,6 +535,7 @@ async def answer(question: str, pool) -> str | None:
     summary = await db.summary(pool, now() - timedelta(hours=CONTEXT_HOURS))
     goals = await db.goals_for(pool)
     profile = await db.get_profile(pool) or {}
+    pending = await db.pending_reminders(pool)
 
     # The question comes FIRST and alone, with the data explicitly demoted to reference.
     # Listing the question as one line among five lines of browsing stats had the model treating
@@ -503,6 +564,7 @@ async def answer(question: str, pool) -> str | None:
         f"where the time went: {_places(summary['places'])}\n"
         f"still to do today: {[_goal_brief(g) for g in goals if not g['completed_at']]}\n"
         f"already finished: {[g['title'] for g in goals if g['completed_at']]}\n"
+        f"reminders already set: {_reminders(pending)}\n"
         )
     )
     return await _converse(prompt, question, pool)

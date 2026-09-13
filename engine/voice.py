@@ -269,22 +269,43 @@ async def voice(request: Request) -> Response:
     # Scribe wants a real file; the device sends bare samples, so put a header on them.
     heard = await transcribe(pcm_to_wav(pcm))
     if not heard:
+        # Nothing was said, or speech-to-text is down. The watch plays its own
+        # network_issue.wav on any non-200, which is the right shape of answer here.
         log.info("voice: <- watch  %.1fs, nothing transcribed", len(pcm) / (SPEAK_SAMPLE_RATE * 2))
         raise HTTPException(503, "could not transcribe")
     log.info("voice: <- watch  %.1fs  \"%s\"", len(pcm) / (SPEAK_SAMPLE_RATE * 2), heard)
 
     from engine import mentor                # imported here: mentor imports voice at module load
     reply = await mentor.answer(heard, request.app.state.pool)
+
+    # FALLBACK - Gemini could not answer. Returning 503 would have the watch say "network
+    # issue", which is a lie: the network carried this request perfectly well. Send the
+    # pre-rendered clip that says the honest thing instead, as a normal 200 the watch plays.
     if not reply:
-        raise HTTPException(503, "no answer")
+        log.warning("voice: no answer from Gemini - sending the pre-rendered clip")
+        return _canned_response("thinking_issue.wav", heard)
     log.warning("buddy replies: %s", reply)
 
     audio = await synthesize(reply)
+    # FALLBACK - the words exist but text-to-speech is gone, so they cannot be spoken. The
+    # pre-rendered clip needs no network and at least tells the user Buddy is not well.
     if not audio:
-        raise HTTPException(503, "could not synthesize")
+        log.warning("voice: no speech from ElevenLabs - sending the pre-rendered clip")
+        return _canned_response("thinking_issue.wav", heard)
     return Response(content=pcm_to_wav(audio), media_type="audio/wav",
                     headers={"X-Buddy-Heard": heard.encode("ascii", "replace").decode()[:120],
                              "X-Buddy-Text": reply.encode("ascii", "replace").decode()[:120]})
+
+
+def _canned_response(name: str, heard: str = "") -> Response:
+    """A pre-rendered clip as a normal 200, so the watch just plays it."""
+    pcm = canned_pcm(name)
+    if pcm is None:
+        # Nothing rendered yet - let the watch fall back to its own copy on flash.
+        raise HTTPException(503, f"{name} has not been generated")
+    return Response(content=pcm_to_wav(pcm), media_type="audio/wav",
+                    headers={"X-Buddy-Heard": heard.encode("ascii", "replace").decode()[:120],
+                             "X-Buddy-Text": f"[canned] {name}"})
 
 
 @device.get("/audio/{name}")
@@ -296,13 +317,43 @@ async def canned(name: str) -> Response:
     return Response(content=path.read_bytes(), media_type="audio/wav")
 
 
+# Pre-rendered once, played when a live service is unavailable. These are the ONLY thing that
+# still works when ElevenLabs or Gemini is down, so they are rendered ahead of time and cached
+# on the watch's own filesystem as well.
 CANNED = {
     "off_task.wav": ("You have senior design until 10. You can play after that. "
                      "You'll regret this block later - go back to the project."),
     "goals_ok.wav": ("Got both. Send the email first, that's the short one. "
                      "Then you have a straight run at senior design until 10."),
     "network_issue.wav": "Sorry, I am facing a network issue right now.",
+    # Said when Gemini or ElevenLabs is unreachable. Deliberately not "network issue" - the
+    # network is fine, it is Buddy's own thinking that is not, and saying so honestly is
+    # better than a message that sends the user looking at their wifi.
+    "thinking_issue.wav": ("My head is not working right now, but you already know what you "
+                           "should be doing. Go do that."),
 }
+
+
+def canned_pcm(name: str) -> bytes | None:
+    """Raw samples from a pre-rendered clip, header stripped. None if it was never generated."""
+    path = AUDIO_DIR / name
+    try:
+        data = path.read_bytes()
+    except OSError:
+        log.warning("voice: canned clip %s is missing - run POST /audio/generate", name)
+        return None
+    return data[44:] if data[:4] == b"RIFF" else data
+
+
+async def say_canned(name: str) -> Clip | None:
+    """Queue a pre-rendered clip. The last resort when text-to-speech itself is unavailable."""
+    global _pending
+    pcm = canned_pcm(name)
+    if not pcm:
+        return None
+    _pending = Clip(text=f"[canned] {CANNED.get(name, name)}", pcm=pcm)
+    log.info("voice: queued canned %s (%s)", name, _pending.id)
+    return _pending
 
 
 @device.post("/audio/generate")
