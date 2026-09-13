@@ -7,8 +7,8 @@
 import {
   canResume,
   HEARTBEAT_MINUTES,
-  HEARTBEAT_MS,
   IDLE_SECONDS,
+  MIN_BEAT_AGE_MS,
   MIN_SESSION_MS,
   SLEEP_GAP_MS,
   describeTab,
@@ -184,11 +184,11 @@ async function heartbeat(at) {
   await reconcile(at);
   const { current } = await chrome.storage.local.get("current");
   if (!current) return;
-  // The alarm is a fixed metronome, but a progress report is only worth sending once per
-  // interval of real session time. Opening a session - a tab switch, a navigation, a refresh -
-  // starts that count over, so a 6-second-old session never reports.
+  // The alarm is a fixed metronome, but a progress report is only worth sending once the
+  // session has some real time on it. Opening a session - a tab switch, a navigation, a
+  // refresh - starts that count over, so a 6-second-old session never reports.
   const sinceReported = at - Math.max(current.start_ms, current.last_beat_end_ms);
-  if (sinceReported < HEARTBEAT_MS) return;
+  if (sinceReported < MIN_BEAT_AGE_MS) return;
   // Non-final snapshot: the backend upserts on session_id, so long sessions are visible live.
   current.beats += 1;
   current.last_beat_end_ms = at;

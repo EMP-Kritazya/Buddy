@@ -1,17 +1,22 @@
-// Session helpers: what counts as trackable, and the record shape sent to the backend.
-
 export const IDLE_SECONDS = 60; // 15 if I wanna test idle behavior
 export const MIN_SESSION_MS = 2000;
 export const HEARTBEAT_MINUTES = 0.5; // Chrome clamps alarms to a 30s floor
 export const HEARTBEAT_MS = HEARTBEAT_MINUTES * 60 * 1000;
+// How old a session must be before an alarm tick is allowed to report it.
+//
+// The alarm is a fixed metronome and does NOT restart when a session opens, so requiring a full
+// HEARTBEAT_MS of session age meant a session beginning mid-cycle missed that tick and waited
+// for the next one - 31 to 60 seconds before its first progress report, and nothing at all if
+// it ended inside that window. Half the period puts the worst case back at one tick while still
+// ignoring the sub-15s tab flicking the gate was written for.
+export const MIN_BEAT_AGE_MS = HEARTBEAT_MS / 2;
 // Three missed heartbeats means nobody was home: the machine slept or the worker was frozen.
 export const SLEEP_GAP_MS = 3 * HEARTBEAT_MS;
 
-// Titles on these domains (and their subdomains) never leave the machine, e.g. 'chase.com'.
+export const RESUME_GAP_MS = 60 * 1000;
+
 const REDACTED_DOMAINS = [];
 
-// Brands look like [{brand:'Google Chrome'}, {brand:'Chromium'}, {brand:'Not)A;Brand'}];
-// pick the real product so Edge/Brave report themselves.
 const BROWSER_NAME = detectBrowser();
 function detectBrowser() {
   const named = (globalThis.navigator?.userAgentData?.brands ?? [])
@@ -57,23 +62,22 @@ export function describeTab(tab) {
     tracked: true,
     domain,
     url_path: url.pathname,
-    // Includes the query so e.g. switching YouTube videos starts a new session; stays local,
-    // only url_path is ever sent.
-    url_key: url.origin + url.pathname + url.search,
+    // Page identity, query string excluded: ?t=90 on a video, a tracking parameter or a
+    // re-sorted table is the same page, and splitting on those produced a row per fiddle.
+    // Switching to a different YouTube video changes the pathname, so that still splits.
+    url_key: url.origin + url.pathname,
     title: redacted ? "[redacted]" : base.title,
   };
 }
 
-// Coming back to the same page after a short detour (an untracked tab, a glance at the
-// terminal) continues the session it left instead of fragmenting one stay into several rows.
-// Only the most recently closed session is eligible, so time spent on another tracked page can
-// never be absorbed into this one - the worst case is up to RESUME_GAP_MS of untracked time.
-export const RESUME_GAP_MS = 15 * 1000;
+// Resuming is judged on what the classifier would see - the site and the title - rather than
+// the exact URL. Two views the model cannot tell apart should not become two rows.
+const contentKey = (x) => `${x.domain ?? ""}\n${x.title ?? ""}`;
 
 export function canResume(lastClosed, target, at) {
   if (!lastClosed || !target?.tracked) return false;
   return (
-    lastClosed.url_key === target.url_key &&
+    contentKey(lastClosed) === contentKey(target) &&
     at - lastClosed.closed_at <= RESUME_GAP_MS
   );
 }

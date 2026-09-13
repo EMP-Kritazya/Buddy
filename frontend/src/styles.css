@@ -1,0 +1,21 @@
+@import "tailwindcss" source(none);
+@import "./styles/tokens.css";
+@import "./styles/globals.css";
+@source "../src";
+
+@theme inline {
+  --color-plot-bg: var(--plot-bg);
+  --color-plot-productive: var(--plot-productive);
+  --color-plot-drifting: var(--plot-drifting);
+  --color-plot-incident: var(--plot-incident);
+  --color-plot-grid: var(--plot-grid);
+  --color-plot-axis: var(--plot-axis);
+  --color-plot-annotation: var(--plot-annotation);
+}
+
+@utility text-display {
+  font-family: var(--font-serif);
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}

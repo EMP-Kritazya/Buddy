@@ -4,8 +4,12 @@
 const INGEST_URL = 'http://127.0.0.1:8000/ingest';
 const BATCH_SIZE = 200;
 const MAX_QUEUE = 5000;
-const MIN_BACKOFF_MS = 30 * 1000;
-const MAX_BACKOFF_MS = 2 * 60 * 1000;
+// The backend here is a local process the developer restarts constantly, not a remote service
+// that needs protecting from a stampede. A 30s-to-2min backoff meant every Ctrl-C left records
+// queued for up to two minutes after the engine came back - indistinguishable, from the
+// terminal, from capture being broken. Retrying against localhost is nearly free.
+const MIN_BACKOFF_MS = 5 * 1000;
+const MAX_BACKOFF_MS = 20 * 1000;
 
 // Queue mutations get their own lock. flush() waits on the network outside of it, so a slow
 // backend never delays event handling.

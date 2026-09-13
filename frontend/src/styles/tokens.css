@@ -1,0 +1,46 @@
+/*
+ * Buddy design tokens.
+ * Declared inside @theme so each token is both a CSS custom property on :root
+ * and a real Tailwind utility (bg-canvas, text-ink-2, border-border-2, ...).
+ */
+@theme {
+  --color-canvas: #f7f5ef;
+  --color-surface: #ffffff;
+  --color-ink: #1f2933;
+  --color-ink-2: #626a64;
+  --color-ink-3: #868b86;
+  --color-accent: #3f6b5b;
+  --color-accent-2: #dce7df;
+  --color-highlight: #e8c76a;
+  --color-border: #d8d1c4;
+  --color-border-2: #e7e1d7;
+  --color-incident: #c45a4a;
+  --color-drift: #c9852c;
+  --color-signout-hover: #fdf5f5;
+  --color-plot-footer: #172028;
+
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-sans: "Geist", sans-serif;
+  --font-mono: "Geist Mono", monospace;
+
+  --text-display: 84px;
+  --text-h1: 48px;
+  --text-h2: 32px;
+  --text-h3: 20px;
+  --text-body: 16px;
+  --text-small: 13px;
+  --text-micro: 11px;
+}
+
+/* Plot tokens — read directly by chart components. */
+:root {
+  --plot-bg: #1f2933;
+  --plot-productive: #3f6b5b;
+  --plot-drifting: #e8c76a;
+  --plot-incident: #c45a4a;
+  --plot-grid: #2a3542;
+  --plot-axis: #626a64;
+  --plot-annotation: #c45a4a;
+
+  --radius-button: 6px;
+}

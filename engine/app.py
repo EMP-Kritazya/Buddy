@@ -1,50 +1,82 @@
 """The local engine: one process, one port.
 
-  uvicorn engine.app:app --port 8000
+    uvicorn engine.app:app --host 0.0.0.0 --port 8000
 
-Ingest, scoring, the trigger loop and the read API all live here so the demo needs one command.
-The pieces are split by clock, not by convenience: ingest answers in milliseconds, the loop
-thinks every 15 seconds, and check-ins take as long as Gemini takes - on a background task.
+--host 0.0.0.0 is not optional once the ESP32 is involved: uvicorn binds 127.0.0.1 by default,
+which is reachable only from this laptop. The device needs the LAN address.
+
+Collect logs -> clean and prep -> run the model -> update the productivity score -> store one
+row per focus session in TigerData.
 """
+
 from __future__ import annotations
 
-import asyncio
 import contextlib
 import logging
 
 from fastapi import FastAPI
 
-from engine import api, ingest
+from engine import api, config, db, goals, ingest, matlab, mentor, voice
+from engine.score import ScoreKeeper
 from engine.scoring import Scorer
-from engine.store import Store
-from engine.trigger import EngineState, run_loop
 
 log = logging.getLogger("uvicorn.error")
 
-with contextlib.suppress(ImportError):
-    from dotenv import load_dotenv
+# .env is loaded by engine.config at import time - see the note there for why it cannot be done
+# from this file.
 
-    load_dotenv()
+
+def lan_address() -> str:
+    """This machine's address on the LAN - what the watch firmware must be flashed with.
+
+    Opening a UDP socket to an outside address makes the OS pick the interface it would really
+    route through, which is the one the ESP32 shares. No packet is sent. Reading hostname or
+    127.0.0.1 would give an address the device cannot reach.
+    """
+    import socket
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        sock.connect(("8.8.8.8", 80))
+        return sock.getsockname()[0]
+    except OSError:
+        return "127.0.0.1"
+    finally:
+        sock.close()
 
 
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.store = Store()
     app.state.scorer = Scorer()
-    app.state.state = EngineState()
-    app.state.speaking = False
-    log.info("engine: %s sessions on disk, model=%s",
-             app.state.store.counts()["sessions"], app.state.scorer.version)
+    app.state.keeper = ScoreKeeper()
+    app.state.pool = await db.connect()
 
-    task = asyncio.create_task(run_loop(app))
+    # Resume where the last run left off: the score rides on the newest activity row, and the
+    # durations tell us how much of each recent session has already been counted.
+    score, counted = await db.load_state(app.state.pool)
+    app.state.keeper.resume_from(score)
+    app.state.counted = counted
+    log.info("engine: model=%s score=%.3f resuming %d recent sessions",
+             app.state.scorer.version, app.state.keeper.value, len(counted))
+    log.info("engine: watch should use  SERVER = \"http://%s:8000\"", lan_address())
+    matlab.start()
+    matlab.prime(await db.recent_scores(app.state.pool, config.MATLAB_WINDOW))
+    # A trigger MATLAB raises now has somewhere to go: gather context -> Gemini -> speak.
+    matlab.set_handler(mentor.make_handler(app.state.pool))
+    mentor.prime(await db.recent_conversation(app.state.pool, mentor.HISTORY_TURNS * 2))
+    if app.state.scorer.pipeline is None:
+        log.warning("engine: NO MODEL - every row will be scored by ml/rules.py (%s)",
+                    app.state.scorer.error)
     try:
         yield
     finally:
-        task.cancel()
-        with contextlib.suppress(asyncio.CancelledError):
-            await task
+        await matlab.stop()
+        await app.state.pool.close()
 
 
 app = FastAPI(title="Buddy engine", lifespan=lifespan)
 app.include_router(ingest.router)
 app.include_router(api.router)
+app.include_router(goals.router)
+app.include_router(voice.router)
+app.include_router(voice.device)   # /pending-speech, /voice, /audio - the watch's contract

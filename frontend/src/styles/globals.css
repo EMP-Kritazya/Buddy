@@ -1,0 +1,276 @@
+html {
+  background-color: var(--color-canvas);
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+  transition:
+    color 220ms ease,
+    background-color 220ms ease;
+  position: relative;
+}
+
+/* Almost invisible paper grain, pure CSS/SVG noise. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+button {
+  border-radius: var(--radius-button);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@keyframes buddy-status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.buddy-pulse {
+  animation: buddy-status-pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .buddy-pulse {
+    animation: none;
+  }
+}
+
+@keyframes buddy-dashboard-task-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.buddy-dashboard-task-in {
+  animation: buddy-dashboard-task-in 220ms ease-out;
+}
+
+@keyframes buddy-commentary-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.buddy-commentary-in {
+  animation: buddy-commentary-in 300ms ease-out;
+}
+
+@keyframes buddy-waiting-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.buddy-waiting-in {
+  animation: buddy-waiting-in 300ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buddy-dashboard-task-in,
+  .buddy-waiting-in,
+  .buddy-commentary-in { animation: none; }
+}
+
+@keyframes buddy-scan {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes buddy-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+
+@keyframes buddy-connect-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.buddy-scan-dot {
+  animation: buddy-scan 1.2s ease-in-out infinite;
+}
+
+.buddy-scan-sweep {
+  background: linear-gradient(to right, transparent, var(--color-drift), transparent);
+  animation: buddy-sweep 1.8s ease-in-out infinite;
+}
+
+.buddy-connect-fade {
+  animation: buddy-connect-fade 300ms ease-out;
+}
+
+.buddy-download-confirm {
+  animation: buddy-connect-fade 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buddy-scan-dot,
+  .buddy-scan-sweep,
+  .buddy-connect-fade,
+  .buddy-download-confirm {
+    animation: none;
+  }
+}
+
+@keyframes buddy-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes buddy-field-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(6px); }
+  40% { transform: translateX(-6px); }
+  60% { transform: translateX(4px); }
+  80% { transform: translateX(-4px); }
+}
+
+.buddy-step-in {
+  animation: buddy-step-in 220ms ease-out;
+}
+
+.buddy-field-shake {
+  animation: buddy-field-shake 300ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buddy-step-in,
+  .buddy-field-shake {
+    animation: none;
+  }
+}
+
+/* Live productivity curve */
+@keyframes buddy-curve-breathe {
+  0%, 100% { opacity: 0.07; }
+  50% { opacity: 0.12; }
+}
+
+.buddy-curve-alert {
+  animation: buddy-curve-breathe 1.5s ease-in-out infinite;
+}
+
+@keyframes buddy-curve-label-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.buddy-curve-label {
+  animation: buddy-curve-label-in 0.4s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buddy-curve-alert,
+  .buddy-curve-label {
+    animation: none;
+  }
+  .buddy-curve-alert {
+    opacity: 0.09;
+  }
+}
+
+/* Wearable section — hardware prototype photo background. */
+.buddy-wearable-section {
+  background-color: #0d1a14;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  isolation: isolate;
+}
+
+.buddy-wearable-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: rgba(13, 26, 20, 0.62);
+}
+
+.buddy-wearable-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.buddy-wearable-section .text-ink,
+.buddy-wearable-section h2,
+.buddy-wearable-section h3 {
+  color: #ffffff;
+}
+
+.buddy-wearable-section .text-ink-2 {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.buddy-wearable-section .text-ink-3 {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.buddy-wearable-section .text-accent {
+  color: #7fb39d;
+}
+
+.buddy-wearable-section .border-border {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.buddy-wearable-caption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+}

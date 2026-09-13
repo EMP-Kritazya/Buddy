@@ -177,12 +177,11 @@ def main() -> None:
           f"generated {origins.count('generated')}, real {origins.count('real')})")
     print(f"  productive {labels.count(1)}   unproductive {labels.count(0)}")
 
-    # ---------------------------------------------------------------- 80/20 holdouts
-    # Two different splits, because they answer two different questions.
-    x_tr, x_te, y_tr, y_te = train_test_split(
+    
+    X_train, X_test, y_train, y_test = train_test_split(
         texts, labels, test_size=0.2, stratify=labels, random_state=42)
     scores = {"random_80_20": report(
-        "random 80/20 split", x_tr, y_tr, x_te, y_te,
+        "random 80/20 split", X_train, y_train, X_test, y_test,
         "rows from the same template land in both halves, so this flatters the model")}
 
     if gen_groups:
